@@ -1,4 +1,4 @@
-package com.ubic.shop.web;
+package com.ubic.shop.api;
 
 import com.ubic.shop.dto.CategorySaveRequestDto;
 import com.ubic.shop.dto.ProductSaveRequestDto;

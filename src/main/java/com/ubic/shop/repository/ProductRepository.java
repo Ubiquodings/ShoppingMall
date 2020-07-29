@@ -22,7 +22,12 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Query(value="select * from Product limit 40", nativeQuery = true)
     List<Product> findDefaultProducts();
 
-    List<Product> findByCategoryId(Long id);
+    // 카운트 쿼리 분리
+    @Query(value = "select p from Product p",
+            countQuery = "select count(p.name) from Product p")
+    Page<Product> findProductsCountBy(Pageable pageable);
+
+    List<Product> findByCategoryId(Long id, Pageable pageable);
 //    List<Product> findAll();
 //    private final EntityManager em;
 //

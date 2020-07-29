@@ -6,10 +6,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.session.SessionRepository;
+import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.client.RestTemplate;
 
 @EnableJpaRepositories(basePackages = "com.ubic.shop.repository")
-@EnableElasticsearchRepositories(basePackages = "com.ubic.shop.es_repository")
+@EnableElasticsearchRepositories(basePackages = "com.ubic.shop.elasticsearch")
 @EnableJpaAuditing
 @SpringBootApplication
 public class ShopApplication {
@@ -23,4 +27,8 @@ public class ShopApplication {
 		return new RestTemplate();
 	}
 
+	@Bean
+	public SessionRepository jdbcIndexedSessionRepository(JdbcTemplate jdbcTemplate, TransactionTemplate transactionTemplate){
+		return new JdbcIndexedSessionRepository(jdbcTemplate, transactionTemplate);
+	}
 }

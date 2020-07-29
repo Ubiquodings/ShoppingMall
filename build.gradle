@@ -36,7 +36,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	compile('org.webjars:stomp-websocket:2.3.3')
-//	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
 	compile('org.springframework.session:spring-session-jdbc')
 
 	// input excel file

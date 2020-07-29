@@ -13,8 +13,7 @@ import javax.persistence.Id;
 @Setter(AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 

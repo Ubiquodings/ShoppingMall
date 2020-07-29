@@ -1,9 +1,8 @@
-package com.ubic.shop.service;
+package com.ubic.shop.kafka.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ubic.shop.dto.UserActionKafkaRequestDto;
-import com.ubic.shop.repository.ProductRepository;
+import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -16,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +32,9 @@ public class KafkaSevice {
     String topic = "ubic-shop-test";
     private final ObjectMapper objectMapper;
 
-    public ListenableFuture<SendResult<String,String>> sendToTopic(UserActionKafkaRequestDto requestDto) throws JsonProcessingException {
+    public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
+
+        log.info("\n\n kafka send log");
 
         // 카프카 토픽에 전송한다 -- 프로듀서 삽질 좀 해보겠지
         String key = requestDto.toString();
@@ -54,7 +58,9 @@ public class KafkaSevice {
     }
 
     private ProducerRecord<String, String> buildProducerRecord(String key, String value, String topic) {
-        List<Header> recordHeaders = List.of(new RecordHeader("event-source", "scanner".getBytes()));
+        List<Header> recordHeaders = /*List.of(new RecordHeader("event-source", "scanner".getBytes()));*/
+            new ArrayList<>(Arrays.asList(new RecordHeader("event-source", "scanner".getBytes())));
+//        출처: https://ilovejinwon.tistory.com/54 [사랑해 마니마니]
         return new ProducerRecord<>(topic, null, key, value, recordHeaders);
     }
 

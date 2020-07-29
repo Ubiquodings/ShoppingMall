@@ -199,7 +199,17 @@
 <body class="container h-100"><!-- py-5 my-3-->
 
 <div class="row">
-    <h1>hello Ubic</h1>
+    <h1 class="col-md-6">hello Ubic</h1>
+    <!--검색창-->
+    <div class="col-md-6">
+        <div class="input-group mb-3">
+            <input type="text" id="keyword" class="form-control" placeholder="검색어 입력"
+                   aria-label="Recipient's username" aria-describedby="btn-search">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="btn-search">Search</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <nav class="px-4 justify-content-start navbar navbar-light bg-list my-2 border border-dark rounded">
@@ -211,13 +221,24 @@
     {{#userName}} <!-- 로그인 했음 이름 출력 -->
         Logged in as: <span id="user">{{userName}}</span>
         <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+<!--
         <a href="/mypage" class="btn btn-info active" role="button">MyPage</a>
         <a href="/carts" class="btn btn-info active" role="button">장바구니</a>
         <a href="/orders" class="btn btn-info active" role="button">주문내역</a>
+-->
     {{/userName}}
     {{^userName}} <!-- 안했음 로그인 버튼 -->
         <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
     {{/userName}}
+
+    <a href="/mypage" class="btn btn-info active" role="button">MyPage</a>
+    <a href="/carts" class="btn btn-info active" role="button">장바구니</a>
+    <a href="/orders" class="btn btn-info active" role="button">주문내역</a>
+
+    <!--비회원 UUID-->
+    {{#clientId}}
+        비회원id : <span id="browser">{{clientId}}</span>
+    {{/clientId}}
 </nav>
 
 <!--<div class=" border px-5 my-3">-->

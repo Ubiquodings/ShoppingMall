@@ -1,20 +1,16 @@
-package com.ubic.shop.es_repository;
+package com.ubic.shop.elasticsearch.domain;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.HashMap;
-import java.util.Map;
 
-//@Data
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
 @Document(indexName="ubic_user_action", type="_doc")
-public class UserAction {
+public class CategoryScore { // 카테고리 점수를 저장하는 도메인
 
 //    @Id
 //    private String id; // data 채우면서 id 삽입하는 과정이 있으므로 멤버로 필요는 없을듯!

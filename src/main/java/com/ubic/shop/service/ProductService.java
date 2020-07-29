@@ -51,6 +51,11 @@ public class ProductService {
         return (List)productRepository.findDefaultProducts/*findAll*/();
     }
 
+    public List<Product> findPagingProducts(Pageable pageable) {
+        return productRepository.findProductsCountBy(pageable).getContent();
+    }
+
+
     public Product findById(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if(optionalProduct.isPresent()){

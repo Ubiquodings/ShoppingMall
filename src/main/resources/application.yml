@@ -22,6 +22,14 @@ logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
 
+ubic:
+  orders:
+    productListPageSize: 40
+    productDetailPageSize: 8
 
 # spring.profiles.include=oauth
 #spring.session.store-type: jdbc
+server:
+  servlet:
+    session:
+      timeout: 5s #30m # 디폴트값 30분

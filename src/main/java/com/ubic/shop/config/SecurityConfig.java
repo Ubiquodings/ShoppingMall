@@ -19,8 +19,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile", "/products/**", "/categories/**", "/excel/**").permitAll()
-                .antMatchers("/api/v1/**","/mypage/**","/carts/**","/orders/**").hasRole(Role.GUEST.name())
+                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile", "/products/**", "/categories/**", "/excel/**", "/api/**",
+                        /*비회원로직 포함*/"/mypage/**","/carts/**","/orders/**")
+                        .permitAll()
+                .antMatchers("/api/v1/**"/*,"/mypage/**","/carts/**","/orders/**"*/).hasRole(Role.GUEST.name())
                 .anyRequest().authenticated()
                 .and()
                 .logout()
