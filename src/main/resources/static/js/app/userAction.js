@@ -22,6 +22,7 @@ var userAction = {
             // window.location.href=window.location.href;
         });
 
+
         $(".btn-shoplist").on('click',function(e){ // detail 페이지에서 가져와야지
             var productId = this.children[0].value;
             $.ajax({
@@ -60,24 +61,12 @@ var userAction = {
         });
         $('div.product-list-card-body').on('click', function(e){ // TODO: id, name 은 어떻게 전달하지 ?
 
-            /*
-            product name:  this.children[0].innerHTML
-            product price: this.children[1].innerHTML
-            product list index: this.children[2].value
-            */
-            // var productName = this.children[0].innerHTML;
-            // var productPrice = this.children[1].innerHTML;
-            // var productListIndex = this.children[2].value;// 상품 하드코딩하니까.. - 1;
             var productId = this.children[0].value; // TODO 확인!
-            // var productId = this.children[0].value;
             $.ajax({
                 type: 'GET',
                 url: '/api/click/'+ productId,//$("input#input-cart-order").val(),
                 dataType: 'json',
                 contentType:'application/json; charset=utf-8'
-                // data: JSON.stringify({ // data 안지우면 get 요청이 안되는군!
-                //     // productId:
-                // })
             }).done(function(){ // 왜 안되지 ?
                 alert('ok');
                 // _this.clickItem(productId);
@@ -88,6 +77,24 @@ var userAction = {
             console.log(productId);
             // _this.click(productId, productName);
             _this.clickItem(productId); // TODO 주석 해제
+        });
+
+        $('#btn-search').on('click', function(e){
+
+            // var productId = this.children[0].value; // TODO 확인!
+            var keyword = $('#input-search-keyword').val();
+            // var keyword = this.parent("div").parent("div").children[0].value;
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/search?keyword='+ keyword,//$("input#input-cart-order").val(),
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8'
+            }).done(function(){ // 왜 안되지 ?
+                alert('ok');
+            }).fail(function(e){
+                alert('fail '+JSON.stringify(e));
+            });
         });
 
     },

@@ -56,7 +56,8 @@ public class RestAPIController {
 
     // CartOrderRequestDto : Long productId
     @PostMapping("/api/carts/new/{id}") // TODO  restful 하진 않다
-    public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+    public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                       HttpServletRequest request) throws JsonProcessingException {
 
         String clientId = null;
         Long shopListUserId;
@@ -81,7 +82,8 @@ public class RestAPIController {
     // 빈 데이터 리턴도 json 형태로 해야 한다! -- 이유 :: https://vvh-avv.tistory.com/159
 
     @PostMapping("/api/orders/new/{id}") // TODO  restful 하진 않다
-    public String order(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+    public String order(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                        HttpServletRequest request) throws JsonProcessingException {
 
         String clientId = null;
         Long shopListUserId;
@@ -125,7 +127,8 @@ public class RestAPIController {
 
 
     @GetMapping("/api/click/{id}")
-    public String click(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+    public String click(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                        HttpServletRequest request) throws JsonProcessingException {
 
         log.info("\n\n click api");
 
@@ -158,4 +161,18 @@ public class RestAPIController {
         return "{}";
     }
 
+    @GetMapping("/api/search")
+    public String search(@RequestParam("keyword") String keyword, @LoginUser SessionUser user,
+                        HttpServletRequest request) throws JsonProcessingException{
+
+//        log.info("\n\n"+keyword); // ok
+
+        //회원+비회원
+
+        // 카프카에 전송하고 > 컨슈머 처리
+
+        // 결과 보여줘야지.. @Controller
+
+        return "{}";
+    }
 }
