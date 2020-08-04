@@ -3,7 +3,7 @@ package com.ubic.shop.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
-import com.ubic.shop.elasticsearch.ElasticSearchService;
+import com.ubic.shop.elasticsearch.service.ElasticSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -27,7 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	implementation 'org.springframework.kafka:spring-kafka'  // kafka
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -49,4 +49,6 @@ dependencies {
 // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
 	compile group: 'org.elasticsearch', name: 'elasticsearch', version: '6.8.5'
 
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }

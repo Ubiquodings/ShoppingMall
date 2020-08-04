@@ -27,7 +27,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             countQuery = "select count(p.name) from Product p")
     Page<Product> findProductsCountBy(Pageable pageable);
 
-    List<Product> findByCategoryId(Long id, Pageable pageable);
+    /*List*/Page<Product> findByCategoryId(Long id, Pageable pageable);
+
 //    List<Product> findAll();
 //    private final EntityManager em;
 //

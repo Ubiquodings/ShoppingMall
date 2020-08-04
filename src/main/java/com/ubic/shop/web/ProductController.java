@@ -59,23 +59,28 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public String detail(@PathVariable Long id, Model model, @LoginUser SessionUser user,
+                         @RequestParam(name = "page", defaultValue = "0") String page,
                          HttpServletRequest request){
 
         model.addAttribute("product", productService.findById(id));
 
 
         String clientId = null;
+        long userId = -1L;
 
         if(user != null){
             model.addAttribute("userName", user.getName());
             clientId = user.getId().toString();
+            userId = user.getId();
         }else{ // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0,5));
             clientId = nonMember.getName();
+            userId = nonMember.getId();
         }
 
-        model.addAttribute("recommendedList", recommendService.getRecommendList(clientId));
+        model.addAttribute("userId", userId);
+                model.addAttribute("recommendedList", recommendService.getRecommendList(clientId, page));
         return "product-detail";
     }
 
