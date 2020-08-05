@@ -60,6 +60,9 @@ var userAction = {
             // window.location.href=window.location.href; // reloading ?
         });
         $('div.product-list-card-body').on('click', function(e){ // TODO: id, name 은 어떻게 전달하지 ?
+            // console.log('이전 페이지는 '+window.location.href.);
+            // let beforeProductId = $('#input-product-id').val();
+            // console.log('이전 페이지 id는 '+beforeProductId);
 
             var productId = this.children[0].value; // TODO 확인!
             $.ajax({

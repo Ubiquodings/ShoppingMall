@@ -28,7 +28,7 @@ public class SearchText {
         this.searchText=searchText;
     }
 
-//    /*클릭,장바구니,구매용*/
+//    /*클릭,장바구니,구매용*/ Coupon
 //    public SearchText(String actionType, String userId, Long productId){
 //        this.actionType=actionType;
 //        this.userId=userId;

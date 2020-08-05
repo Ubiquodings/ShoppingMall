@@ -27,7 +27,7 @@ public class SocketController {
 
     private final EsSocketService esSocketService; /*TODO 리팩토링!*/
 
-        private final SimpMessagingTemplate socketTemplate;
+    private final SimpMessagingTemplate socketTemplate;
     /**      [사용법]
      *           String text = "[" + getTimestamp() + "]:" + greeting;
      *           ObjectMapper 이용해서 json to String 변환하기!
@@ -47,7 +47,7 @@ public class SocketController {
         String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
         log.info("\nupdateUserNumber : "+result);
 
-        // send 하면서 수를 늘려야하는걸수도 있어! TODO check@
+        // send 하면서 수를 늘려야하는걸수도 있어! no check@ ok
         socketTemplate.convertAndSend("/topic/users/"+productID, result);
     }
 

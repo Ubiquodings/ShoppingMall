@@ -1,6 +1,5 @@
 package com.ubic.shop.elasticsearch.service;
 
-import com.ubic.shop.elasticsearch.domain.CategoryScore;
 import com.ubic.shop.elasticsearch.domain.ProductPageUserNumber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,8 @@ public class EsSocketService {
 
     private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장 ?
 
-    public long plusUserCount(long productId) {
+    public long plusUserCount(long productId, long count) {
+        log.info("\nplusUserCount : count : "+count);
 
         // 업데이트
         // 기존 es 객체 가져와야 한다
@@ -34,14 +34,14 @@ public class EsSocketService {
         if (productUserNumber == null) { // 결과가 없으면 객체 새로 생성해서 작업 진행
             productUserNumber = new ProductPageUserNumber();
             map = productUserNumber.getUserNumber();
-            userNumber = 1L;
+            userNumber = count;
         } else { // 결과가 있는 상태라면
             map = productUserNumber.getUserNumber(); // 가져오기
             // 키 값이 있는지도 확인했어야 했다!
             if (map.containsKey(productId)) { // 키 있다면
-                userNumber = map.get(productId) + 1L;
+                userNumber = map.get(productId) + count;
             } else { // 키 없다면
-                userNumber = 1L;
+                userNumber = count;
             }
         }
         map.put(productId, userNumber);

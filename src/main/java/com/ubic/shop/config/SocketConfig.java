@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -31,6 +32,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 //    private final ElasticSearchService elasticSearchService;
     private final EsSocketService esSocketService;
     private final ObjectMapper objectMapper;
+//    private final SimpMessagingTemplate socketTemplate;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -48,7 +50,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new MyChannelInterceptor(esSocketService, objectMapper));
+        registration.interceptors(new MyChannelInterceptor(esSocketService, objectMapper/*,socketTemplate*/));
     }
 
 
@@ -57,36 +59,50 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
         private final EsSocketService esSocketService;
         private final ObjectMapper objectMapper;
+//        private final SimpMessagingTemplate socketTemplate;
 
         @Override
         public Message<?> preSend(Message<?> message, MessageChannel channel) {
             StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+//            long productId = -1L;
             if (StompCommand.CONNECT == accessor.getCommand()) { // websocket 연결요청
                 log.info("\nsocket connected ");
-            } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
-//                String productIdStr = getHeaderValue(message, "productId");
-                long productId = getHeaderValue(message, "productId");
 
+            } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
+
+                long productId = getHeaderValue(message, "productId");
+                if (productId == -1L) {
+                    return message;
+                }
                 log.info("\nsocket subscribed : productId - " + productId);
 
-                // TODO 디테일 페이지 접속 인원수를 +1한다.
-                esSocketService.plusUserCount(productId);
+                // 디테일 페이지 접속 인원수를 +1한다.
+                esSocketService.plusUserCount(productId, 1L);
 
-//               카테고리 점수와 같은 형태 HashMap 으로 {상품ID: 인원수} ES 에 저장
+//               카테고리 점수와 같은  HashMap 형태로
+//               {상품ID: 인원수} ES 에 저장
                 /*TODO 접속자 수 소켓 연결하고, 스케줄러 세팅해서 디테일 페이지 바뀌도록하기*/
-//				chatRoomRepository.plusUserCount(roomId);
+
             } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
-                long productId = Long.parseLong(((Map)message.getHeaders().get("nativeHeaders")).get("productId").toString());
-                log.info("\nsocket terminated : productId - " + productId);
-//				String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
+
+                long productId = getHeaderValue(message, "productId");
+                if (productId == -1L) {
+                    return message;
+                }
+                log.info("\nsocket terminated : productId - " + productId); // 함수가 다시 초기화되는 모양
+
                 // TODO 디테일 페이지 접속 인원수를 -1한다.
-//                esSocketService.minusUserCount(productId);
+                // 마지막으로 user 가 방문한 product id 를 알아야 한다
+                esSocketService.plusUserCount(productId, -1L);
             }
             return message;
         }
 
         private Long getHeaderValue(Message<?> message, String keyName){
             Map header = (Map)message.getHeaders().get("nativeHeaders");
+            if(header==null){
+                return -1L;
+            }
             log.info("\nsocket subscribed : header - " + header.toString());
 
             List<Long> listId;
