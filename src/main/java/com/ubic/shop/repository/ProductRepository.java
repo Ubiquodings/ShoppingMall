@@ -29,6 +29,10 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     /*List*/Page<Product> findByCategoryId(Long id, Pageable pageable);
 
+    // category id 기반으로 검색하되, count 만 반환하는 함수
+    // 이렇게 하면 전체 product 개수를 세는 함수인데!
+    long countByCategoryId(Long categoryId);
+
 //    List<Product> findAll();
 //    private final EntityManager em;
 //

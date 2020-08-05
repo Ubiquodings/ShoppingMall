@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 @Service
@@ -31,11 +32,21 @@ public class RecommendService {
     public List<Product> getRecommendList(/*@LoginUser SessionUser user*/String userId, String page) {
         // es 에서 user 관련 데이터 중 - 쿼리실행
 //        String id = user.getId().toString();
-        CategoryScore userAction = elasticSearchService.getESUserActionById(userId);
-        List<Product> productList = new ArrayList<>();
+
+        Long categoryId = getHighestCategoryId(userId);
+        List<Product> productList;
 
         // 페이징 --
         PageRequest pageRequest = PageRequest.of(/*0*/Integer.parseInt(page), ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
+
+        productList = productRepository.findByCategoryId(categoryId, pageRequest).getContent();
+
+        // 가져온 카테고리가 없다면 {하드코딩} 카테고리의 상품 4개 출력하기 - category id: 907001
+        return productList;
+    }
+
+    public Long getHighestCategoryId(String userId) {
+        CategoryScore userAction = elasticSearchService.getESUserActionById(userId);
 
         Long categoryId = 1L;
         if(userAction != null) { // es 에 useraction 정상적으로 가져왔다면
@@ -46,12 +57,7 @@ public class RecommendService {
             categoryId = highestEntry.getKey();
             log.info("\nhighestCategoryId :: {}\nValue :: {}", categoryId, highestEntry.getValue());
             // 해당 카테고리의 상품 4개 반환하기
-
         }
-
-        productList = productRepository.findByCategoryId(categoryId, pageRequest).getContent();
-
-        // 가져온 카테고리가 없다면 {하드코딩} 카테고리의 상품 4개 출력하기 - category id: 907001
-        return productList;
+        return categoryId;
     }
 }

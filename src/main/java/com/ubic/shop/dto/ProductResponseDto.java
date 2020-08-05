@@ -1,6 +1,7 @@
 package com.ubic.shop.dto;
 
 import com.ubic.shop.domain.Product;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -18,7 +19,7 @@ public class ProductResponseDto {
         this.name = entity.getName();
         this.price = entity.getPrice();
         this.stockQuantity = entity.getStockQuantity();
-//        categoryId = entity.getCategory().getId();
+        categoryId = entity.getCategory().getId();
         description=entity.getDescription();
         imgUrl = entity.getImgUrl();
     }
