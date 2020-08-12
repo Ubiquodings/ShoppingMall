@@ -22,24 +22,21 @@ var productSocket = {
         let currentPage = 0;
 
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
-            // setConnected(true); // 화면 조작 함수
-            // console.log('Connected: ' + frame);
 
             /*[구독] 해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
             stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
-                // showGreeting(JSON.parse(greeting.body).content); // 화면 조작 함수
                 console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
                 _this.updateUserNumber(JSON.parse(result.body).number);
             }, {"productId": productId});
 
             /*[구독] 해당 유저에게만 추천 목록 갱신*/
             stompClient.subscribe('/topic/products/'+userId, function (result) {
-
-                console.log('/topic/products/{userId} 결과 :  \n'+ JSON.stringify( /*JSON.parse(*/result.body ));
+                let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
+                    // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
                 // 결과로 화면 조작
-
-            }, {}); // "userId":userId -- 여기서는 header 필요없을듯!
+                _this.updateRecommendedList(resultList);
+            }, {});
 
             /*해당 페이지 접속 사용자 수 요청*/
             stompClient.send('/app/users/' + productId,
@@ -49,10 +46,9 @@ var productSocket = {
             _this.setSchedulingTasks(stompClient, userId, currentPage);
         });
 
-        /*테스트 ok*/ // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) { // 이거는 안먹힌다
+        // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
+        window.onbeforeunload = function (eventObject) {
 
-            // 페이지를 그냥 이동하면 이게 실행이 안된다
             stompClient.disconnect(function () {
             }, {"productId": productId});
         };
@@ -64,17 +60,64 @@ var productSocket = {
         userNumberDiv.innerHTML += `${number} 명`;
     },
     setSchedulingTasks: function(stompClient, userId, currentPage){
+        // 추천 목록 주기적 요청
         setInterval(function(){
-            console.log('userID 로그 확인 : '+userId);
-
             currentPage += 1
             // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
             stompClient.send('/app/products/' + userId + '/page/'+currentPage,
                 {}, {});
-            console.log('추천 목록 요청');
+        }, 2000);
+    },
+    updateRecommendedList: function(resultList){
+        let _this = this;
+        let recomList = document.querySelector('div.recommended-product-list');
+        recomList.innerHTML = "";
 
-            // 화면 구성하는 함수도 필요하겠다! 구독하는 쪽에 TODO
-        }, 1000);
+        Array.from(resultList).forEach((product)=>{
+            console.log(product); // ok
+            /*
+{categoryId: 1
+description: "국산 천일염만으로 절여진"
+id: 99
+imgUrl: "https://img-cf.kurly.com/shop/data/goods/1587000014157l0.jpg"
+name: "오이지 3입"
+price: 3990
+stockQuantity: 50}
+            * */
+            let id = product.id;
+            let imgUrl = product.imgUrl;
+            let name = product.name;
+            let price = product.price;
+            let description = product.description;
+
+            recomList.innerHTML += _this.buildHTML(id, imgUrl, name, price, description); // 출력 ok
+        });
+    },
+    buildHTML: function(id, imgUrl, name, price, description){
+
+        return `<div class="col-md-3 product-list-card-body">
+            <input type="hidden" value="${id}"/>
+            <div class="ibox">
+                <div class="ibox-content product-box">
+                    <div class="product-imitation">
+                        <img src="${imgUrl}"/>
+                    </div>
+                    <div class="product-desc">
+                    <span class="product-discount">
+                        save 10%
+                    </span>
+                        <a href="#" class="product-name">${name}</a>
+                        <small class="product-price">${price}</small>
+                        <div class="small m-t-xs description">
+                            ${description}
+                        </div>
+                        <div class="m-t text-left">
+                            <a href="#" class="btn btn-xs btn-outline btn-success" style="margin-top: 10px">장바구니 </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`
     }
 };
 

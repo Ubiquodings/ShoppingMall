@@ -66,7 +66,7 @@ public class ExcelController {
                     .build();
 
             ProductSaveRequestDto result = restTemplate.postForObject(
-                    "http://localhost:8080/products/new",
+                    "http://localhost:8080/api/products/new",
                     requestDto, ProductSaveRequestDto.class);
             if(result != null)
                 logger.info("\n"+result.toString());
@@ -101,7 +101,7 @@ public class ExcelController {
                     .build();
 
             CategorySaveRequestDto result = restTemplate.postForObject(
-                    "http://localhost:8080/categories/new",
+                    "http://localhost:8080/api/categories/new",
                     requestDto, CategorySaveRequestDto.class);
 
             logger.info("\n"+result.toString());

@@ -23,16 +23,11 @@ public class UserActionConsumer {
     @KafkaListener(topics = {"ubic-shop-test"}, containerFactory = "defaultKafkaListenerContainerFactory")
     public void onUserAction(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
 
-        log.info("\nubic-shop-test :: ConsumerRecord : {} ", consumerRecord.value()); //ok
-        // value 는 String >> json ?
+        log.info("\nubic-shop-test :: ConsumerRecord : {} ", consumerRecord.value());
         ClickActionRequestDto received = objectMapper.readValue(consumerRecord.value(), ClickActionRequestDto.class);
-        log.info("\nubic-shop-test :: ObjectMapper : {} ", received ); //ok
 
         // 사용자-카테고리 점수 계산 로직
         elasticSearchService.updateCategoryScore(received);
-
-        // 사용자 검색 데이터 수집 TODO 컨슈머 추가하기
-//        elasticSearchService.saveSearchData(received);
     }
 
 }

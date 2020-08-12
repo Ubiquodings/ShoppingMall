@@ -29,7 +29,7 @@ ubic:
 
 # spring.profiles.include=oauth
 #spring.session.store-type: jdbc
-server:
-  servlet:
-    session:
-      timeout: 5s #30m # 디폴트값 30분
+#server:
+#  servlet:
+#    session:
+#      timeout: 5s #30m # 디폴트값 30분

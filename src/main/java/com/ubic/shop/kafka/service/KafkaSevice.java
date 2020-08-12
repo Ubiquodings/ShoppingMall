@@ -34,9 +34,9 @@ public class KafkaSevice {
 
     public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
 
-        log.info("\n\n kafka send log");
+        log.info("\nkafka send log");
 
-        // 카프카 토픽에 전송한다 -- 프로듀서 삽질 좀 해보겠지
+        // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topic);
@@ -54,7 +54,6 @@ public class KafkaSevice {
             }
         });
         return listenableFuture;
-        // 그리고 컨슈머 작업 들어가기
     }
 
     private ProducerRecord<String, String> buildProducerRecord(String key, String value, String topic) {

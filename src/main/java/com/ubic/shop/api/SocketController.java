@@ -61,7 +61,7 @@ public class SocketController {
         String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
         log.info("\nupdateUserNumber : "+result);
 
-        // send 하면서 수를 늘려야하는걸수도 있어! no check@ ok
+        /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/"+productID, result);
     }
 
@@ -73,8 +73,7 @@ public class SocketController {
     /*왜인지 url 파람은 받지 못한다!*/
     @MessageMapping("/products/{userId}/page/{page}") /*해당 페이지 다음 추천 목록*/   // 전송
 //    @SendTo("/topic/products/{userId}") /*해당 유저에게만 추천 목록 갱신*/ // 구독
-    public void updateProductDetailRecommendedList(/*@DestinationVariable(value = "0") String nextPage,*/
-                                                     @DestinationVariable String userId,
+    public void updateProductDetailRecommendedList(@DestinationVariable String userId,
                                                      @DestinationVariable String page,
                                                      String body) throws JsonProcessingException {
         log.info("updateProductDetailRecommendedList page: "+page+", userId: "+userId);
