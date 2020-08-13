@@ -51,4 +51,7 @@ dependencies {
 
 	// websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	//mariadb
+	implementation 'org.mariadb.jdbc:mariadb-java-client'
 }

@@ -33,3 +33,4 @@ out/
 
 **/application-oauth.yml
 **/application-kafka.yml
+**/application-db.yml

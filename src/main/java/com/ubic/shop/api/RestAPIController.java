@@ -149,6 +149,30 @@ public class RestAPIController {
         return "{}";
     }
 
+    @GetMapping("/api/hover/{id}")
+    public String hover(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                        HttpServletRequest request) throws JsonProcessingException {
+
+        log.info("\n\n hover api");
+
+        String clientId = null;
+        if(user != null){
+            clientId = user.getId().toString();
+        }else{
+            clientId = request.getSession().getId();
+            log.info("\n\n click api session id"+clientId);
+        }
+
+        String action = "hover";
+        logger.info("\n/hover "+productId);
+        Product product = productService.findById(productId);
+
+        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+
+        return "{}";
+    }
+
+
     // 주문 취소 로직
     @DeleteMapping("/api/orders/{id}")
     public String detail(@PathVariable Long id, @LoginUser SessionUser user){

@@ -1,5 +1,6 @@
 package com.ubic.shop.api;
 
+import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.dto.CategorySaveRequestDto;
 import com.ubic.shop.dto.ProductSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class ExcelController {
     RestTemplate restTemplate;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final UbicConfig ubicConfig;
 
     @PostMapping("/excel/read/products")
     public void excelProductsNew(@RequestBody/*("file")*/ MultipartFile file) throws IOException {
@@ -66,7 +69,7 @@ public class ExcelController {
                     .build();
 
             ProductSaveRequestDto result = restTemplate.postForObject(
-                    "http://localhost:8080/api/products/new",
+                    ubicConfig.baseUrl+"/api/products/new",
                     requestDto, ProductSaveRequestDto.class);
             if(result != null)
                 logger.info("\n"+result.toString());
@@ -101,7 +104,7 @@ public class ExcelController {
                     .build();
 
             CategorySaveRequestDto result = restTemplate.postForObject(
-                    "http://localhost:8080/api/categories/new",
+                    ubicConfig.baseUrl+"/api/categories/new",
                     requestDto, CategorySaveRequestDto.class);
 
             logger.info("\n"+result.toString());
