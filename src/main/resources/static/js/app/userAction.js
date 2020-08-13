@@ -67,14 +67,14 @@ var userAction = {
             var productId = this.children[0].value; // TODO 확인!
             $.ajax({
                 type: 'GET',
-                url: '/api/click/'+ productId,//$("input#input-cart-order").val(),
+                url: '/api/click/'+ productId,
                 dataType: 'json',
                 contentType:'application/json; charset=utf-8'
             }).done(function(){ // 왜 안되지 ?
-                alert('ok');
+                console.log('ok');
                 // _this.clickItem(productId);
             }).fail(function(e){
-                alert('fail '+JSON.stringify(e));
+                console.log('fail '+JSON.stringify(e));
             });
 
             console.log(productId);
@@ -98,6 +98,25 @@ var userAction = {
             }).fail(function(e){
                 alert('fail '+JSON.stringify(e));
             });
+        });
+
+        $('div.product-list-card-body').on('mouseenter', function(e){
+
+
+            let productId = this.children[0].value; // TODO 확인!
+            console.log('hover '+productId);
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/hover/'+ productId,
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8'
+            }).done(function(){ // 왜 안되지 ?
+                console.log('ok');
+            }).fail(function(e){
+                console.log('fail '+JSON.stringify(e));
+            });
+
         });
 
     },
