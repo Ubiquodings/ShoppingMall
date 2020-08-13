@@ -1,0 +1,100 @@
+{{>layout/header}}
+<link rel="stylesheet" type="text/css" href="/css/product-list.css">
+<link rel="stylesheet" type="text/css" href="/css/product-detail.css">
+
+<!--
+product-detail
+-->
+
+<!--
+- 상품 이름 :  product.name
+- 가격 :  product.price
+- 상품 간단 설명 & 중량용량 & 구매수량 :: 다음에...
+
+개수에 따른 총 상품 금액 은 프론트에서 이벤트로 처리해야 할 로직인듯 !
+-->
+
+
+{{#product}}
+{{name}}
+<input type="hidden" value="{{id}}" id="input-product-id"/>
+
+<div class="card">
+    <div class="container-fliud">
+        <div class="wrapper row">
+            <div class="preview col-md-6">
+
+                <div class="preview-pic tab-content">
+                    <div class="tab-pane active" id="pic-1">
+                        <img src="{{imgUrl}}" alt="상품 대표 이미지" class="img-thumbnail">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="details col-md-6">
+                <h3 class="product-title">{{name}}</h3>
+                <div class="rating">
+                    <div class="stars">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                    </div>
+                </div>
+                <p class="product-description">{{description}}</p>
+                <h4 class="price">Price: <span>{{price}}</span> <span class="won">원</span></h4>
+
+                <div class="action">
+                    <!--
+                            <button type="button" class="btn btn-primary btn-lg" id="btn-shoplist">장바구니</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="btn-order">바로주문</button>
+                    -->
+                    <button type="button" class="btn btn-primary btn-lg btn-shoplist"><input type="hidden"
+                                                                                             value="{{id}}"/>장바구니
+                    </button>
+                    <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{id}}"/>바로주문
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/product}}
+
+<div class="row" id="userNumber">
+
+</div>
+
+<div class="row recommended-product-list">
+    {{#recommendedList}}
+        <div class="col-md-3 product-list-card-body">
+            <input type="hidden" value="{{id}}"/>
+            <div class="ibox">
+                <div class="ibox-content product-box">
+                    <div class="product-imitation">
+                        <img src="{{imgUrl}}"/>
+                    </div>
+                    <div class="product-desc">
+                    <span class="product-discount">
+                        save 10%
+                    </span>
+                        <a href="#" class="product-name">{{name}}</a>
+                        <small class="product-price">{{price}}</small>
+                        <div class="small m-t-xs description">
+                            {{description}}
+                        </div>
+                        <div class="m-t text-left">
+                            <a href="#" class="btn btn-xs btn-outline btn-success" style="margin-top: 10px">장바구니 </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/recommendedList}}
+</div>
+
+<!--상품 디테일 소켓 추가-->
+<script src="/js/app/product-socket.js"></script>
+{{>layout/footer}}
