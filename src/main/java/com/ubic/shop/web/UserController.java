@@ -34,6 +34,20 @@ public class UserController {
         return "mypage";
     }
 
+    @GetMapping("/my-coupons")
+    public String coupons(Model model, @LoginUser SessionUser user, HttpServletRequest request){
+
+        if(user != null){
+            model.addAttribute("userName", user.getName());
+        }else{ // 해시코드 다섯글자만 추출하기
+            User nonMember = getTempUser(request);
+            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+        }
+
+        return "mycoupons";
+    }
+
+
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User nonMember=null;
