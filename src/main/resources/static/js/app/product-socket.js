@@ -32,11 +32,22 @@ var productSocket = {
             /*[구독] 해당 유저에게만 추천 목록 갱신*/
             stompClient.subscribe('/topic/products/'+userId, function (result) {
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
-                    // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
                 // 결과로 화면 조작
                 _this.updateRecommendedList(resultList);
             }, {});
+
+            /*[구독] 망설이지마세요 쿠폰*/
+            stompClient.subscribe('/topic/coupons/'+userId, function (result) {
+                result = JSON.parse(result.body ); /*JSON.stringify(*/
+                console.log('/topic/coupons/{userId} 결과 :  \n'+ result);
+
+                // 결과로 화면 조작
+                // _this.updateRecommendedList(resultList);
+                $("#btn-my-coupons").css("color","red");
+            }, {});
+
 
             /*해당 페이지 접속 사용자 수 요청*/
             stompClient.send('/app/users/' + productId,
@@ -44,6 +55,9 @@ var productSocket = {
 
             /*스케줄링 작업 설정*/
             _this.setSchedulingTasks(stompClient, userId, currentPage);
+
+            /*망설이지마세요 쿠폰 요청*/
+            _this.requestDoNotHesitateCoupon(stompClient, userId);
         });
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
@@ -52,6 +66,7 @@ var productSocket = {
             stompClient.disconnect(function () {
             }, {"productId": productId});
         };
+
 
     },
     updateUserNumber: function (number) {
@@ -118,6 +133,15 @@ stockQuantity: 50}
                 </div>
             </div>
         </div>`
+    },
+    requestDoNotHesitateCoupon: function(stompClient, userId){
+        setTimeout(function(){
+            console.log('망설이지마세요 쿠폰 요청');
+            // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
+            stompClient.send('/app/products/' + userId,
+                {}, {});
+        }, 3000);
+
     }
 };
 
