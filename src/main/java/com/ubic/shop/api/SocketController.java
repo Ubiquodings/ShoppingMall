@@ -81,15 +81,23 @@ public class SocketController {
         // page 받고 repo 의 count 로 나머지 연산해야 한다 : page % pageCount
         // product repository 에서 카운트만 가져오는 쿼리 수행
         long categoryID = recommendService.getHighestCategoryId(userId);
+        log.info("categoryID: "+categoryID);
 //        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
         // (찾아온 상품 수) % (페이징하는 상품 수) = 6 % 8 = 6
         
-        PageRequest pageRequest = PageRequest.of(/*0*/Integer.parseInt(page), ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
+        PageRequest pageRequest = PageRequest.of(1, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
         Page<Product> productPageFindByCategoryId = productRepository.findByCategoryId(categoryID, pageRequest);
+        if(productPageFindByCategoryId.hasContent()){
+            log.info("has content");
+        }else{
+            log.info("has not content");
+        }
         long pageCount = productPageFindByCategoryId.getTotalPages(); // 해당 카테고리 전체 페이지 수
+        log.info("pageCount: "+pageCount);
 
         long pageToLong = Long.parseLong(page);
-        pageToLong = pageToLong % pageCount;
+        log.info("pageToLong: "+pageToLong);
+        pageToLong %= pageCount;
 
         log.info("updateProductDetailRecommendedList page: "+pageToLong+", count: "+pageCount);
 
@@ -103,5 +111,29 @@ public class SocketController {
         socketTemplate.convertAndSend("/topic/products/"+userId, objectMapper.writeValueAsString(collect));
 //        return "updateProductDetailRecommendedList";
     }
+
+    @MessageMapping("/products/{userID}") /*해당 페이지 접속 사용자 수*/
+//    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+    public void requestDoNotHesitateCoupon(@DestinationVariable long userID,
+                                 String body) throws JsonProcessingException {
+
+        // user 정보 가져오기
+
+        // 해당 유저에게 쿠폰 발급하기
+
+        // 소켓 응답하면 화면에서 쿠폰 버튼만 바꿔주기기
+
+        // ES에서 가져오기
+//        long number = esSocketService.getProductDetailUserNumber(productID);
+//
+//        String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
+//        log.info("\nupdateUserNumber : "+result);
+
+        /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+//        socketTemplate.convertAndSend("/topic/users/"+productID, result);
+
+        // 여기까지 하고 브라우저 테스트!
+    }
+
 
 }

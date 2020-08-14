@@ -44,6 +44,9 @@ public class UserController {
             model.addAttribute("clientId", nonMember.getName().substring(0,5));
         }
 
+//        TODO 전달해야 한다!
+        model.addAttribute("couponList", user.getName());
+
         return "mycoupons";
     }
 
