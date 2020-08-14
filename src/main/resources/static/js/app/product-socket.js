@@ -118,9 +118,11 @@ stockQuantity: 50}
                         <img src="${imgUrl}"/>
                     </div>
                     <div class="product-desc">
+                    <!--
                     <span class="product-discount">
                         save 10%
                     </span>
+                    -->
                         <a href="#" class="product-name">${name}</a>
                         <small class="product-price">${price}</small>
                         <div class="small m-t-xs description">

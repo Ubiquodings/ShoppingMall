@@ -39,7 +39,8 @@ product-list
         </li>
         <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
         <!-- active의 의미는 현재 페이지의 의미이다. -->
-        <li class="active"><a href="http://localhost:8080/products?page=1">1</a></li>
+        <!-- <li class="active"> active 보류 -->
+        <li><a href="http://localhost:8080/products?page=1">1</a></li>
         <li><a href="http://localhost:8080/products?page=2">2</a></li>
         <li><a href="http://localhost:8080/products?page=3">3</a></li>
         <li><a href="http://localhost:8080/products?page=4">4</a></li>
@@ -70,7 +71,7 @@ product-list
                         </div>
 
                         <div class="product-desc">
-                            <span class="product-discount">save 10%</span>
+                           <!-- <span class="product-discount">save 10%</span>-->
                             <a href="#" class="product-name">{{name}}</a>
                             <small class="product-price">{{price}}</small>
                             <div class="small m-t-xs description" >
