@@ -14,7 +14,22 @@ product-list
 -->
 
 product-list
+<!--  PAGINATION plugin -->
 
+
+<script>
+
+
+    $(function() {
+
+        $("#demo_pag1").bs_pagination({
+            totalPages: 100
+        });
+
+    });
+
+
+</script>
 
 
 
@@ -23,6 +38,9 @@ product-list
 
 
 <div class="container">
+
+    <div id="demo_pag1"></div>
+
     <div class="row">
         {{#products}}
             <div class="col-md-3 " >
@@ -65,20 +83,21 @@ product-list
             </div>
         {{/products}}
     </div>
-
+<!--
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
             <li class="page-item">
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>
     </nav>
+    -->
 </div>
 
 {{>layout/footer}}
