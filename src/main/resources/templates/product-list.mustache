@@ -16,6 +16,12 @@ product-list
 product-list
 
 
+<script>
+
+
+
+</script>
+
 
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -23,6 +29,32 @@ product-list
 
 
 <div class="container">
+    <ul class="pagination justify-content-center">
+        <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
+        <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
+        <li class="disabled">
+            <a href="#">
+                <span>«</span>
+            </a>
+        </li>
+        <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
+        <!-- active의 의미는 현재 페이지의 의미이다. -->
+        <!-- <li class="active"> active 보류 -->
+        <li><a href="http://localhost:8080/products?page=1">1</a></li>
+        <li><a href="http://localhost:8080/products?page=2">2</a></li>
+        <li><a href="http://localhost:8080/products?page=3">3</a></li>
+        <li><a href="http://localhost:8080/products?page=4">4</a></li>
+        <li><a href="http://localhost:8080/products?page=5">5</a></li>
+        <li>
+            <a href="#">
+                <span>»</span>
+            </a>
+        </li>
+    </ul>
+
+
+
+
     <div class="row">
         {{#products}}
             <div class="col-md-3 " >
@@ -39,7 +71,7 @@ product-list
                         </div>
 
                         <div class="product-desc">
-                            <span class="product-discount">save 10%</span>
+                           <!-- <span class="product-discount">save 10%</span>-->
                             <a href="#" class="product-name">{{name}}</a>
                             <small class="product-price">{{price}}</small>
                             <div class="small m-t-xs description" >
@@ -65,20 +97,21 @@ product-list
             </div>
         {{/products}}
     </div>
-
+<!--
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
             <li class="page-item">
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>
     </nav>
+    -->
 </div>
 
 {{>layout/footer}}
