@@ -51,6 +51,14 @@ product-detail
                             <button type="button" class="btn btn-primary btn-lg" id="btn-shoplist">장바구니</button>
                             <button type="button" class="btn btn-primary btn-lg" id="btn-order">바로주문</button>
                     -->
+
+                    <form name="form" method="get">
+                        수량 : <input type=hidden name="sell_price" value="5500">
+                        <input type="text" name="amount" value="1" size="3" onchange="change();">
+                        <input type="button" value=" + " onclick="add();"><input type="button" value=" - " onclick="del();"><br>
+
+                        금액 : <input type="text" name="sum" size="11" readonly>원
+
                     <button type="button" class="btn btn-primary btn-lg btn-shoplist"><input type="hidden"
                                                                                              value="{{id}}"/>장바구니
                     </button>
