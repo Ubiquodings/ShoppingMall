@@ -26,7 +26,7 @@ logging.level:
 
 ubic:
   orders:
-    productListPageSize: 40
+    productListPageSize: 28
     productDetailPageSize: 8
 
 # spring.profiles.include=oauth
