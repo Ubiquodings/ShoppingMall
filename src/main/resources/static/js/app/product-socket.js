@@ -32,7 +32,7 @@ var productSocket = {
             /*[구독] 해당 유저에게만 추천 목록 갱신*/
             stompClient.subscribe('/topic/products/'+userId, function (result) {
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
-                console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
                 // 결과로 화면 조작
                 _this.updateRecommendedList(resultList);
@@ -57,7 +57,7 @@ var productSocket = {
             _this.setSchedulingTasks(stompClient, userId, currentPage);
 
             /*망설이지마세요 쿠폰 요청*/
-            _this.requestDoNotHesitateCoupon(stompClient, userId);
+            _this.requestDoNotHesitateCoupon(stompClient, userId, productId);
         });
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
@@ -89,7 +89,7 @@ var productSocket = {
         recomList.innerHTML = "";
 
         Array.from(resultList).forEach((product)=>{
-            console.log(product); // ok
+            // console.log(product); // ok
             /*
 {categoryId: 1
 description: "국산 천일염만으로 절여진"
@@ -134,12 +134,13 @@ stockQuantity: 50}
             </div>
         </div>`
     },
-    requestDoNotHesitateCoupon: function(stompClient, userId){
+    requestDoNotHesitateCoupon: function(stompClient, userId, productId){
         setTimeout(function(){
             console.log('망설이지마세요 쿠폰 요청');
-            // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
-            stompClient.send('/app/products/' + userId,
-                {}, {});
+            stompClient.send('/app/coupons/' + userId,
+                {}, JSON.stringify({ // body 에 string 처리 꼭 해줘야하는구나!
+                    productId: productId
+                }));
         }, 3000);
 
     }
