@@ -24,7 +24,7 @@ public class Category extends BaseTimeEntity {
 //    private Product product;
 
     @Builder
-    public Category(long kurlyId,String name) {
+    public Category(long kurlyId, String name) {
         this.kurlyId = kurlyId;
         this.name = name;
     }

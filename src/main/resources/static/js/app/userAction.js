@@ -25,11 +25,12 @@ var userAction = {
 
         $(".btn-shoplist").on('click',function(e){ // detail 페이지에서 가져와야지
             var productId = this.children[0].value;
+
             //var count = this.children[1].value;
             var count = $('#count').val();
             $.ajax({
-                type: 'POST', // 일단 상품 list 에서 가능한지 확인 후 detail 수정
-                url: '/api/carts/new/'+ productId,//$("input#product-detail-id").val(),
+                type: 'POST',
+                url: '/api/carts/new/'+ productId,
                 dataType: 'json',
                 contentType:'application/json; charset=utf-8',
                 //data: JSON.stringify({}) // TODO 간단하게 url param 으로 대체
@@ -39,6 +40,7 @@ var userAction = {
             }).fail(function(e){
                 alert('fail '+JSON.stringify(e));
             });
+
             // window.location.href=window.location.href; // reloading ?
         });
         // button 에 input 넣기
