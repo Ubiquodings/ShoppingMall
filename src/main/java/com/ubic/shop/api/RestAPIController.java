@@ -56,11 +56,14 @@ public class RestAPIController {
 
     // CartOrderRequestDto : Long productId
     @PostMapping("/api/carts/new/{id}") // TODO  restful 하진 않다
-    public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
-                       HttpServletRequest request) throws JsonProcessingException {
+    /*public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                       HttpServletRequest request) throws JsonProcessingException {*/
+    public String cart(@PathVariable(name = "id") Long productId, @RequestBody int count,
+                       @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
         String clientId = null;
         Long shopListUserId;
+
         if(user != null){
             clientId = user.getId().toString();
             shopListUserId = user.getId();
@@ -74,8 +77,10 @@ public class RestAPIController {
         Product product = productService.findById(productId);
         kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
 
+        //Long count = shopListService.findAllShopLists()
         // 장바구니 저장
-        shopListService.shopList(shopListUserId, productId, 1);
+        //shopListService.shopList(shopListUserId, productId, 1);
+        shopListService.shopList(shopListUserId, productId, count);
 
         return "{}";
     }
