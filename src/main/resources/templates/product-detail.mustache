@@ -21,7 +21,6 @@ product-detail
     <input type="hidden" value="{{id}}" id="input-product-id"/>
 
 
-
     <div class="card">
         <div class="container-fliud">
             <div class="wrapper row">
@@ -50,37 +49,40 @@ product-detail
                     <h4 class="price">Price: <span>{{price}}</span> <span class="won">원</span></h4>
 
 
-                    <body onload="init();">
+<!--                    <body onload="init();">-->
                     <script language="JavaScript">
-                        <!--
+                        $(document).ready(function () { // 문서가 준비되면
+                            init();
+                        });
+
                         var sell_price;
                         var amount;
 
-                        function init () {
+                        function init() {
                             sell_price = document.form.sell_price.value;
                             amount = document.form.amount.value;
                             document.form.sum.value = sell_price;
                             change();
                         }
 
-                        function add () {
+                        function add() {
                             hm = document.form.amount;
                             sum = document.form.sum;
-                            hm.value ++ ;
+                            hm.value++;
 
                             sum.value = parseInt(hm.value) * sell_price;
                         }
 
-                        function del () {
+                        function del() {
                             hm = document.form.amount;
                             sum = document.form.sum;
                             if (hm.value > 1) {
-                                hm.value -- ;
+                                hm.value--;
                                 sum.value = parseInt(hm.value) * sell_price;
                             }
                         }
 
-                        function change () {
+                        function change() {
                             hm = document.form.amount;
                             sum = document.form.sum;
 
@@ -89,7 +91,6 @@ product-detail
                             }
                             sum.value = parseInt(hm.value) * sell_price;
                         }
-                        //-->
                     </script>
                     <!--
                     <form name="form" method="get">
@@ -113,16 +114,16 @@ product-detail
 
                         <div class="quantity">
 
-                            <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >
+                            <button class="minus-btn" type="button" name="button" value=" - " onclick="del();">
                                 <!--<img src="minus.svg" alt="" />-->
-                                <img src="/icon/minus.svg" alt="" />
+                                <img src="/icon/minus.svg" alt=""/>
                             </button>
 
                             <input type="text" name="amount" value="1" id="count" onchange="change();">
 
                             <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
                                 <!--<img src="plus.svg" alt="" />-->
-                                <img src="/icon/plus.svg" alt="" />
+                                <img src="/icon/plus.svg" alt=""/>
                             </button>
                         </div>
 
@@ -132,9 +133,6 @@ product-detail
                             <input type="text" name="sum" readonly>
                             <span>원</span>
                         </h4>
-
-
-
 
 
                     </form>
@@ -166,7 +164,8 @@ product-detail
                             <input type="hidden" name="amount" value="1" onchange="change();">-->
                             장바구니
                         </button>
-                        <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{id}}"/>바로주문
+                        <button type="button" class="btn btn-primary btn-lg btn-order-immediately-from-detail"><input type="hidden"
+                                                                                              value="{{id}}"/>바로주문
                         </button>
                     </div>
                 </div>
@@ -211,4 +210,6 @@ product-detail
 
 <!--상품 디테일 소켓 추가-->
 <script src="/js/app/product-socket.js"></script>
+<!--상품 카운트 로직 추가-->
+<!--<script src="/js/app/product-detail-cal.js"></script>-->
 {{>layout/footer}}

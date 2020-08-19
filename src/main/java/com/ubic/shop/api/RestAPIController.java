@@ -2,13 +2,11 @@ package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ubic.shop.config.LoginUser;
-import com.ubic.shop.domain.Category;
-import com.ubic.shop.domain.Product;
-import com.ubic.shop.domain.Role;
-import com.ubic.shop.domain.User;
+import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.*;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
+import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.*;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +28,7 @@ public class RestAPIController {
 
     private final ProductService productService;
     private final ShopListService shopListService;
+    private final ShopListRepository shopListRepository;
     private final OrderService orderService;
     private final ProductCategoryService productCategoryService;
     private final CategorySevice categoryService;
@@ -61,6 +60,8 @@ public class RestAPIController {
     public String cart(@PathVariable(name = "id") Long productId, @RequestBody int count,
                        @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
+        log.info("\n" + productId + "\n" + count);
+
         String clientId = null;
         Long shopListUserId;
 
@@ -86,10 +87,11 @@ public class RestAPIController {
     }
     // 빈 데이터 리턴도 json 형태로 해야 한다! -- 이유 :: https://vvh-avv.tistory.com/159
 
-    @PostMapping("/api/orders/new/{id}") // TODO  restful 하진 않다
-    public String order(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
-                        HttpServletRequest request) throws JsonProcessingException {
 
+    @PostMapping("/api/orders/fromDetail/{id}") // 상품 상세 페이지에서 바로 하나 주문하는 기능
+    public String orderOneFromDetail(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                                     @RequestBody int count,
+                                     HttpServletRequest request) throws JsonProcessingException {
         String clientId = null;
         Long shopListUserId;
         if (user != null) {
@@ -103,10 +105,47 @@ public class RestAPIController {
 
         String action = "order";
         Product product = productService.findById(productId);
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+
+        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
 
         // 주문 저장
-        orderService.order(shopListUserId, productId, 1);
+        orderService.orderOneFromDetail(shopListUserId, product.getId(), count);
+
+        return "{}";
+
+    }
+
+    @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능
+    public String orderFromShopList(@PathVariable(name = "id") Long shopListId, @LoginUser SessionUser user,
+                                       @RequestBody int count,
+                                     HttpServletRequest request) throws JsonProcessingException {
+
+        String clientId = null;
+        Long shopListUserId;
+        if (user != null) {
+            clientId = user.getId().toString();
+            shopListUserId = user.getId();
+        } else {
+            clientId = request.getSession().getId();
+            User nonMember = getTempUser(request);
+            shopListUserId = nonMember.getId();
+        }
+
+        String action = "order";
+        ShopList shopList = shopListRepository.findById(shopListId).get();
+        Product product = shopList.getProduct();
+
+        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
+
+        // 주문 저장
+        orderService.orderOneFromShopList(shopListUserId, product.getId(), count, shopListId);
+
+        return "{}";
+    }
+
+    @PostMapping("/api/orderAll") // TODO  restful 하진 않다
+    public String orderAll(OrderAllRequestDto requestDto,
+                           @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
         return "{}";
     }
@@ -199,7 +238,7 @@ public class RestAPIController {
 
     // 장바구니 수정
     @PutMapping("/api/carts/{id}")
-    public String modifyCartItem(ShopListModifyRequestDto requestDto, @PathVariable Long id, @LoginUser SessionUser user){
+    public String modifyCartItem(ShopListModifyRequestDto requestDto, @PathVariable Long id, @LoginUser SessionUser user) {
         shopListService.modifyShopList(requestDto.getCartId(), requestDto.getCount());
         return "{}";
     }

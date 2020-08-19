@@ -4,6 +4,7 @@ import com.ubic.shop.domain.Coupon;
 import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.ShopList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,9 @@ import java.util.List;
 public interface ShopListRepository extends CrudRepository<ShopList, Long> {
 
     List<ShopList> findAllByUserId(Long userId);
+
+//    @Query("select m.id from ShopList m")
+//    List<Long> findUsernameList();
 
 //    private final EntityManager em;
 //

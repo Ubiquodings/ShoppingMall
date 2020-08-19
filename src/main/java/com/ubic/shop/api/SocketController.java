@@ -140,6 +140,7 @@ public class SocketController {
         Coupon coupon = Coupon.builder()
                 .name(product.getName()+" 망설이지마세요!")
                 .user(user)
+                .product(product)
                 .build();
         couponRepository.save(coupon);
 

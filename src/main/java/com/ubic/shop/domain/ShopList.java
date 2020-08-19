@@ -24,7 +24,7 @@ public class ShopList extends BaseTimeEntity {
 //    @OneToMany(mappedBy = "shopList", cascade = CascadeType.ALL)
 //    private List<ShopListProduct> shopListProducts = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY) // casecade all 하면 product 도 지우려 한다 ? oo 오류 수정!
     @JoinColumn(name = "product_id")
     private Product product; //주문 상품
     private long count; //장바구니 수량
