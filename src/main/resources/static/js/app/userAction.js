@@ -9,17 +9,14 @@ var userAction = {
                 url: '/api/orders/'+ $("input#input-order-id").val(), // order id
                 dataType: 'json',// Accept ?
                 contentType:'application/json; charset=utf-8',
-                // data: JSON.stringify({}) // TODO 간단하게 url param 으로 대체
+                // data: JSON.stringify({})
             }).done(function() {
                 alert('삭제되었습니다.');
-                window.location.href=window.location.href;
+                // window.location.href=window.location.href;
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
-            // .done(function(){ // 왜 안되지 ?
-            //     alert('ok');
-            // });
-            // window.location.href=window.location.href;
+            window.location.href=window.location.href;
         });
 
 

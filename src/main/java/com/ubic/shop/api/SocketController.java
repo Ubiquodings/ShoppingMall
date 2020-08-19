@@ -129,14 +129,16 @@ public class SocketController {
 //    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
     public void requestDoNotHesitateCoupon(CouponRequestDto requestDto, @DestinationVariable long userID
     ) throws JsonProcessingException {
-        log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ??
+        log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ?? 쿠폰 이름에 사용하려고!
+        Long productId = requestDto.getProductId();
+        Product product = productRepository.findById(productId).get();
 
         // user 정보 가져오기
         User user = userRepository.findById(userID).get();
 
         // 해당 유저에게 쿠폰 발급하기
         Coupon coupon = Coupon.builder()
-                .name("망설이지마세요!")
+                .name(product.getName()+" 망설이지마세요!")
                 .user(user)
                 .build();
         couponRepository.save(coupon);

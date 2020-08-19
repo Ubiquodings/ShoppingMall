@@ -38,10 +38,10 @@ public class RestAPIController {
 
 
     @PostMapping("/api/products/new")
-    public ProductResponseDto save(@RequestBody ProductSaveRequestDto requestDto){
+    public ProductResponseDto save(@RequestBody ProductSaveRequestDto requestDto) {
 //        logger.info("\n"+requestDto.toString()+"\n"); // ok
         Category category = categoryService.getCategoryByKurlyId(requestDto.getCategoryId());
-        if(category == null)
+        if (category == null)
             return null;
 //        Product product = requestDto.toEntity(category);
 //        product.set
@@ -49,7 +49,7 @@ public class RestAPIController {
     }
 
     @PostMapping("/api/categories/new")
-    public CategoryResponseDto save(@RequestBody CategorySaveRequestDto requestDto){
+    public CategoryResponseDto save(@RequestBody CategorySaveRequestDto requestDto) {
 //        logger.info("\n"+requestDto.toString());
         return new CategoryResponseDto(categoryService.saveCategory(requestDto));
     }
@@ -64,10 +64,10 @@ public class RestAPIController {
         String clientId = null;
         Long shopListUserId;
 
-        if(user != null){
+        if (user != null) {
             clientId = user.getId().toString();
             shopListUserId = user.getId();
-        }else{
+        } else {
             clientId = request.getSession().getId();
             User nonMember = getTempUser(request);
             shopListUserId = nonMember.getId();
@@ -92,10 +92,10 @@ public class RestAPIController {
 
         String clientId = null;
         Long shopListUserId;
-        if(user != null){
+        if (user != null) {
             clientId = user.getId().toString();
             shopListUserId = user.getId();
-        }else{
+        } else {
             clientId = request.getSession().getId();
             User nonMember = getTempUser(request);
             shopListUserId = nonMember.getId();
@@ -113,9 +113,9 @@ public class RestAPIController {
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User nonMember=null;
-        if(session.isNew()){
-            log.info("\nsession is new : "+session.getId());
+        User nonMember = null;
+        if (session.isNew()) {
+            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -124,7 +124,7 @@ public class RestAPIController {
                     .role(Role.GUEST)
                     .build();
             userRepository.save(nonMember);
-        }else{ // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
+        } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;
@@ -138,15 +138,15 @@ public class RestAPIController {
         log.info("\n\n click api");
 
         String clientId = null;
-        if(user != null){
+        if (user != null) {
             clientId = user.getId().toString();
-        }else{
+        } else {
             clientId = request.getSession().getId();
-            log.info("\n\n click api session id"+clientId);
+            log.info("\n\n click api session id" + clientId);
         }
 
         String action = "click";
-        logger.info("\n/click "+productId);
+        logger.info("\n/click " + productId);
         Product product = productService.findById(productId);
 
         kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
@@ -161,15 +161,15 @@ public class RestAPIController {
         log.info("\n\n hover api");
 
         String clientId = null;
-        if(user != null){
+        if (user != null) {
             clientId = user.getId().toString();
-        }else{
+        } else {
             clientId = request.getSession().getId();
-            log.info("\n\n click api session id"+clientId);
+            log.info("\n\n click api session id" + clientId);
         }
 
         String action = "hover";
-        logger.info("\n/hover "+productId);
+        logger.info("\n/hover " + productId);
         Product product = productService.findById(productId);
 
         kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
@@ -180,7 +180,7 @@ public class RestAPIController {
 
     // 주문 취소 로직
     @DeleteMapping("/api/orders/{id}")
-    public String detail(@PathVariable Long id, @LoginUser SessionUser user){
+    public String cancelOrder(@PathVariable Long id, @LoginUser SessionUser user) {
         orderService.cancelOrder(id);
 //        if(user != null){
 //            model.addAttribute("userName", user.getName());
@@ -190,9 +190,24 @@ public class RestAPIController {
         return "{}";
     }
 
+    // 장바구니 취소
+    @DeleteMapping("/api/carts/{id}")
+    public String cancelCartItem(@PathVariable Long id, @LoginUser SessionUser user) {
+        shopListService.cancelShopList(id);
+        return "{}";
+    }
+
+    // 장바구니 수정
+    @PutMapping("/api/carts/{id}")
+    public String modifyCartItem(ShopListModifyRequestDto requestDto, @PathVariable Long id, @LoginUser SessionUser user){
+        shopListService.modifyShopList(requestDto.getCartId(), requestDto.getCount());
+        return "{}";
+    }
+
+
     @GetMapping("/api/search")
     public String search(@RequestParam("keyword") String keyword, @LoginUser SessionUser user,
-                        HttpServletRequest request) throws JsonProcessingException{
+                         HttpServletRequest request) throws JsonProcessingException {
 
 //        log.info("\n\n"+keyword); // ok
 

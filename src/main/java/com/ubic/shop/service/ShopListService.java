@@ -29,10 +29,14 @@ public class ShopListService {
         Product product = productService.findById(productId);
 
         //주문상품 생성
-        ShopListProduct shopListProduct = ShopListProduct.createShopListProduct(product, product.getPrice(),
-                count);
+//        ShopListProduct shopListProduct = ShopListProduct.createShopListProduct(product, product.getPrice(),
+//                count);
         //주문 생성
-        ShopList shopList = ShopList.createShopList(user, /*delivery, */shopListProduct);
+        ShopList shopList = ShopList.builder()
+                .user(user)
+                .product(product)
+                .count(count)
+                .build();
         //주문 저장
         shopListRepository.save(shopList);
         return shopList.getId();
@@ -41,13 +45,18 @@ public class ShopListService {
     /** 장바구니 취소 */
     @Transactional
     public void cancelShopList(Long shopListId) {
-        //엔티티 조회
-        ShopList shopList = shopListRepository.findOne(shopListId);
         //취소
-        shopList.cancel();
+        shopListRepository.deleteById(shopListId);
+    }
+
+    /*장바구니 수정*/
+    @Transactional
+    public void modifyShopList(Long shopListId, Long count){
+        ShopList shopList = shopListRepository.findById(shopListId).get();
+        shopList.changeCount(count); // 더티체킹 해주겠지 ?
     }
 
     public List<ShopList> findAllShopLists(Long userId) {
-        return shopListRepository.findAll(userId);
+        return shopListRepository.findAllByUserId(userId);
     }
 }
