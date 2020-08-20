@@ -35,11 +35,13 @@ var userAction = {
                 alert('ok');
                 //location.reload(); //새로고침 추가
                 //$("order-list-row").load(window.location.href + "order-list-row");
+                window.location.href=window.location.href; // reloading ?
+
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
             });
             //$("order-list-row").load(window.location.href + "order-list-row");
-            // window.location.href=window.location.href; // reloading ?
+             window.location.href=window.location.href; // reloading ?
         });
         // button 에 input 넣기
         // button class 수정

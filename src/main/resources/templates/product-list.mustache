@@ -10,7 +10,7 @@ product-list
             $(this).addClass("active");
 
 
-            URLSearchParams(location.search).get('page');
+            new URLSearchParams(location.search).get('page');
             for (let p of searchParams) {
                 console.log(p);
             }
@@ -25,18 +25,28 @@ product-list
         var pageItem = $(".pagination li").not(".prev,.next");
         var prev = $(".pagination li.prev");
         var next = $(".pagination li.next");
+        var currentPage=0;
+
 
         pageItem.click(function () {
             pageItem.removeClass("active");
             $(this).not(".prev,.next").addClass("active");
+            currentPage=new URLSearchParams(location.search).get('page');
+            location.href = "http://localhost:8080/products?page="+(Number(currentPage)+1).toString(); //
         });
 
         next.click(function () {
             $('li.active').removeClass('active').next().addClass('active');
+            currentPage=new URLSearchParams(location.search).get('page');
+            location.href = "http://localhost:8080/products?page="+(Number(currentPage)+1).toString(); //
+
         });
 
         prev.click(function () {
             $('li.active').removeClass('active').prev().addClass('active');
+            currentPage=new URLSearchParams(location.search).get('page');
+            location.href = "http://localhost:8080/products?page="+(Number(currentPage)+1).toString(); //
+
         });
 
 
