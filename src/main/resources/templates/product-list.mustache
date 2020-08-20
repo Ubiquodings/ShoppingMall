@@ -1,41 +1,20 @@
 {{>layout/header}}
 
 product-list
-<h3>{{page-total-count}}</h3>
-<!--
-  $(function () {
-        $(".page-item").click(function () {
-            $(".page-item").each(function () {
-                $(this).removeClass("active");
-            });
-            $(this).addClass("active");
 
-
-            new URLSearchParams(location.search).get('page');
-            for (let p of searchParams) {
-                console.log(p);
-            }
-
-        });
-    });
--->
 <script>
-
 
     $(document).ready(function () {
         var pageItem = $(".pagination li").not(".prev,.next");
         var prev = $(".pagination li.prev");
         var next = $(".pagination li.next");
         var currentPage = 0;
-        //var count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
-        //console.log(count)
 
         pageItem.click(function () {
             pageItem.removeClass("active");
             $(this).not(".prev,.next").addClass("active");
             currentPage = new URLSearchParams(location.search).get('page');
             if (currentPage != null) {
-
                 location.href = "http://localhost:8080/products?page=" + (Number(currentPage) + 1).toString(); //
             }
         });
@@ -44,7 +23,6 @@ product-list
             $('li.active').removeClass('active').next().addClass('active');
             currentPage = new URLSearchParams(location.search).get('page');
             if (currentPage != null) {
-
                 location.href = "http://localhost:8080/products?page=" + (Number(currentPage) + 1).toString(); //
             }
         });
@@ -62,21 +40,18 @@ product-list
             }
         });
 
-
     });
 
 </script>
 
-
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/product-list.css">
-
 
 <div class="container">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center pagination-lg">
-            <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
-            <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
+            <!-- class="disabled"는 앞 페이지가 존재하지 않는다는 뜻, 클릭하지 못하는 상태가 됨-->
+            <!--이전 페이지-->
             <li class="prev page-item">
                 <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
@@ -90,6 +65,11 @@ product-list
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
+                                     +{{page-total-count}}>
+                {{page-total-count}} </a></li>
+
+            <!--다음 페이지-->
             <li class="next">
                 <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
@@ -146,21 +126,7 @@ product-list
             </div>
         {{/products}}
     </div>
-    <!--
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
-                <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
-                <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-        -->
+
 </div>
 
 {{>layout/footer}}
