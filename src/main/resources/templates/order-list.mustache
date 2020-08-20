@@ -7,7 +7,7 @@ order-list
 <input type="hidden" value="{{id}}" id="input-order-id"/> <!-- Order 의 id -->
 
 {{#orderProducts}} <!--loop ? ok--> <!--List<OrderProduct>-->
-<div class="row">
+<div class="row" id="order-list-row">
     <div class="card" style="width: 100%;">
         <div class="card-body">
             <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
