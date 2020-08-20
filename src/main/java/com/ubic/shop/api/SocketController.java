@@ -2,12 +2,14 @@ package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.domain.Coupon;
 import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.CouponRequestDto;
 import com.ubic.shop.dto.ProductResponseDto;
+import com.ubic.shop.dto.SessionUser;
 import com.ubic.shop.dto.SimpleMessageDto;
 import com.ubic.shop.elasticsearch.service.ElasticSearchService;
 import com.ubic.shop.elasticsearch.service.EsSocketService;
@@ -27,9 +29,12 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,13 +55,13 @@ public class SocketController {
 
     private final SimpMessagingTemplate socketTemplate;
 
+
     /**
      * [사용법]
      * String text = "[" + getTimestamp() + "]:" + greeting;
      * ObjectMapper 이용해서 json to String 변환하기!
      * this.template.convertAndSend("/topic/greetings", text);
      */
-
 
     @MessageMapping("/users/{productID}") /*해당 페이지 접속 사용자 수*/
 //    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
@@ -88,12 +93,18 @@ public class SocketController {
                                                    String body) throws JsonProcessingException {
         log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
 
+
+
+
         // page 받고 repo 의 count 로 나머지 연산해야 한다 : page % pageCount
         // product repository 에서 카운트만 가져오는 쿼리 수행
         long categoryID = recommendService.getHighestCategoryId(userId);
         log.info("categoryID: " + categoryID);
-//        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
+
+
+        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
         // (찾아온 상품 수) % (페이징하는 상품 수) = 6 % 8 = 6
+
 
         PageRequest pageRequest = PageRequest.of(1, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
         Page<Product> productPageFindByCategoryId = productRepository.findByCategoryId(categoryID, pageRequest);
@@ -138,7 +149,7 @@ public class SocketController {
 
         // 해당 유저에게 쿠폰 발급하기
         Coupon coupon = Coupon.builder()
-                .name(product.getName()+" 망설이지마세요!")
+                .name(product.getName() + " 망설이지마세요!")
                 .user(user)
                 .product(product)
                 .build();

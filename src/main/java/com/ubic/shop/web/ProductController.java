@@ -2,9 +2,11 @@ package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
+import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.SessionUser;
+import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.ProductService;
 import com.ubic.shop.service.RecommendService;
@@ -31,11 +33,15 @@ public class ProductController {
     private final RecommendService recommendService;
     private final UbicConfig ubicConfig;
     private final UserRepository userRepository;
+
+    private final ProductRepository productRepository; // 유연 추가
+
+
 //    private
 
     @GetMapping("/products")
     public String list(Model model, @LoginUser SessionUser user,
-                       @RequestParam(name = "page", defaultValue = "0") String page, HttpServletRequest request){ // 화면 :: 윤진
+                       @RequestParam(name = "page", defaultValue = "0") String page, HttpServletRequest request) { // 화면 :: 윤진
 
 //        User nonMember = getTempUser(request);
 
@@ -47,20 +53,25 @@ public class ProductController {
 //        model.addAttribute("products", productService.findAllProducts(/*PageRequest.of(0,20)*/));
         model.addAttribute("products", productService.findPagingProducts(pageRequest)); // 40개씩 페이징
 
-        if(user != null){
+        if (user != null) {
             model.addAttribute("userName", user.getName());
-        }else{ // 해시코드 다섯글자만 추출하기
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
         }
 
+        //끝페이지 가져오기
+        Page<Product> pages=productRepository.findProductsCountBy(pageRequest);
+        int page_total_count=pages.getTotalPages();
+        model.addAttribute("page-total-count",page_total_count );
         return "product-list";
+
     }
 
     @GetMapping("/products/{id}")
     public String detail(@PathVariable Long id, Model model, @LoginUser SessionUser user,
                          @RequestParam(name = "page", defaultValue = "0") String page,
-                         HttpServletRequest request){
+                         HttpServletRequest request) {
 
         model.addAttribute("product", productService.findById(id));
 
@@ -68,27 +79,27 @@ public class ProductController {
         String clientId = null;
         long userId = -1L;
 
-        if(user != null){
+        if (user != null) {
             model.addAttribute("userName", user.getName());
             clientId = user.getId().toString();
             userId = user.getId();
-        }else{ // 해시코드 다섯글자만 추출하기
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getName();
             userId = nonMember.getId();
         }
 
         model.addAttribute("userId", userId);
-                model.addAttribute("recommendedList", recommendService.getRecommendList(clientId, page));
+        model.addAttribute("recommendedList", recommendService.getRecommendList(clientId, page));
         return "product-detail";
     }
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User nonMember=null;
-        if(session.isNew()){
-            log.info("\nsession is new : "+session.getId());
+        User nonMember = null;
+        if (session.isNew()) {
+            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -97,7 +108,7 @@ public class ProductController {
                     .role(Role.GUEST)
                     .build();
             userRepository.save(nonMember);
-        }else{ // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
+        } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;

@@ -1,6 +1,7 @@
 {{>layout/header}}
 
 product-list
+<h3>{{page-total-count}}</h3>
 <!--
   $(function () {
         $(".page-item").click(function () {
@@ -25,28 +26,40 @@ product-list
         var pageItem = $(".pagination li").not(".prev,.next");
         var prev = $(".pagination li.prev");
         var next = $(".pagination li.next");
-        var currentPage=0;
-
+        var currentPage = 0;
+        //var count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
+        //console.log(count)
 
         pageItem.click(function () {
             pageItem.removeClass("active");
             $(this).not(".prev,.next").addClass("active");
-            currentPage=new URLSearchParams(location.search).get('page');
-            location.href = "http://localhost:8080/products?page="+(Number(currentPage)+1).toString(); //
+            currentPage = new URLSearchParams(location.search).get('page');
+            if (currentPage != null) {
+
+                location.href = "http://localhost:8080/products?page=" + (Number(currentPage) + 1).toString(); //
+            }
         });
 
         next.click(function () {
             $('li.active').removeClass('active').next().addClass('active');
-            currentPage=new URLSearchParams(location.search).get('page');
-            location.href = "http://localhost:8080/products?page="+(Number(currentPage)+1).toString(); //
+            currentPage = new URLSearchParams(location.search).get('page');
+            if (currentPage != null) {
 
+                location.href = "http://localhost:8080/products?page=" + (Number(currentPage) + 1).toString(); //
+            }
         });
 
         prev.click(function () {
             $('li.active').removeClass('active').prev().addClass('active');
-            currentPage=new URLSearchParams(location.search).get('page');
-            location.href = "http://localhost:8080/products?page="+(Number(currentPage)+1).toString(); //
-
+            currentPage = new URLSearchParams(location.search).get('page');
+            //location.href = "http://localhost:8080/products?page=" + (Number(currentPage) - 1).toString(); //
+            if (currentPage != null) {
+                if (Number(currentPage) - 1 > 0) {
+                    location.href = "http://localhost:8080/products?page=" + (Number(currentPage) - 1).toString(); //
+                } else {
+                    prev.addClass('disabled')
+                }
+            }
         });
 
 
@@ -64,7 +77,7 @@ product-list
         <ul class="pagination justify-content-center pagination-lg">
             <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
             <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
-            <li class="disabled prev page-item">
+            <li class="prev page-item">
                 <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -118,11 +131,13 @@ product-list
                         </div>
 
                         <div class="m-t text-left">
-                            <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
+                            <button type="button" style="margin-top: 10px"
+                                    class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
                                 <input type="hidden" value="{{id}}" id="product-detail-id"/>
                                 <!--<input type="hidden" value= "1"/>-->
-                                <input type="hidden" id="count" value= "1"/>
-                                장바구니</button>
+                                <input type="hidden" id="count" value="1"/>
+                                장바구니
+                            </button>
                             <!--<a href="#" class="" >장바구니 </a>-->
                         </div>
 
