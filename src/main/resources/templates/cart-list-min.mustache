@@ -1,71 +1,161 @@
 {{>layout/header}}
+
 cart-list
-{{#shopLists}} <!--List<ShopList>-->
-{{#shopListProducts}} <!--loop ? ok--> <!--List<ShopListProduct>-->
-<div class="row">
-    <div class="card" style="width: 100%;">
-        <div class="card-body">
-            <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
-            <h5 class="card-title">{{count}}</h5>
 
-            <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기@@@@@@@@@@@@@@@@@@@@@@@@ -->
 
-            <body onload="init();">
-            <script language="JavaScript">
-                <!--
-                var sell_price;
-                var amount;
+<style>
+    body{
+        background-color: #f5f5f5;
+    }
+    .Product-img img{
+        width: 100%;
+    }
+    .main-section{
+        font-family: 'Roboto Condensed', sans-serif;
+        margin-top:100px;
+    }
 
-                function init () {
-                    sell_price = document.form.sell_price.value;
-                    amount = document.form.amount.value;
-                    document.form.sum.value = sell_price;
-                    change();
-                }
+</style>
 
-                function add () {
-                    hm = document.form.amount;
-                    sum = document.form.sum;
-                    hm.value ++ ;
+<html>
+<head>
+    <title> 장바구니</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="custom.css">
+</head>
 
-                    sum.value = parseInt(hm.value) * sell_price;
-                }
 
-                function del () {
-                    hm = document.form.amount;
-                    sum = document.form.sum;
-                    if (hm.value > 1) {
-                        hm.value -- ;
-                        sum.value = parseInt(hm.value) * sell_price;
-                    }
-                }
+<body>
+<div class="container main-section">
+    <div class="row">
+        <div class="col-lg-12 pb-2">
+            <h4>장바구니</h4>
+        </div>
+        <div class="col-lg-12 pl-3 pt-3">
+            <table class="table table-hover border bg-white">
+                <thead>
+                <tr>
+                    <th>상품정보</th>
+                    <th>가격</th>
+                    <th style="width:10%;">수량</th>
+                    <th>상품금액</th>
+                    <th>상품삭제</th>
+                </tr>
+                </thead>
 
-                function change () {
-                    hm = document.form.amount;
-                    sum = document.form.sum;
 
-                    if (hm.value < 0) {
-                        hm.value = 0;
-                    }
-                    sum.value = parseInt(hm.value) * sell_price;
-                }
-                //-->
-            </script>
 
-            <input type=hidden name="sell_price" value="{{price}}">
+                {{#shopLists}} <!--List<ShopList>-->
+                    {{#shopListProducts}} <!--loop ? ok--> <!--List<ShopListProduct>-->
 
-            <input type="hidden" name="amount" value="{{count}}" onchange="change();">
 
-            <input type="text" name="sum" style="border: none; background: transparent;" readonly>
 
-            <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기 끝@@@@@@@@@@@@@@@@@@@@@@@@ -->
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <div class="col-lg-2 Product-img">
+                                        <img src="{{product.imgUrl}}" alt="..." class="img-responsive"/>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <h4 class="nomargin">{{product.name}}</h4>
+                                        <p>{{product.description}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <!--<td> {{product.price}} </td>-->
+                            <td> {{shopListPrice}} </td>
 
-            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{product.id}}"/>주문</button>
-            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
-            <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
+                            <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+                            <body onload="init();">
+                            <script language="JavaScript">
+                                <!--
+                                var sell_price;
+                                var amount;
+
+                                function init () {
+                                    sell_price = document.form.sell_price.value;
+                                    amount = document.form.amount.value;
+                                    document.form.sum.value = sell_price;
+                                    change();
+                                }
+
+                                function add () {
+                                    hm = document.form.amount;
+                                    sum = document.form.sum;
+                                    hm.value ++ ;
+
+                                    sum.value = parseInt(hm.value) * sell_price;
+                                }
+
+                                function del () {
+                                    hm = document.form.amount;
+                                    sum = document.form.sum;
+                                    if (hm.value > 1) {
+                                        hm.value -- ;
+                                        sum.value = parseInt(hm.value) * sell_price;
+                                    }
+                                }
+
+                                function change () {
+                                    hm = document.form.amount;
+                                    sum = document.form.sum;
+
+                                    if (hm.value < 0) {
+                                        hm.value = 0;
+                                    }
+                                    sum.value = parseInt(hm.value) * sell_price;
+                                }
+                                //-->
+                            </script>
+
+                            <form name="form" method="get">
+                                <input type=hidden name="sell_price" value="{{shopListPrice}}">
+                                <input type="hidden" name="amount" value="{{count}}">
+
+                                <td data-th="Quantity">
+                                    <!--<input type="number" class="form-control text-center" value="1">-->
+                                    <input type="number" class="form-control text-center" value="{{count}}" onchange="change();">
+                                </td>
+
+                                <!--<td>{{product.price}}</td>-->
+                                <!--<input type="text" name="sum" style="border: none; background: transparent;" readonly>
+                                -->
+
+                                <td><input type="text" name="sum" style="border: none; background: transparent;" readonly></td>
+
+                            </form>
+                            <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기 끝@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+                            <td class="actions" data-th="" style="width:10%;">
+                                <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+
+                    {{/shopListProducts}}
+                {{/shopLists}}
+
+                <tfoot>
+                <tr>
+                    <td><a href="#" class="btn btn-warning text-white"><i class="fa fa-angle-left"></i> 쇼핑계속하기</a></td>
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td class="hidden-xs text-center" style="width:10%;"><strong>총금액: 1억</strong></td>
+                    <td><a href="#" class="btn btn-success btn-block">주문하기<i class="fa fa-angle-right"></i></a></td>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
-{{/shopListProducts}}
-{{/shopLists}}
+</body>
+</html>
+
+
 {{>layout/footer}}
