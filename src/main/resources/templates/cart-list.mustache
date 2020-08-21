@@ -35,6 +35,134 @@ cart-list
             }
         }
     </script>-->
+
+    <script language="JavaScript">
+
+        $(document).ready(function() {
+            init();
+        });
+
+        function init () {
+            var sell_price;
+            var amount;
+            //var init = 0;
+            var form_list = document.getElementsByClassName("formlist");
+            console.log("form_list length " + form_list.length);
+            var amount_list = document.getElementsByClassName("amount");
+            console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...
+
+            var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
+
+            if(form_list.length == 1) {
+                sell_price = document.form.sell_price.value;
+                amount = document.form.amount.value;
+                document.form.sum.value = sell_price;
+                //document.init_c.value = 0;
+                $('.init_c').val('0');
+
+                hm = document.form.amount;
+                sum = document.form.sum;
+
+                if (hm.value < 0) {
+                    hm.value = 0;
+                }
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+
+            else {
+                for(var i=0; i<form_list.length; i++) {
+                    sell_price = document.form[i].sell_price.value;
+                    amount = document.form[i].amount.value;
+                    document.form[i].sum.value = sell_price;
+                    //document.form[i].init_c.value = init;
+                    //document.init_c.value = i;
+                    console.log("i " + i);
+                    //$('.init_c')[i].val(i);
+                    $(init_list[i]).val(i);
+                    //init++;
+
+                    hm = document.form[i].amount;
+                    sum = document.form[i].sum;
+
+                    if (hm.value < 0) {
+                        hm.value = 0;
+                    }
+                    sum.value = parseInt(hm.value) * sell_price;
+                }
+            }
+
+        }
+
+        $('.minus-btn').on('click', function() {
+
+           // var minus_index = $('.minus-btn').index($(this));
+           /*var minus_index = $('.formlist').index($(this));
+           console.log(minus_index); 싹다 안된다....*/
+           // console.log($(this).index()); 이거도 안돼..
+           // console.log($(".minus-btn").index(this)); 안돼..
+            //var minus_index = $('.minus-btn').index($(this));
+            /*var minus_index = $(".minus-btn").index(this);
+            console.log(minus_index);*/
+
+            //https://stackoverflow.com/questions/35960324/getting-the-index-of-a-form-element
+            //여기있는 방법 적용
+            var all_sellprice = $('[name="sell_price"]');
+            var sellprice = $(this).siblings('[name="sell_price"]');
+            var minus_index = all_sellprice.index(sellprice.get(0));
+
+            console.log(minus_index);
+
+            hm = document.form[minus_index].amount;
+            sum = document.form[minus_index].sum;
+
+            if (hm.value > 1) {
+                hm.value -- ;
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+        });
+
+        function add () {
+            index = document.init_c.value;
+            index = $('.init_c').val();
+
+            hm = document.form[index].amount;
+            sum = document.form[index].sum;
+            hm.value ++ ;
+
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+
+        function del () {
+            index = document.getElementsByClassName("init_c");
+
+            hm = document.form[index].amount;
+            sum = document.form[index].sum;
+            if (hm.value > 1) {
+                hm.value -- ;
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+        }
+
+        function change () {
+            //index = document.getElementsByClassName("init_c");
+
+            var sum_index = $('.formlist').index($(this));
+            console.log(sum_index);
+
+            hm = document.form[sum_index].amount;
+            sum = document.form[sum_index].sum;
+
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+
+
+
+        //-->
+    </script>
+
 </head>
 
 
@@ -48,6 +176,7 @@ cart-list
             <table class="table table-hover border bg-white">
                 <thead>
                 <tr>
+                    <th>숫자</th>
                     <th>상품정보</th>
                     <th>가격</th>
                     <th style="width:10%;">수량</th>
@@ -63,6 +192,7 @@ cart-list
 
                         <tbody>
                         <tr>
+                            <td><input type=text class="init_c" name="init_c"></td>
                             <td>
                                 <div class="row">
                                     <div class="col-lg-2 Product-img">
@@ -77,86 +207,22 @@ cart-list
                             <!--<td> {{product.price}} </td>-->
                             <td> {{shopListPrice}} </td>
 
-                            <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기@@@@@@@@@@@@@@@@@@@@@@@@ -->
-
-                            <!--<body onload="init();">-->
-                            <script language="JavaScript">
-
-                                $(document).ready(function() {
-                                    init();
-                                });
-
-                                var sell_price;
-                                var amount;
-                                //var sum;
-                                var i=0;
-
-                                for(var i=0;i<1;i++){
-
-
-                                    function init () {
-                                        sell_price = document.form[0].sell_price.value;
-                                        //sell_price=document.getElementById("sell_price").value;
-                                        amount = document.form[0].amount.value;
-                                        document.form[0].sum.value = sell_price;
-                                        //sum = sell_price;
-                                        change();
-                                    }
-
-                                    function add () {
-                                        hm = document.form[0].amount;
-                                        sum = document.form[0].sum;
-                                        hm.value ++ ;
-
-                                        sum.value = parseInt(hm.value) * sell_price;
-                                    }
-
-                                    function del () {
-                                        hm = document.form[0].amount;
-                                        sum = document.form[0].sum;
-                                        if (hm.value > 1) {
-                                            hm.value -- ;
-                                            sum.value = parseInt(hm.value) * sell_price;
-                                        }
-                                    }
-
-                                    function change () {
-                                        sell_price = document.form[0].sell_price.value;
-                                        amount = document.form[0].amount.value;
-                                        document.form[0].sum.value = sell_price;
-
-                                        hm = document.form[0].amount;
-                                        sum = document.form[0].sum;
-
-                                        if (hm.value < 0) {
-                                            hm.value = 0;
-                                        }
-                                        sum.value = parseInt(hm.value) * sell_price;
-
-                                    }
-
-                                    //document.form[0].sum.write(sum.value);
-                                }
-
-
-
-                                //-->
-                            </script>
-
                             <!--                            <form name="form" method="get" onload="init()">-->
-                            <form name="form" method="get">
+                            <form name="form" class="formlist" method="get">
                                 <input type=hidden name="sell_price" value="{{shopListPrice}}">
+                                <!--<input type=hidden name="init_c">-->
                                 <!--<input type="hidden" name="amount" value="{{count}}">-->
 
                                 <td data-th="Quantity">
                                     <div class="quantity">
 
-                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >
+<!--                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >-->
+                                        <button class="minus-btn" type="button" name="button" value=" - ">
 
                                             <img src="/icon/minus-cartlist.svg" alt="" />
                                         </button>
 
-                                        <input type="text" name="amount" value="{{count}}" onchange="change();">
+                                        <input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">
 
                                         <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
 
@@ -207,5 +273,5 @@ cart-list
 </body>
 </html>
 
-<script src="/js/app/cart-list-quantity.js"></script>
+<!--<script src="/js/app/cart-list-quantity.js"></script>-->
 {{>layout/footer}}

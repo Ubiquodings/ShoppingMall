@@ -2,6 +2,7 @@
 
 cart-list
 
+<link rel="stylesheet" type="text/css" href="/css/cart-list-quantity.css">
 
 <style>
     body{
@@ -24,6 +25,16 @@ cart-list
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="custom.css">
+
+    <!--<script language="JavaScript">
+        function init(x) {
+            var sell_price_length = $(".sell_price").length;
+            var sell_price_Data = new Array(sell_price_length);
+            for(var i=0; i<sell_price_length; i++) {
+                sell_price_Data[i] = $(".sell_price")[i].value;
+            }
+        }
+    </script>-->
 </head>
 
 
@@ -50,8 +61,6 @@ cart-list
                 {{#shopLists}} <!--List<ShopList>-->
                     {{#shopListProducts}} <!--loop ? ok--> <!--List<ShopListProduct>-->
 
-
-
                         <tbody>
                         <tr>
                             <td>
@@ -70,62 +79,103 @@ cart-list
 
                             <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기@@@@@@@@@@@@@@@@@@@@@@@@ -->
 
-                            <body onload="init();">
+                            <!--<body onload="init();">-->
                             <script language="JavaScript">
-                                <!--
+
+                                $(document).ready(function() {
+                                    init();
+                                });
+
                                 var sell_price;
                                 var amount;
+                                //var sum;
+                                var i=0;
 
-                                function init () {
-                                    sell_price = document.form.sell_price.value;
-                                    amount = document.form.amount.value;
-                                    document.form.sum.value = sell_price;
-                                    change();
-                                }
+                                for(var i=0;i<1;i++){
 
-                                function add () {
-                                    hm = document.form.amount;
-                                    sum = document.form.sum;
-                                    hm.value ++ ;
 
-                                    sum.value = parseInt(hm.value) * sell_price;
-                                }
+                                    function init () {
+                                        sell_price = document.form[0].sell_price.value;
+                                        //sell_price=document.getElementById("sell_price").value;
+                                        amount = document.form[0].amount.value;
+                                        document.form[0].sum.value = sell_price;
+                                        //sum = sell_price;
+                                        change();
+                                    }
 
-                                function del () {
-                                    hm = document.form.amount;
-                                    sum = document.form.sum;
-                                    if (hm.value > 1) {
-                                        hm.value -- ;
+                                    function add () {
+                                        hm = document.form[0].amount;
+                                        sum = document.form[0].sum;
+                                        hm.value ++ ;
+
                                         sum.value = parseInt(hm.value) * sell_price;
                                     }
-                                }
 
-                                function change () {
-                                    hm = document.form.amount;
-                                    sum = document.form.sum;
-
-                                    if (hm.value < 0) {
-                                        hm.value = 0;
+                                    function del () {
+                                        hm = document.form[0].amount;
+                                        sum = document.form[0].sum;
+                                        if (hm.value > 1) {
+                                            hm.value -- ;
+                                            sum.value = parseInt(hm.value) * sell_price;
+                                        }
                                     }
-                                    sum.value = parseInt(hm.value) * sell_price;
+
+                                    function change () {
+                                        sell_price = document.form[0].sell_price.value;
+                                        amount = document.form[0].amount.value;
+                                        document.form[0].sum.value = sell_price;
+
+                                        hm = document.form[0].amount;
+                                        sum = document.form[0].sum;
+
+                                        if (hm.value < 0) {
+                                            hm.value = 0;
+                                        }
+                                        sum.value = parseInt(hm.value) * sell_price;
+
+                                    }
+
+                                    //document.form[0].sum.write(sum.value);
                                 }
+
+
+
                                 //-->
                             </script>
 
+                            <!--                            <form name="form" method="get" onload="init()">-->
                             <form name="form" method="get">
                                 <input type=hidden name="sell_price" value="{{shopListPrice}}">
-                                <input type="hidden" name="amount" value="{{count}}">
+                                <!--<input type="hidden" name="amount" value="{{count}}">-->
 
                                 <td data-th="Quantity">
-                                    <!--<input type="number" class="form-control text-center" value="1">-->
-                                    <input type="number" class="form-control text-center" value="{{count}}" onchange="change();">
+                                    <div class="quantity">
+
+                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >
+
+                                            <img src="/icon/minus-cartlist.svg" alt="" />
+                                        </button>
+
+                                        <input type="text" name="amount" value="{{count}}" onchange="change();">
+
+                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
+
+                                            <img src="/icon/plus-cartlist.svg" alt="" />
+                                        </button>
+                                    </div>
                                 </td>
 
                                 <!--<td>{{product.price}}</td>-->
                                 <!--<input type="text" name="sum" style="border: none; background: transparent;" readonly>
                                 -->
 
-                                <td><input type="text" name="sum" style="border: none; background: transparent;" readonly></td>
+                                <td class="product_total_price">
+                                    <!--
+                                    <input type="text" name="sum" style="border: none; background: transparent;" readonly>
+                                    -->
+                                    <input type="text" name="sum" onload="init();" readonly>
+                                    <span>원</span>
+                                </td>
 
                             </form>
                             <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기 끝@@@@@@@@@@@@@@@@@@@@@@@@ -->
@@ -157,5 +207,5 @@ cart-list
 </body>
 </html>
 
-
+<script src="/js/app/cart-list-quantity.js"></script>
 {{>layout/footer}}
