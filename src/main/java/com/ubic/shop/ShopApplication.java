@@ -7,11 +7,13 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.client.RestTemplate;
 
+@EnableAsync
 @EnableJpaRepositories(basePackages = "com.ubic.shop.repository")
 @EnableElasticsearchRepositories(basePackages = "com.ubic.shop.elasticsearch")
 @EnableJpaAuditing

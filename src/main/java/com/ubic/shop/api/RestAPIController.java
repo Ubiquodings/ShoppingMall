@@ -2,6 +2,8 @@ package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.config.UbicConfig;
+import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.*;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
@@ -34,6 +36,7 @@ public class RestAPIController {
     private final CategorySevice categoryService;
     private final KafkaSevice kafkaService;
     private final UserRepository userRepository;
+    private final UbicSecretConfig ubicConfig;
 
 
     @PostMapping("/api/products/new")
@@ -248,7 +251,7 @@ public class RestAPIController {
     public String search(@RequestParam("keyword") String keyword, @LoginUser SessionUser user,
                          HttpServletRequest request) throws JsonProcessingException {
 
-//        log.info("\n\n"+keyword); // ok
+        log.info("\nkeyword: "+keyword+"\napi key: "+ubicConfig.etriApiKey); // ok
 
         //회원+비회원
 
