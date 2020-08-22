@@ -15,6 +15,14 @@ cart-list
         font-family: 'Roboto Condensed', sans-serif;
         margin-top:100px;
     }
+    .init_c {
+        border: none;
+        background: transparent;
+        width: 10px;
+    }
+    .init_td {
+        width: 10px;
+    }
 
 </style>
 
@@ -24,21 +32,12 @@ cart-list
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="custom.css">
+<!--    <link rel="stylesheet" type="text/css" href="custom.css">-->
+<!--    위에 링크 custom.css 자꾸 안뜬다고 떠서 주석 처리 했습니다!-->
 
     <!--<script language="JavaScript">
-        function init(x) {
-            var sell_price_length = $(".sell_price").length;
-            var sell_price_Data = new Array(sell_price_length);
-            for(var i=0; i<sell_price_length; i++) {
-                sell_price_Data[i] = $(".sell_price")[i].value;
-            }
-        }
-    </script>-->
 
-    <script language="JavaScript">
-
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             init();
         });
 
@@ -91,18 +90,19 @@ cart-list
                 }
             }
 
-        }
+        }*/
 
-        $('.minus-btn').on('click', function() {
+        /*$('.minus-btn').on('click', function() {
+            console.log("minus button click");
 
            // var minus_index = $('.minus-btn').index($(this));
-           /*var minus_index = $('.formlist').index($(this));
-           console.log(minus_index); 싹다 안된다....*/
+           /!*var minus_index = $('.formlist').index($(this));
+           console.log(minus_index); 싹다 안된다....*!/
            // console.log($(this).index()); 이거도 안돼..
            // console.log($(".minus-btn").index(this)); 안돼..
             //var minus_index = $('.minus-btn').index($(this));
-            /*var minus_index = $(".minus-btn").index(this);
-            console.log(minus_index);*/
+            /!*var minus_index = $(".minus-btn").index(this);
+            console.log(minus_index);*!/
 
             //https://stackoverflow.com/questions/35960324/getting-the-index-of-a-form-element
             //여기있는 방법 적용
@@ -110,37 +110,30 @@ cart-list
             var sellprice = $(this).siblings('[name="sell_price"]');
             var minus_index = all_sellprice.index(sellprice.get(0));
 
+            console.log("minus index before");
             console.log(minus_index);
+            console.log("minus index after");
 
             hm = document.form[minus_index].amount;
             sum = document.form[minus_index].sum;
 
             if (hm.value > 1) {
                 hm.value -- ;
-                sum.value = parseInt(hm.value) * sell_price;
+                //sum.value = parseInt(hm.value) * sell_price;
+                sum.value = parseInt(hm.value) * sellprice;
             }
-        });
+        });*/
 
         function add () {
-            index = document.init_c.value;
-            index = $('.init_c').val();
 
-            hm = document.form[index].amount;
-            sum = document.form[index].sum;
-            hm.value ++ ;
+            var add_index = document.form.getElementsByClassName('.plus-btn)
+            hm = document.form.amount.value;
+            sum = document.form.sum;
+            console.log(parseInt(hm));
+            hm.value++;
+            //hm.val()++;
 
             sum.value = parseInt(hm.value) * sell_price;
-        }
-
-        function del () {
-            index = document.getElementsByClassName("init_c");
-
-            hm = document.form[index].amount;
-            sum = document.form[index].sum;
-            if (hm.value > 1) {
-                hm.value -- ;
-                sum.value = parseInt(hm.value) * sell_price;
-            }
         }
 
         function change () {
@@ -157,11 +150,7 @@ cart-list
             }
             sum.value = parseInt(hm.value) * sell_price;
         }
-
-
-
-        //-->
-    </script>
+    </script>-->
 
 </head>
 
@@ -192,7 +181,7 @@ cart-list
 
                         <tbody>
                         <tr>
-                            <td><input type=text class="init_c" name="init_c"></td>
+                            <td class="init_td"><input type=text class="init_c" name="init_c"></td>
                             <td>
                                 <div class="row">
                                     <div class="col-lg-2 Product-img">
@@ -224,7 +213,8 @@ cart-list
 
                                         <input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">
 
-                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
+<!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
+                                        <button class="plus-btn" type="button" name="button" value=" + ">
 
                                             <img src="/icon/plus-cartlist.svg" alt="" />
                                         </button>
@@ -239,7 +229,8 @@ cart-list
                                     <!--
                                     <input type="text" name="sum" style="border: none; background: transparent;" readonly>
                                     -->
-                                    <input type="text" name="sum" onload="init();" readonly>
+                                    <!--<input type="text" name="sum" onload="init();" readonly>-->
+                                    <input type="text" name="sum" readonly>
                                     <span>원</span>
                                 </td>
 
@@ -270,6 +261,144 @@ cart-list
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        init();
+    });
+
+    function init () {
+        var sell_price;
+        var amount;
+        //var init = 0;
+        var form_list = document.getElementsByClassName("formlist"); // 잘나옴
+        console.log("form_list length " + form_list.length);
+        /*var amount_list = document.getElementsByClassName("amount");
+        console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...*/
+
+        var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
+
+        if (form_list.length == 1) { // list에 하나 있을때는 따로 처리해줘야 하는듯.. 잘 안나온다.
+            sell_price = document.form.sell_price.value;
+            amount = document.form.amount.value;
+            document.form.sum.value = sell_price;
+            /*$('.init_c').val('0'); 그냥 1부터 시작하게 하는게...*/
+            $('.init_c').val('1');
+
+            hm = document.form.amount;
+            sum = document.form.sum;
+
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+        } else {
+            for (var i = 0; i < form_list.length; i++) {
+                sell_price = document.form[i].sell_price.value;
+                amount = document.form[i].amount.value;
+                document.form[i].sum.value = sell_price;
+                /*console.log("i " + i); 확인! 잘 나온다.*/
+                $(init_list[i]).val(i+1); // 0번째부터 나와서 그냥 +1 해줬다.
+
+                hm = document.form[i].amount;
+                sum = document.form[i].sum;
+
+                if (hm.value < 0) {
+                    hm.value = 0;
+                }
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+        }
+    }
+
+
+    $('.minus-btn').on('click', function() {
+        var form_list = document.getElementsByClassName("formlist");
+        if (form_list.length == 1) {
+            console.log("minus button click alone");
+
+            var sell_price = document.form.sell_price.value;
+            hm = document.form.amount;
+            sum = document.form.sum;
+            if (hm.value > 1) {
+                hm.value -- ;
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+        }
+        else {
+            console.log("minus button click");
+            var minus_index = $('.minus-btn').index($(this));
+            console.log("minus_index " + minus_index);
+
+            var sell_price = document.form[minus_index].sell_price.value;
+            hm = document.form[minus_index].amount;
+            sum = document.form[minus_index].sum;
+            if (hm.value > 1) {
+                hm.value -- ;
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+        }
+    });
+
+    $('.plus-btn').on('click', function() {
+        var form_list = document.getElementsByClassName("formlist");
+        if (form_list.length == 1) {
+            console.log("plus button click alone");
+
+            var sell_price = document.form.sell_price.value;
+            hm = document.form.amount;
+            sum = document.form.sum;
+            hm.value ++ ;
+
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+        else {
+            console.log("plus button click");
+            var plus_index = $('.plus-btn').index($(this));
+            console.log("plus_index " + plus_index);
+
+            var sell_price = document.form[plus_index].sell_price.value;
+            hm = document.form[plus_index].amount;
+            sum = document.form[plus_index].sum;
+            hm.value ++ ;
+
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+    });
+
+    function change () {
+        var form_list = document.getElementsByClassName("formlist");
+        if (form_list.length == 1) {
+
+            var sell_price = document.form.sell_price.value;
+            var amount = document.form.amount.value;
+            document.form.sum.value = sell_price;
+
+            hm = document.form.amount;
+            sum = document.form.sum;
+
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+        else {
+            var change_index = $('.amount').index();
+            console.log(change_index);
+
+            var sell_price = document.form[change_index].sell_price.value;
+            var amount = document.form[change_index].amount.value;
+            document.form[change_index].sum.value = sell_price;
+
+            hm = document.form[change_index].amount;
+            sum = document.form[change_index].sum;
+
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+    }
+</script>
 </body>
 </html>
 

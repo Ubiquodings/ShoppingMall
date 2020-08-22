@@ -1,3 +1,4 @@
+/*
 var cartListQuantity = {
 
     var sell_price;
@@ -28,4 +29,4 @@ var cartListQuantity = {
 
 };
 
-cartListQuantity.init();
+cartListQuantity.init();*/
