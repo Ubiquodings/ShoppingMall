@@ -211,7 +211,9 @@ cart-list
                                             <img src="/icon/minus-cartlist.svg" alt="" />
                                         </button>
 
-                                        <input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">
+                                        <!--<input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">-->
+                                        <!-- 시현이 준 로직 추가하기-->
+                                        <input type="text" name="amount" class="amount" id="cart-item-count" value="{{count}}" onchange="change();">
 
 <!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
                                         <button class="plus-btn" type="button" name="button" value=" + ">
@@ -221,26 +223,27 @@ cart-list
                                     </div>
                                 </td>
 
-                                <!--<td>{{product.price}}</td>-->
-                                <!--<input type="text" name="sum" style="border: none; background: transparent;" readonly>
-                                -->
-
                                 <td class="product_total_price">
-                                    <!--
-                                    <input type="text" name="sum" style="border: none; background: transparent;" readonly>
-                                    -->
                                     <!--<input type="text" name="sum" onload="init();" readonly>-->
                                     <input type="text" name="sum" readonly>
                                     <span>원</span>
                                 </td>
 
                             </form>
-                            <!-- @@@@@@@@@@@@@@@@@@@@@@채민-데이터 가져오기 끝@@@@@@@@@@@@@@@@@@@@@@@@ -->
 
                             <td class="actions" data-th="" style="width:10%;">
                                 <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
                                 <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
                             </td>
+
+                            <!-- 시현이가 추가한 부분(바로 주문하기 버튼)-->
+                            <!-- 이건 바로 주문하기 버튼 생성 후 추가하려는 로직 입니다-->
+                            <!--<button type="button" class="btn btn-primary btn-lg btn-order-immediately-from-cart">
+                                <input type="hidden" id="cart-item-id" value="{{id}}"/>
+                                <input type="hidden" id="cart-item-count" value="{{count}}"/>
+                                주문
+                            </button>
+                            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>-->
                         </tr>
 
                         </tbody>

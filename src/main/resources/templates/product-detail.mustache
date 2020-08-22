@@ -162,7 +162,8 @@ product-detail
                             <input type="hidden" name="amount" value="1" onchange="change();">-->
                             장바구니
                         </button>
-                        <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{id}}"/>바로주문
+                        <button type="button" class="btn btn-primary btn-lg btn-order-immediately-from-detail">
+                            <input type="hidden" value="{{id}}"/>바로주문
                         </button>
                     </div>
                 </div>
@@ -207,4 +208,6 @@ product-detail
 
 <!--상품 디테일 소켓 추가-->
 <script src="/js/app/product-socket.js"></script>
+<!--상품 카운트 로직 추가-->
+<!--<script src="/js/app/product-detail-cal.js"></script>-->
 {{>layout/footer}}
