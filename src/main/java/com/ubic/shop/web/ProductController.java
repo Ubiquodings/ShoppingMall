@@ -2,6 +2,7 @@ package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
+import com.ubic.shop.domain.Pagination;
 import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
@@ -17,9 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,15 +32,17 @@ public class ProductController {
     private final RecommendService recommendService;
     private final UbicConfig ubicConfig;
     private final UserRepository userRepository;
-
-    private final ProductRepository productRepository; // 유연 추가
+    private final ProductRepository productRepository;
 
 
 //    private
 
     @GetMapping("/products")
     public String list(Model model, @LoginUser SessionUser user,
-                       @RequestParam(name = "page", defaultValue = "0") String page, HttpServletRequest request) { // 화면 :: 윤진
+                       @RequestParam(name = "page", defaultValue = "0") String page,
+                       @RequestParam(required = false, defaultValue = "1") int currentPage,
+                       @RequestParam(required = false,  defaultValue = "1") int range,
+                       HttpServletRequest request) throws Exception { // 화면 :: 윤진
 
 //        User nonMember = getTempUser(request);
 
@@ -61,12 +62,21 @@ public class ProductController {
         }
 
         //끝페이지 가져오기
-        Page<Product> pages=productRepository.findProductsCountBy(pageRequest);
-        int page_total_count=pages.getTotalPages();
-        model.addAttribute("page-total-count",page_total_count );
+
+        Page<Product> pages = productRepository.findProductsCountBy(pageRequest);
+        int page_total_count = pages.getTotalPages();
+        model.addAttribute("page-total-count", page_total_count);
+
+        Pagination pagination=new Pagination();
+        pagination.pageInfo(currentPage,range,page_total_count);
+
+        model.addAttribute("pagination",pagination);
+        model.addAttribute("productList",productService.findPagingProducts(pageRequest));
+
         return "product-list";
 
     }
+
 
     @GetMapping("/products/{id}")
     public String detail(@PathVariable Long id, Model model, @LoginUser SessionUser user,

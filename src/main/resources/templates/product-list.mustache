@@ -43,23 +43,94 @@ product-list
     });
 
 </script>
+<script>
+
+    //이전 버튼 이벤트
+    function fn_prev(page, range, rangeSize) {
+        var page = ((range - 2) * rangeSize) + 1;
+        var range = range - 1;
+        var url = "http://localhost:8080/products?page=";
+        url = url + "?page=" + page;
+        url = url + "&range=" + range;
+        location.href = url;
+    }
+
+    //페이지 번호 클릭
+    function fn_pagination(page, range, rangeSize, searchType, keyword) {
+        var url = "http://localhost:8080/products?page=";
+        url = url + "?page=" + page;
+        url = url + "&range=" + range;
+        location.href = url;
+    }
+
+    //다음 버튼 이벤트
+    function fn_next(page, range, rangeSize) {
+        var page = parseInt((range * rangeSize)) + 1;
+        var range = parseInt(range) + 1;
+        var url = "http://localhost:8080/products?page=";
+        url = url + "?page=" + page;
+        url = url + "&range=" + range;
+        location.href = url;
+    }
+
+</script>
+
+<!-- pagination{s} -->
+<br>
+<div id="paginationBox">
+    <ul class="pagination justify-content-center">
+
+        <!--이전 버튼-->
+        <c:if test="${pagination.prev}">
+            <li class="page-item">
+                <a class="page-link" href="#"
+                   onClick="fn_prev('${pagination.page}', '${pagination.range}', '${pagination.rangeSize}')">&laquo;</a>
+            </li>
+        </c:if>
+
+        <c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="idx">
+
+            <li class="page-item">
+                <c:out value=" ${pagination.page== idx ?'active' : ''}"></c:out>
+                <a class="page-link" href="#"
+                   onClick="fn_pagination('${idx}', '${pagination.range}', '${pagination.rangeSize}')">
+                    ${idx} </a>
+            </li>
+
+        </c:forEach>
+
+        <!--이후 버튼-->
+        <c:if test="${pagination.next}">
+            <li class="page-item"><a class="page-link" href="#" onClick="fn_next('${pagination.range}',
+'${pagination.range}', '${pagination.rangeSize}')">&raquo;</a></li>
+        </c:if>
+    </ul>
+</div>
+<!-- pagination{e} -->
+
+</div>
+
+</article>
+
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/product-list.css">
 
 <div class="container">
+
+    <!--이전 Pagination
     <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center pagination-lg">
-            <!-- class="disabled"는 앞 페이지가 존재하지 않는다는 뜻, 클릭하지 못하는 상태가 됨-->
-            <!--이전 페이지-->
+        <ul class="pagination justify-content-center "> <!- -크게 pagination-lg - ->
+            <!- - class="disabled"는 앞 페이지가 존재하지 않는다는 뜻, 클릭하지 못하는 상태가 됨- ->
+            <!- -이전 페이지- ->
             <li class="prev page-item">
                 <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
-            <!-- active의 의미는 현재 페이지의 의미이다. -->
-            <!-- <li class="active"> active 보류 -->
+            <!- - li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. - ->
+            <!- - active의 의미는 현재 페이지의 의미이다. - ->
+            <!- - <li class="active"> active 보류 - ->
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
@@ -69,7 +140,7 @@ product-list
                                      +{{page-total-count}}>
                 {{page-total-count}} </a></li>
 
-            <!--다음 페이지-->
+            <!- -다음 페이지- ->
             <li class="next">
                 <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
@@ -78,6 +149,7 @@ product-list
         </ul>
     </nav>
 
+이전 Pagination-->
     <div class="row">
         {{#products}}
             <div class="col-md-3 ">
