@@ -12,11 +12,12 @@ var userAction = {
                 // data: JSON.stringify({})
             }).done(function () {
                 alert('삭제되었습니다.');
-                // window.location.href=window.location.href;
+                window.location.href=window.location.href;
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
             window.location.href = window.location.href;
+            // window.location.href=window.location.href;
         });
 
 
