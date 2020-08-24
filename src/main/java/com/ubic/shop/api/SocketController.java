@@ -93,16 +93,12 @@ public class SocketController {
                                                    String body) throws JsonProcessingException {
         log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
 
-
-
-
         // page 받고 repo 의 count 로 나머지 연산해야 한다 : page % pageCount
         // product repository 에서 카운트만 가져오는 쿼리 수행
         long categoryID = recommendService.getHighestCategoryId(userId);
         log.info("categoryID: " + categoryID);
 
-
-        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
+//        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
         // (찾아온 상품 수) % (페이징하는 상품 수) = 6 % 8 = 6
 
 
@@ -149,7 +145,9 @@ public class SocketController {
 
         // 해당 유저에게 쿠폰 발급하기
         Coupon coupon = Coupon.builder()
+
                 .name(product.getName() + " 망설이지마세요!")
+
                 .user(user)
                 .product(product)
                 .build();

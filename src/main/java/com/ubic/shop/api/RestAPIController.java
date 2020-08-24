@@ -117,8 +117,8 @@ public class RestAPIController {
 
     @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능
     public String orderFromShopList(@PathVariable(name = "id") Long shopListId, @LoginUser SessionUser user,
-                                       @RequestBody int count,
-                                     HttpServletRequest request) throws JsonProcessingException {
+                                    @RequestBody int count,
+                                    HttpServletRequest request) throws JsonProcessingException {
 
         String clientId = null;
         Long shopListUserId;

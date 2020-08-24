@@ -32,4 +32,6 @@ public class Coupon extends BaseTimeEntity {
         this.product = product;
     }
 
+
 }
+

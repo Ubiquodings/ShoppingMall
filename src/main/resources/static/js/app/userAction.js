@@ -11,6 +11,7 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 // data: JSON.stringify({})
             }).done(function () {
+
                 alert('삭제되었습니다.');
                 window.location.href=window.location.href;
             }).fail(function (error) {
@@ -47,6 +48,7 @@ var userAction = {
         // button 에 input 넣기
         // button class 수정
         $(".btn-order-immediately-from-detail").on('click', function (e) { // detail 페이지에서 가져와야지
+
             var productId = this.children[0].value;
             var count = $('#count').val();
             $.ajax({
@@ -56,6 +58,7 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(count)
             }).done(function () { // 왜 안되지 ?
+
                 alert('ok');
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
@@ -75,11 +78,12 @@ var userAction = {
                 window.location.href = window.location.href;
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
+
             });
 
         });
 
-        // 결재 페이지: 주문
+        // 결제 페이지: 주문
         $(".btn-order-all").on('click', function (e) {
             let shopListIdList = []; // = $("#input-shop-list-id").val(); // get list ? no
             let couponIdList = $("#input-coupon-id").val();
@@ -89,6 +93,7 @@ var userAction = {
                 shopListIdList.push(elem.value);
             });
             console.log('shopListIdList: ' + shopListIdList + "\ncouponIdList: " + couponIdList);
+
 
             // $.ajax({
             //     type: 'POST',
