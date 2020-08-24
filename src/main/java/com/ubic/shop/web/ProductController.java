@@ -38,17 +38,16 @@ public class ProductController {
 //    private
 
     @GetMapping("/products")
-    public String list(Model model, @LoginUser SessionUser user,
-                       @RequestParam(name = "page", defaultValue = "0") String page,
-                       @RequestParam(required = false, defaultValue = "1") int currentPage,
-                       @RequestParam(required = false,  defaultValue = "1") int range,
+    public String list(Model model, @LoginUser SessionUser user
+            , @RequestParam(name = "page", defaultValue = "0") int page
+            , @RequestParam(required = false, defaultValue = "1") int range,
                        HttpServletRequest request) throws Exception { // 화면 :: 윤진
 
 //        User nonMember = getTempUser(request);
 
         // 사용 (age, offset=page, limit=40)
         // 정렬은 어떻게 하지 ? name 디폴트로 하고 정렬 라디오 박스 추가하면 되겠다 TODO
-        PageRequest pageRequest = PageRequest.of(Integer.parseInt(page), ubicConfig.productListPageSize, Sort.by(Sort.Direction.DESC, "name"));
+        PageRequest pageRequest = PageRequest.of(page, ubicConfig.productListPageSize, Sort.by(Sort.Direction.DESC, "name"));
 //        productService.findPagingProducts(pageRequest);
 
 //        model.addAttribute("products", productService.findAllProducts(/*PageRequest.of(0,20)*/));
@@ -65,19 +64,50 @@ public class ProductController {
 
         Page<Product> pages = productRepository.findProductsCountBy(pageRequest);
         int page_total_count = pages.getTotalPages();
+
+        Pagination pagination = new Pagination();
+        pagination.pageInfo(page, range, page_total_count);
+        pagination.setStartPage(1);
+        pagination.setEndPage(page_total_count - 1);
+        pagination.setRange(10);
+        model.addAttribute("pagination", pagination);
+/*
+        Page<Product> pages = productRepository.findProductsCountBy(pageRequest);
+        int page_total_count = pages.getTotalPages();
         model.addAttribute("page-total-count", page_total_count);
 
-        Pagination pagination=new Pagination();
-        pagination.pageInfo(currentPage,range,page_total_count);
+        Pagination pagination = new Pagination();
+        pagination.pageInfo(page, range, page_total_count);
 
-        model.addAttribute("pagination",pagination);
-        model.addAttribute("productList",productService.findPagingProducts(pageRequest));
-
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("productList", productService.findPagingProducts(pageRequest));
+*/
         return "product-list";
 
     }
+/*
+    @RequestMapping(value = "/getProductList", method = RequestMethod.GET)
+    public String getProductList(Model model
+            , @RequestParam(name = "page", defaultValue = "0") int page
+            , @RequestParam(required = false, defaultValue = "1") int range
+    ) throws Exception {
 
+        PageRequest pageRequest = PageRequest.of(page, ubicConfig.productListPageSize, Sort.by(Sort.Direction.DESC, "name"));
+        Page<Product> pages = productRepository.findProductsCountBy(pageRequest);
 
+        int page_total_count = pages.getTotalPages();
+
+        Pagination pagination = new Pagination();
+        pagination.pageInfo(page, range, page_total_count);
+        pagination.setStartPage(1);
+        pagination.setEndPage(page_total_count - 1);
+        pagination.setRange(10);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("productList", productService.findPagingProducts(pageRequest));
+
+        return "product-list";
+    }
+*/
     @GetMapping("/products/{id}")
     public String detail(@PathVariable Long id, Model model, @LoginUser SessionUser user,
                          @RequestParam(name = "page", defaultValue = "0") String page,

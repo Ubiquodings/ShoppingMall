@@ -1,6 +1,7 @@
 package com.ubic.shop.service;
 
 import com.ubic.shop.domain.Category;
+import com.ubic.shop.domain.Pagination;
 import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.ProductCategory;
 import com.ubic.shop.dto.ProductResponseDto;
@@ -63,4 +64,7 @@ public class ProductService {
         }
         return null;
     }
+
+
+
 }
