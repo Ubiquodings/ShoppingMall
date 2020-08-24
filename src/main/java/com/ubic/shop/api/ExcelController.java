@@ -4,6 +4,7 @@ import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.dto.CategorySaveRequestDto;
 import com.ubic.shop.dto.ProductSaveRequestDto;
+import com.ubic.shop.dto.SearchResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +41,7 @@ public class ExcelController {
     private final UbicConfig ubicConfig;
     private final UbicSecretConfig ubicSecretConfig;
 
-    @PostMapping("/excel/read/products")
+    @PostMapping("/excel/read/products") //categories
     public void excelProductsNew(@RequestBody/*("file")*/ MultipartFile file) throws IOException {
 
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -78,11 +79,16 @@ public class ExcelController {
                     .imgUrl(row.getCell(6).getStringCellValue())
                     .build();
 
-            ProductSaveRequestDto result = restTemplate.postForObject(
-                    ubicConfig.baseUrl + "/api/products/new",
-                    requestDto, ProductSaveRequestDto.class);
-            if (result != null)
-                logger.info("\n" + result.toString());
+            try{
+                ProductSaveRequestDto result = restTemplate.postForObject(
+                        ubicConfig.baseUrl + "/api/products/new",
+                        requestDto, ProductSaveRequestDto.class);
+
+            }catch (Exception e){
+                return;
+            }
+//            if (result != null)
+//                logger.info("\n" + result.toString());
 
             // 형태소 분석 - 상품 이름 : productName -- 제발 비동기 처리하자!
             // 형태소 분석 - 상품 설명 : productDesc
@@ -90,7 +96,7 @@ public class ExcelController {
     }//end handler
 
     @GetMapping("/api/search/test")
-    public Object search(@RequestParam(value = "text") String text) {
+    public Object searchTest(@RequestParam(value = "text") String text) {
 //        ubicSecretConfig.etriApiKey;
         log.info("\ntext: " + text);
 
@@ -102,26 +108,29 @@ public class ExcelController {
                 "http://127.0.0.1:8000/search/test/?text=" + text,
                 SearchResponseDto.class);
 
+        // 스트림 처리하며 lemma 부분을 태그로 등록하기
+        // Product 객체 필요한데! : ProductService 에서 처리!
+
         return result;
     }
 
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class SearchResponseDto {
-        List<SearchContent> result;
-    }
+//    @Getter
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    static class SearchResponseDto {
+//        List<SearchContent> result;
+//    }
 
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class SearchContent {
-        Double id;
-        String lemma;
-        String type;
-        Double position;
-        Double weight;
-    }
+//    @Getter
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    static class SearchContentDto {
+//        Double id;
+//        String lemma;
+//        String type;
+//        Double position;
+//        Double weight; // 가중치가 좀 신경쓰이는데 일단 다 해보자!
+//    }
 
     @Getter
     @AllArgsConstructor
@@ -140,10 +149,10 @@ public class ExcelController {
     }
 
 
-    @Async
-    void stemmingProductName() { // 상품 이름&설명 일반화할 수 있지 않을까!
-
-    }
+//    @Async
+//    void stemmingProductName() { // 상품 이름&설명 일반화할 수 있지 않을까!
+//
+//    }
 
 //    @Async
 //    private stemmingProductDecs(){
