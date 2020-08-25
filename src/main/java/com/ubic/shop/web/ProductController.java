@@ -1,13 +1,21 @@
 package com.ubic.shop.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
+import com.ubic.shop.config.UbicSecretConfig;
+import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.SessionUser;
+import com.ubic.shop.kafka.dto.ClickActionRequestDto;
+import com.ubic.shop.kafka.dto.SearchActionRequestDto;
+import com.ubic.shop.kafka.service.KafkaSevice;
+import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.ProductService;
 import com.ubic.shop.service.RecommendService;
+import com.ubic.shop.service.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,7 +39,11 @@ public class ProductController {
     private final ProductService productService;
     private final RecommendService recommendService;
     private final UbicConfig ubicConfig;
+    private final UbicSecretConfig ubicSecretConfig;
     private final UserRepository userRepository;
+    private final KafkaSevice kafkaService;
+    private final TagService tagService;
+    private final ProductRepository productRepository;
 //    private
 
     @GetMapping("/products")
@@ -82,6 +95,56 @@ public class ProductController {
         model.addAttribute("userId", userId);
                 model.addAttribute("recommendedList", recommendService.getRecommendList(clientId, page));
         return "product-detail";
+    }
+
+    @GetMapping("/api/search")
+    public String search(@RequestParam("keyword") String searchText, Model model,
+                         @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+
+//        log.info("\nkeyword: "+searchText+"\napi key: "+ ubicSecretConfig.etriApiKey); // ok
+
+        //회원+비회원
+        Long userId=-1L;
+        if(user != null){
+            model.addAttribute("userName", user.getName());
+            userId = user.getId();
+        }else{ // 해시코드 다섯글자만 추출하기
+            User nonMember = getTempUser(request);
+            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            userId = nonMember.getId();
+        }
+
+        // 카프카에 전송하고 > 컨슈머 처리
+        kafkaService.sendToTopic(new SearchActionRequestDto(userId.toString(), searchText));
+
+        // 검색어 형태소 분석
+        List<String> result = tagService.stemmingProductInfo(searchText);
+        // 한번에 찾아오는 기능 시도
+
+        /**
+         * Tag 에서 찾아오는데,
+         * 키를 ProductTag 가 갖고 있으니까
+         * Tag > ProductTag > Product 순으로 접근해야겠다
+         * 지금 Product 에서 ProductTag 갖고 있는데 -- 없애고
+         * Tag 에서 ProductTag 갖고
+         * Tag 로 찾기 > ProductTag 거쳐서 > Product 가져오기 -- stream 으로 하든 쿼리로 가져오든
+         * */
+
+        List<Product> bystemmingResults = productRepository.findBystemmingResults(result);
+        bystemmingResults.stream()
+                .forEach(r -> log.info("\n"+r.toString()));
+        // 한번에 안되면 각각 해야겠지
+//        for(String stemming : result){
+//            // 형태소별 상품 정보랑 매칭
+//            productRepository.findBystemmingResults()
+//        }
+
+        // 결과 보여줘야지.. @Controller
+        PageRequest pageRequest = PageRequest.of(0, ubicConfig.productListPageSize, Sort.by(Sort.Direction.DESC, "name"));
+        model.addAttribute("products", productService.findPagingProducts(pageRequest)); // 40개씩 페이징
+
+
+        return "product-list";
     }
 
     private User getTempUser(HttpServletRequest request) {

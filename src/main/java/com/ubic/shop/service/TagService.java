@@ -62,7 +62,7 @@ public class TagService {
     }
 
     //    @Async
-    private List<String> stemmingProductInfo(String productInfo) { // 상품 이름&설명 일반화할 수 있지 않을까!
+    public List<String> stemmingProductInfo(String productInfo) { // 상품 이름&설명 일반화할 수 있지 않을까!
 
         // url 요청 구성
         SearchResponseDto result = null;

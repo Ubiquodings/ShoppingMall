@@ -30,4 +30,15 @@ public class UserActionConsumer {
         elasticSearchService.updateCategoryScore(received);
     }
 
+    @KafkaListener(topics = {"ubic-shop-search"}, containerFactory = "defaultKafkaListenerContainerFactory")
+    public void onUserSearchAction(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
+
+        log.info("\nubic-shop-search :: ConsumerRecord : {} ", consumerRecord.value());
+        ClickActionRequestDto received = objectMapper.readValue(consumerRecord.value(), ClickActionRequestDto.class);
+
+        // 사용자-카테고리 점수 계산 로직
+//        elasticSearchService.updateCategoryScore(received);
+    }
+
+
 }
