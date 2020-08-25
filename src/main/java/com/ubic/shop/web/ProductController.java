@@ -67,10 +67,14 @@ public class ProductController {
 
         Pagination pagination = new Pagination();
         pagination.pageInfo(page, range, page_total_count);
+
         pagination.setStartPage(1);
         pagination.setEndPage(page_total_count - 1);
         pagination.setRange(10);
+
+
         model.addAttribute("pagination", pagination);
+
 /*
         Page<Product> pages = productRepository.findProductsCountBy(pageRequest);
         int page_total_count = pages.getTotalPages();

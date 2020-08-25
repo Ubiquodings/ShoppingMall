@@ -40,6 +40,22 @@
         div#input-group-append {
             display: inline-block;
         }
+
+        /* 유연: Pagination 시도중 */
+        /* Builds on bootstrap */
+        /* Numbering page listing, since our templating is logicless */
+
+        ol.pagination {
+            counter-reset: page-number
+        }
+
+        ol.pagination > li > a.page-link::before {
+            counter-increment: page-number;
+            content: counter(page-number);
+        }
+
+
+
     </style>
 
 

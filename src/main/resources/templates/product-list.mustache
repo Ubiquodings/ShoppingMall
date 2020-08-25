@@ -1,8 +1,37 @@
 {{>layout/header}}
 product-list
 <script>
+    function getPaging(page) {
+        $.getJSON("/replies/" + articleNo + "/" + page, function (data) {
+            console.log(data)
+         printPageNumbers(data.pageMaker);
+
+        });
+    }
+
+    function printPageNumbers(pageMaker) {
+        var str = "";
+
+        //이전 버튼 활성화
+        if (pageMaker.prev) {
+            str += "<li><a href='" + (pageMaker.startPage - 1) + "'>이전</a></li>";
+        }
+
+        //페이지 번호
+        for (var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
+            var strCalss = pageMaker.criteria.page == i ? 'class=active' : '';
+            str += "<li " + strCalss + "><a href='" + i + "'>" + i + "</a></li>";
+        }
+        //다음 버튼 활성화
+        if (pageMaker.next) {
+            str += "<li><a href='" + (pageMaker.startPage + 1) + "'>다음</a></li>";
+        }
+        $(".pagination-sm").html(str)
+    }
+
 
     //이전 버튼 이벤트
+
     function fn_prev(page, range, rangeSize) {
         var page = ((range - 2) * rangeSize) + 1;
         var range = range - 1;
@@ -32,6 +61,15 @@ product-list
 
 </script>
 
+<div class="ibox-footer">
+    <div class="text-center">
+        <ul class="pagination pagination-sm no-margin">
+
+        </ul>
+    </div>
+
+</div>
+
 <!-- pagination{s} -->
 
 <div id="paginationBox">
@@ -49,11 +87,10 @@ product-list
             <li class="page-item">
                 <c:out value="${pagination.page == idx ? 'active' : ''}"/>
                 <a class="page-link" href="#"
-                     onClick="fn_pagination('${idx}', '${pagination.range}', '${pagination.rangeSize}')"> ${idx} </a>
+                   onClick="fn_pagination('${idx}', '${pagination.range}', '${pagination.rangeSize}')"> ${idx} </a>
             </li>
 
         </c:forEach>
-
 
 
         <!--이후 버튼-->

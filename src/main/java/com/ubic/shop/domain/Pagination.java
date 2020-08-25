@@ -4,15 +4,15 @@ public class Pagination {
 
     private int listSize = 10;                //초기값으로 목록개수를 10으로 셋팅
     private int rangeSize = 10;            //초기값으로 페이지범위를 10으로 셋팅
-    private int page;
-    private int range;
+    private int page=1;//초기값으로 시작 페이제를 1로 세팅
+    private int range=1;
     private int listCnt;
     private double pageCnt;
-    private int startPage = 1; //초기값으로 시작 페이제를 1로 세팅
+    private int startPage = 1;
     private int startList;
     private int endPage;
-    private boolean prev;
-    private boolean next;
+    private boolean prev=false;
+    private boolean next=true;
 
     public int getRangeSize() {
         return rangeSize;
