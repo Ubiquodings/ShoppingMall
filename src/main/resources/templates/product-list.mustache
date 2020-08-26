@@ -82,6 +82,12 @@ product-list
                                                                 &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
                                                             </div>
                                 -->
+                                <div>
+                                    <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
+                                    {{#ProductTagList}}<!--style="border:1px solid plum"-->
+                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>
+                                    {{/ProductTagList}}
+                                </div>
                             </div>
                         </div>
 
@@ -99,10 +105,6 @@ product-list
                     </div>
                 </div>
 
-                <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
-                {{#ProductTagList}}<!--style="border:1px solid plum"-->
-                    <span padding="1px" style="background-color:pink">{{tag.name}}</span>
-                {{/ProductTagList}}
             </div>
         {{/products}}
     </div>

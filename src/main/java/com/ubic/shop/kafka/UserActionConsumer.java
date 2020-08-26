@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.elasticsearch.service.ElasticSearchService;
+import com.ubic.shop.kafka.dto.SearchActionRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -34,7 +35,11 @@ public class UserActionConsumer {
     public void onUserSearchAction(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
 
         log.info("\nubic-shop-search :: ConsumerRecord : {} ", consumerRecord.value());
-        ClickActionRequestDto received = objectMapper.readValue(consumerRecord.value(), ClickActionRequestDto.class);
+        SearchActionRequestDto received = objectMapper.readValue(consumerRecord.value(), SearchActionRequestDto.class);
+
+        // TODO 검색 이력 ES 에 저장
+        // 아 이걸 못한 이유가 index 꽉 차서였어...! 아니다 원래 있었음 아무튼 정리함!
+        elasticSearchService.saveSearchData(received);
 
         // 사용자-카테고리 점수 계산 로직
 //        elasticSearchService.updateCategoryScore(received);
