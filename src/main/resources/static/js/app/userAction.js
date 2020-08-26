@@ -24,7 +24,6 @@ var userAction = {
 
         $(".btn-shoplist").on('click', function (e) { // detail 페이지에서 가져와야지
             var productId = this.children[0].value;
-            //var count = this.children[1].value;
             var count = $('#count').val();
             $.ajax({
                 type: 'POST',

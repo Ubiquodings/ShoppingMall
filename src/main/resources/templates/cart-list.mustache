@@ -34,7 +34,7 @@ cart-list
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <!--시현:주석 끝-->
 
-    <!--    <link rel="stylesheet" type="text/css" href="custom.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="custom.css">-->
     <!--    위에 링크 custom.css 자꾸 안뜬다고 떠서 주석 처리 했습니다!-->
 
     <!--<script language="JavaScript">
@@ -109,26 +109,6 @@ cart-list
                 sum.value = parseInt(hm.value) * sellprice;
             }
         });*/
-        function add () {
-            var add_index = document.form.getElementsByClassName('.plus-btn)
-            hm = document.form.amount.value;
-            sum = document.form.sum;
-            console.log(parseInt(hm));
-            hm.value++;
-            //hm.val()++;
-            sum.value = parseInt(hm.value) * sell_price;
-        }
-        function change () {
-            //index = document.getElementsByClassName("init_c");
-            var sum_index = $('.formlist').index($(this));
-            console.log(sum_index);
-            hm = document.form[sum_index].amount;
-            sum = document.form[sum_index].sum;
-            if (hm.value < 0) {
-                hm.value = 0;
-            }
-            sum.value = parseInt(hm.value) * sell_price;
-        }
     </script>-->
 
 </head>
@@ -181,10 +161,11 @@ cart-list
                             <!--<input type=hidden name="init_c">-->
                             <!--<input type="hidden" name="amount" value="{{count}}">-->
 
-                            <td data-th="Quantity">
+                            <!--<td data-th="Quantity">-->
+                            <td>
                                 <div class="quantity">
 
-                                    <!--                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >-->
+                                    <!--<button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >-->
                                     <button class="minus-btn" type="button" name="button" value=" - ">
 
                                         <img src="/icon/minus-cartlist.svg" alt="" />
@@ -194,7 +175,7 @@ cart-list
                                     <!-- 시현이 준 로직 추가하기-->
                                     <input type="text" name="amount" class="amount" id="cart-item-count" value="{{count}}" onchange="change();">
 
-                                    <!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
+                                    <!--<button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
                                     <button class="plus-btn" type="button" name="button" value=" + ">
 
                                         <img src="/icon/plus-cartlist.svg" alt="" />
@@ -292,9 +273,6 @@ cart-list
                 }
                 sum.value = parseInt(hm.value) * sell_price;
 
-                /**
-                 * 윤진언니 총 합계 수량 메소드
-                 * */
                 /*if(parseInt(sum.value)){
                     test += parseInt(sum.value);
                 }*/
@@ -328,9 +306,6 @@ cart-list
                 console.log("minus after totalSum " + totalSum);
             }
 
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
             /*if(parseInt(sum.value)){
                 test -= parseInt(sum.value);
             }
@@ -358,9 +333,6 @@ cart-list
                 console.log("minus after totalSum " + totalSum);
             }
 
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
             /*<!--이 밑에 함수가 안먹히는듯-->
             if(parseInt(sum.value)){
                 test -= parseInt(sum.value);
@@ -418,9 +390,6 @@ cart-list
             }
             sum.value = parseInt(hm.value) * sell_price;
 
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
             <!--이 밑에 함수가 안먹히는듯-->
             /*for (var i = 0; i < form_list.length; i++){
 
@@ -448,9 +417,6 @@ cart-list
             }
             sum.value = parseInt(hm.value) * sell_price;
 
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
             <!--이 밑에 함수가 안먹히는듯-->
             /*for (var i = 0; i < form_list.length; i++){
 

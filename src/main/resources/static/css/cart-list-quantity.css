@@ -1,8 +1,8 @@
 .quantity {
-    /*padding-top: 10px;
-    margin-right: 60px;*/
+    /*padding-top: 10px;*/
+    /*margin-right: 60px;*/
     font-family: 'Roboto', sans-serif;
-    width: 80px;
+    /*width: 80px;*/
 }
 .quantity input {
     -webkit-appearance: none;
@@ -17,23 +17,12 @@
 }
 
 .product_total_price {
-    /*
-    margin-top: 15px;
+    /*margin-top: 15px;
     margin-bottom: 15px;
-    padding: 5px;
-     */
+    padding: 5px;*/
     font-weight: bold;
-
-    /*float: left;*/
-    /*float-displace: auto;*/
+    width: 80px;
 }
-/*
-.product_total_price h4{
-    font-family: 'Roboto', sans-serif;
-    font-size: 17px;
-    font-weight: bold;
-}
-*/
 .product_total_price input {
     /*-webkit-appearance: none;*/
     border: none;
@@ -47,6 +36,7 @@
     color: #3a79ff;
     font-size: 15px;
 
+    font-weight: bold;
 }
 
 .product_total_price span {
@@ -55,16 +45,6 @@
 
     /*float: right;*/
 }
-/*
-button[class*=btn] {
-    width: 30px;
-    height: 30px;
-    background-color: #E1E8EE;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-}
-*/
 .minus-btn {
     width: 20px;
     height: 20px;
