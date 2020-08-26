@@ -46,6 +46,7 @@ var productSocket = {
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
                 $("#btn-my-coupons").css("color","red");
+                // alert('쿠폰이 발급되었습니다!');
             }, {});
 
 

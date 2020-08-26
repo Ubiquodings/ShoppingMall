@@ -4,19 +4,19 @@ spring:
   profiles.include: oauth,kafka,db
   session.store-type: jdbc
 
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/sisishop
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
-#    data: classpath*:db/${database}/data.sql # db data 초기화하고 싶을 때 이용
+  #  datasource:
+  #    url: jdbc:h2:tcp://localhost/~/sisishop
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
+  #    data: classpath*:db/${database}/data.sql # db data 초기화하고 싶을 때 이용
 
   jpa:
     hibernate:
-      ddl-auto: update #create # , create-drop
+      ddl-auto: create #update #create # , create-drop
     properties:
       hibernate:
-  #     show_sql: true
+        #     show_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
 
@@ -47,10 +47,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #create # , create-drop
+      ddl-auto: update # create # , create-drop
     properties:
       hibernate:
         #     show_sql: true
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
 

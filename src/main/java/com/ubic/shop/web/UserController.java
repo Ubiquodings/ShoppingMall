@@ -4,6 +4,7 @@ import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.SessionUser;
+import com.ubic.shop.repository.CouponRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final CouponRepository couponRepository;
 
     @GetMapping("/mypage")
     public String detail(Model model, @LoginUser SessionUser user, HttpServletRequest request){
@@ -37,15 +39,18 @@ public class UserController {
     @GetMapping("/my-coupons")
     public String coupons(Model model, @LoginUser SessionUser user, HttpServletRequest request){
 
+        Long userId=-1L;
         if(user != null){
             model.addAttribute("userName", user.getName());
+            userId = user.getId();
         }else{ // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            userId = nonMember.getId();
         }
 
 //        TODO 전달해야 한다!
-//        model.addAttribute("couponList", user.getName());
+        model.addAttribute("couponList", couponRepository.findByUserId(userId));
 
         return "mycoupons";
     }

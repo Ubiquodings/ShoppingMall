@@ -24,7 +24,7 @@ public class ShopListProduct extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_list_id")
-    private ShopList shopList; //주문
+    private ShopList shopList;
 
     private int shopListPrice; //장바구니 가격
     private int count; //장바구니 수량

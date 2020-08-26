@@ -3,12 +3,13 @@ package com.ubic.shop.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SimpleMessageDto {
-    String message;
+@Getter
+public class ShopListModifyRequestDto {
+    // 장바구니 id
+    Long cartId;
+    // 수량
+    Long count;
 }
