@@ -1,16 +1,447 @@
 {{>layout/header}}
+
 cart-list
-{{#shopLists}} <!--List<ShopList>-->
-        <div class="row">
-            <div class="card" style="width: 100%;">
-                <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
-                    <h5 class="card-title" id="cart-item-count">{{count}}</h5>
-                    <button type="button" class="btn btn-primary btn-lg btn-order-immediately-from-cart"><input type="hidden" id="cart-item-id" value="{{id}}"/><input type="hidden" id="cart-item-count" value="{{count}}"/>주문</button>
-                    <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
-<!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
-                </div>
-            </div>
+
+<!--시현:주석시작-->
+<link rel="stylesheet" type="text/css" href="/css/cart-list-quantity.css">
+
+<style>
+    body{
+        background-color: #f5f5f5;
+    }
+    .Product-img img{
+        width: 100%;
+    }
+    .main-section{
+        font-family: 'Roboto Condensed', sans-serif;
+        margin-top:100px;
+    }
+    .init_c {
+        border: none;
+        background: transparent;
+        width: 10px;
+    }
+    .init_td {
+        width: 10px;
+    }
+</style>
+
+<html>
+<head>
+    <!--    <title> 장바구니</title>-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <!--시현:주석 끝-->
+
+    <!--    <link rel="stylesheet" type="text/css" href="custom.css">-->
+    <!--    위에 링크 custom.css 자꾸 안뜬다고 떠서 주석 처리 했습니다!-->
+
+    <!--<script language="JavaScript">
+        /*$(document).ready(function() {
+            init();
+        });
+        function init () {
+            var sell_price;
+            var amount;
+            //var init = 0;
+            var form_list = document.getElementsByClassName("formlist");
+            console.log("form_list length " + form_list.length);
+            var amount_list = document.getElementsByClassName("amount");
+            console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...
+            var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
+            if(form_list.length == 1) {
+                sell_price = document.form.sell_price.value;
+                amount = document.form.amount.value;
+                document.form.sum.value = sell_price;
+                //document.init_c.value = 0;
+                $('.init_c').val('0');
+                hm = document.form.amount;
+                sum = document.form.sum;
+                if (hm.value < 0) {
+                    hm.value = 0;
+                }
+                sum.value = parseInt(hm.value) * sell_price;
+            }
+            else {
+                for(var i=0; i<form_list.length; i++) {
+                    sell_price = document.form[i].sell_price.value;
+                    amount = document.form[i].amount.value;
+                    document.form[i].sum.value = sell_price;
+                    //document.form[i].init_c.value = init;
+                    //document.init_c.value = i;
+                    console.log("i " + i);
+                    //$('.init_c')[i].val(i);
+                    $(init_list[i]).val(i);
+                    //init++;
+                    hm = document.form[i].amount;
+                    sum = document.form[i].sum;
+                    if (hm.value < 0) {
+                        hm.value = 0;
+                    }
+                    sum.value = parseInt(hm.value) * sell_price;
+                }
+            }
+        }*/
+        /*$('.minus-btn').on('click', function() {
+            console.log("minus button click");
+           // var minus_index = $('.minus-btn').index($(this));
+           /!*var minus_index = $('.formlist').index($(this));
+           console.log(minus_index); 싹다 안된다....*!/
+           // console.log($(this).index()); 이거도 안돼..
+           // console.log($(".minus-btn").index(this)); 안돼..
+            //var minus_index = $('.minus-btn').index($(this));
+            /!*var minus_index = $(".minus-btn").index(this);
+            console.log(minus_index);*!/
+            //https://stackoverflow.com/questions/35960324/getting-the-index-of-a-form-element
+            //여기있는 방법 적용
+            var all_sellprice = $('[name="sell_price"]');
+            var sellprice = $(this).siblings('[name="sell_price"]');
+            var minus_index = all_sellprice.index(sellprice.get(0));
+            console.log("minus index before");
+            console.log(minus_index);
+            console.log("minus index after");
+            hm = document.form[minus_index].amount;
+            sum = document.form[minus_index].sum;
+            if (hm.value > 1) {
+                hm.value -- ;
+                //sum.value = parseInt(hm.value) * sell_price;
+                sum.value = parseInt(hm.value) * sellprice;
+            }
+        });*/
+        function add () {
+            var add_index = document.form.getElementsByClassName('.plus-btn)
+            hm = document.form.amount.value;
+            sum = document.form.sum;
+            console.log(parseInt(hm));
+            hm.value++;
+            //hm.val()++;
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+        function change () {
+            //index = document.getElementsByClassName("init_c");
+            var sum_index = $('.formlist').index($(this));
+            console.log(sum_index);
+            hm = document.form[sum_index].amount;
+            sum = document.form[sum_index].sum;
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+        }
+    </script>-->
+
+</head>
+
+
+<body>
+<div class="container main-section">
+    <div class="row">
+        <div class="col-lg-12 pb-2">
+            <h4>장바구니</h4>
         </div>
-{{/shopLists}}
+        <div class="col-lg-12 pl-3 pt-3">
+            <table class="table table-hover border bg-white">
+                <thead>
+                <tr>
+                    <th>숫자</th>
+                    <th>상품정보</th>
+                    <th>가격</th>
+                    <th style="width:10%;">수량</th>
+                    <th>상품금액</th>
+                    <th>상품삭제</th>
+                </tr>
+                </thead>
+
+
+
+                {{#shopLists}} <!--List<ShopList>-->
+                    <!--                    &lt;!&ndash;loop ? ok&ndash;&gt; &lt;!&ndash;List<ShopListProduct>&ndash;&gt;-->
+
+                    <tbody>
+                    <tr>
+                        <td class="init_td"><input type=text class="init_c" name="init_c"></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-lg-2 Product-img">
+                                    <img src="{{product.imgUrl}}" alt="..." class="img-responsive"/>
+                                </div>
+                                <div class="col-lg-10">
+                                    <h4 class="nomargin">{{product.name}}</h4>
+                                    <p>{{product.description}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <!--<td> {{product.price}} </td>-->
+                        <td> {{product.price}} </td>
+
+                        <!--                            <form name="form" method="get" onload="init()">-->
+                        <form name="form" class="formlist" method="get">
+                            <input type=hidden name="sell_price" value="{{product.price}}">
+                            <!--<input type=hidden name="init_c">-->
+                            <!--<input type="hidden" name="amount" value="{{count}}">-->
+
+                            <td data-th="Quantity">
+                                <div class="quantity">
+
+                                    <!--                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >-->
+                                    <button class="minus-btn" type="button" name="button" value=" - ">
+
+                                        <img src="/icon/minus-cartlist.svg" alt="" />
+                                    </button>
+
+                                    <!--<input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">-->
+                                    <!-- 시현이 준 로직 추가하기-->
+                                    <input type="text" name="amount" class="amount" id="cart-item-count" value="{{count}}" onchange="change();">
+
+                                    <!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
+                                    <button class="plus-btn" type="button" name="button" value=" + ">
+
+                                        <img src="/icon/plus-cartlist.svg" alt="" />
+                                    </button>
+                                </div>
+                            </td>
+
+                            <td class="product_total_price">
+                                <!--<input type="text" name="sum" onload="init();" readonly>-->
+                                <input type="text" class="sum" name="sum" readonly>
+                                <span>원</span>
+                            </td>
+
+                        </form>
+
+                        <td class="actions" data-th="" style="width:10%;">
+                            <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                        </td>
+
+                        <!-- 시현이가 추가한 부분(바로 주문하기 버튼)-->
+                        <!-- 이건 바로 주문하기 버튼 생성 후 추가하려는 로직 입니다-->
+                        <!--<button type="button" class="btn btn-primary btn-lg btn-order-immediately-from-cart">
+                                <input type="hidden" id="cart-item-id" value="{{id}}"/>
+                                <input type="hidden" id="cart-item-count" value="{{count}}"/>
+                                주문
+                            </button>
+                            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>-->
+                    </tr>
+
+                    </tbody>
+
+
+
+                {{/shopLists}}
+
+                <tfoot>
+                <tr>
+                    <td><a href="#" class="btn btn-warning text-white"><i class="fa fa-angle-left"></i> 쇼핑계속하기</a></td>
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td class="hidden-xs text-center" style="width:10%;"><strong>총금액:
+                        <input type="text" id="allsum">
+                    <td><a href="/payment" class="btn btn-success btn-block">주문하기<i class="fa fa-angle-right"></i></a></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        init();
+    });
+    function init () {
+        var sell_price;
+        var amount;
+        //var init = 0;
+        var form_list = document.getElementsByClassName("formlist"); // 잘나옴
+        console.log("form_list length " + form_list.length);
+        /*var amount_list = document.getElementsByClassName("amount");
+        console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...*/
+        /*var test = 0;*/
+        var totalSum = 0; // 채민: 임의대로 잠시 test -> totalSum으로 바꿔서 해볼게요!
+        var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
+        if (form_list.length == 1) { // list에 하나 있을때는 따로 처리해줘야 하는듯.. 잘 안나온다.
+            sell_price = document.form.sell_price.value;
+            amount = document.form.amount.value;
+            document.form.sum.value = sell_price;
+            /*$('.init_c').val('0'); 그냥 1부터 시작하게 하는게...*/
+            $('.init_c').val('1');
+            hm = document.form.amount;
+            sum = document.form.sum;
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+            totalSum = sum.value;
+            document.getElementById("allsum").value = totalSum;
+        } else {
+            for (var i = 0; i < form_list.length; i++) {
+                sell_price = document.form[i].sell_price.value;
+                amount = document.form[i].amount.value;
+                document.form[i].sum.value = sell_price;
+                /*console.log("i " + i); 확인! 잘 나온다.*/
+                $(init_list[i]).val(i+1); // 0번째부터 나와서 그냥 +1 해줬다.
+                hm = document.form[i].amount;
+                sum = document.form[i].sum;
+                if (hm.value < 0) {
+                    hm.value = 0;
+                }
+                sum.value = parseInt(hm.value) * sell_price;
+                /**
+                 * 윤진언니 총 합계 수량 메소드
+                 * */
+                /*if(parseInt(sum.value)){
+                    test += parseInt(sum.value);
+                }*/
+                totalSum = totalSum + parseInt(sum.value);
+            }
+            /*document.getElementById("allsum").value = test;*/
+            document.getElementById("allsum").value = totalSum;
+        }
+    }
+    $('.minus-btn').on('click', function() {
+        var form_list = document.getElementsByClassName("formlist");
+        if (form_list.length == 1) {
+            console.log("minus button click alone");
+            var sell_price = document.form.sell_price.value;
+            hm = document.form.amount;
+            sum = document.form.sum;
+            if (hm.value > 1) {
+                hm.value -- ;
+                sum.value = parseInt(hm.value) * sell_price;
+                //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
+                // try 해보자..ㅎ
+                var totalSum = document.getElementById("allsum").value;
+                console.log("minus before totalSum " + totalSum);
+                totalSum = totalSum - sell_price;
+                document.getElementById("allsum").value = totalSum;
+                console.log("minus after totalSum " + totalSum);
+            }
+            /**
+             * 윤진언니 총 합계 수량 메소드
+             * */
+            /*if(parseInt(sum.value)){
+                test -= parseInt(sum.value);
+            }
+            document.getElementById("allsum").value = test;*/
+        }
+        else {
+            console.log("minus button click");
+            var minus_index = $('.minus-btn').index($(this));
+            console.log("minus_index " + minus_index);
+            var sell_price = document.form[minus_index].sell_price.value;
+            hm = document.form[minus_index].amount;
+            sum = document.form[minus_index].sum;
+            if (hm.value > 1) {
+                hm.value -- ;
+                sum.value = parseInt(hm.value) * sell_price;
+                //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
+                // try 해보자..ㅎ
+                var totalSum = document.getElementById("allsum").value;
+                console.log("minus before totalSum " + totalSum);
+                totalSum = totalSum - sell_price;
+                document.getElementById("allsum").value = totalSum;
+                console.log("minus after totalSum " + totalSum);
+            }
+            /**
+             * 윤진언니 총 합계 수량 메소드
+             * */
+            /*<!--이 밑에 함수가 안먹히는듯-->
+            if(parseInt(sum.value)){
+                test -= parseInt(sum.value);
+            }
+            document.getElementById("allsum").value = test;*/
+        }
+    });
+    $('.plus-btn').on('click', function() {
+        var form_list = document.getElementsByClassName("formlist");
+        if (form_list.length == 1) {
+            console.log("plus button click alone");
+            var sell_price = document.form.sell_price.value;
+            hm = document.form.amount;
+            sum = document.form.sum;
+            hm.value ++ ;
+            sum.value = parseInt(hm.value) * sell_price;
+            var totalSum = document.getElementById("allsum").value;
+            console.log("plus before totalSum " + totalSum);
+            totalSum = parseInt(totalSum) + parseInt(sell_price);
+            document.getElementById("allsum").value = totalSum;
+            console.log("plus after totalSum " + totalSum);
+        }
+        else {
+            console.log("plus button click");
+            var plus_index = $('.plus-btn').index($(this));
+            console.log("plus_index " + plus_index);
+            var sell_price = document.form[plus_index].sell_price.value;
+            hm = document.form[plus_index].amount;
+            sum = document.form[plus_index].sum;
+            hm.value ++ ;
+            sum.value = parseInt(hm.value) * sell_price;
+            var totalSum = document.getElementById("allsum").value;
+            console.log("plus before totalSum " + totalSum);
+            totalSum = parseInt(totalSum) + parseInt(sell_price);
+            document.getElementById("allsum").value = totalSum;
+            console.log("plus after totalSum " + totalSum);
+        }
+    });
+    function change () {
+        var form_list = document.getElementsByClassName("formlist");
+        if (form_list.length == 1) {
+            var sell_price = document.form.sell_price.value;
+            var amount = document.form.amount.value;
+            document.form.sum.value = sell_price;
+            hm = document.form.amount;
+            sum = document.form.sum;
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+            /**
+             * 윤진언니 총 합계 수량 메소드
+             * */
+            <!--이 밑에 함수가 안먹히는듯-->
+            /*for (var i = 0; i < form_list.length; i++){
+                if(parseInt(sum.value)){
+                    test += parseInt(document.form[i].sum.value);
+                }
+                document.getElementById("allsum").value = test;
+            }*/
+            <!-- 채민: 이게 지금 하나라서 아마 document.form[i]가 안먹힐거에요 ㅜㅜ-->
+            document.getElementById("allsum").value = sum.value;
+            console.log("change method after totalSum " + sum.value);
+        }
+        else {
+            var change_index = $('.amount').index();
+            console.log(change_index);
+            var sell_price = document.form[change_index].sell_price.value;
+            var amount = document.form[change_index].amount.value;
+            document.form[change_index].sum.value = sell_price;
+            hm = document.form[change_index].amount;
+            sum = document.form[change_index].sum;
+            if (hm.value < 0) {
+                hm.value = 0;
+            }
+            sum.value = parseInt(hm.value) * sell_price;
+            /**
+             * 윤진언니 총 합계 수량 메소드
+             * */
+            <!--이 밑에 함수가 안먹히는듯-->
+            /*for (var i = 0; i < form_list.length; i++){
+                if(parseInt(sum.value)){
+                    test += parseInt(document.form[i].sum.value);
+                }
+                document.getElementById("allsum").value = test;
+            }*/
+            var totalSum = 0;
+            for (var i = 0; i < form_list.length; i++){
+                totalSum = parseInt(totalSum) + parseInt(document.form[i].sum.value);
+            }
+            document.getElementById("allsum").value = totalSum;
+            console.log("change method after totalSum " + totalSum);
+        }
+    }
+</script>
+</body>
+</html>
+
+<!--<script src="/js/app/cart-list-quantity.js"></script>-->
 {{>layout/footer}}

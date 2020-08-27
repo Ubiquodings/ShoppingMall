@@ -3,6 +3,7 @@ package com.ubic.shop.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
+
 import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.SessionUser;
@@ -11,6 +12,12 @@ import com.ubic.shop.kafka.dto.SearchActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.TagRepository;
+
+import com.ubic.shop.domain.Product;
+import com.ubic.shop.domain.Role;
+import com.ubic.shop.domain.User;
+import com.ubic.shop.dto.SessionUser;
+
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.ProductService;
 import com.ubic.shop.service.RecommendService;
@@ -43,10 +50,12 @@ public class ProductController {
     private final UbicConfig ubicConfig;
     private final UbicSecretConfig ubicSecretConfig;
     private final UserRepository userRepository;
+
     private final KafkaSevice kafkaService;
     private final TagService tagService;
     private final ProductRepository productRepository;
     private final TagRepository tagRepository;
+
 //    private
 
     @GetMapping("/products")
@@ -70,7 +79,12 @@ public class ProductController {
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
         }
 
+        //끝페이지 가져오기
+        Page<Product> pages=productRepository.findProductsCountBy(pageRequest);
+        int page_total_count=pages.getTotalPages();
+        model.addAttribute("page-total-count",page_total_count );
         return "product-list";
+
     }
 
     @GetMapping("/products/{id}")

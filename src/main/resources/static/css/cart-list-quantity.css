@@ -1,70 +1,53 @@
 .quantity {
-    padding-top: 20px;
-    margin-right: 60px;
+    /*padding-top: 10px;*/
+    /*margin-right: 60px;*/
     font-family: 'Roboto', sans-serif;
+    /*width: 80px;*/
 }
 .quantity input {
     -webkit-appearance: none;
     border: none;
     text-align: center;
     width: 32px;
-    font-size: 16px;
+    /*font-size: 16px;*/
+    font-size: 15px;
     color: #43484D;
     font-weight: 300;
     background-color: transparent;
 }
 
 .product_total_price {
-    margin-top: 15px;
+    /*margin-top: 15px;
     margin-bottom: 15px;
-    padding: 5px;
+    padding: 5px;*/
     font-weight: bold;
-
-    /*float: left;*/
-    /*float-displace: auto;*/
+    width: 80px;
 }
-/*
-.product_total_price h4{
-    font-family: 'Roboto', sans-serif;
-    font-size: 17px;
-    font-weight: bold;
-}
-*/
 .product_total_price input {
     /*-webkit-appearance: none;*/
     border: none;
     /*text-align: center;*/
-    width: 60px;
+    /*width: 60px;*/
     /*width: 100%;*/
     /*width: auto;*/
     /*font-size: 20px;*/
     background-color: transparent;
 
-    color: #ff8431;
-    font-size: 20px;
+    color: #3a79ff;
+    font-size: 15px;
 
     font-weight: bold;
 }
 
 .product_total_price span {
-    color: #ff8431;
-    font-size: 20px;
+    color: #3a79ff;
+    font-size: 15px;
 
     /*float: right;*/
 }
-/*
-button[class*=btn] {
-    width: 30px;
-    height: 30px;
-    background-color: #E1E8EE;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-}
-*/
 .minus-btn {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     background-color: #E1E8EE;
     border-radius: 6px;
     border: none;
@@ -72,8 +55,8 @@ button[class*=btn] {
 }
 
 .plus-btn {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     background-color: #E1E8EE;
     border-radius: 6px;
     border: none;

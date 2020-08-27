@@ -41,7 +41,7 @@ public class ShopListService {
         shopListRepository.save(shopList);
         return shopList.getId();
     }
-    
+
     /** 장바구니 취소 */
     @Transactional
     public void cancelShopList(Long shopListId) {
