@@ -140,6 +140,7 @@ public class ProductController {
         // result stream 돌면서 List<Tag> 에 관련
 //        List<String> byName = new ArrayList<>();
         List<Tag> byName = result.stream()
+                .filter(x -> x!=null)
                 .map(tagName -> {
                     log.info("\n debug tagName: "+tagName);
                     if(tagRepository.findByName(tagName).size() == 0) {
@@ -160,10 +161,11 @@ public class ProductController {
         for (int i=0; i<byName.size(); i++) {
             if(byName.get(i)==null)
                 log.info("\ntag list null"); // null
-            if (byName.get(i).getProductTagList().size() != 0) // null 일 수가 없어
-                productTagList = Stream.concat(productTagList.stream(), byName.get(i).getProductTagList().stream())
-                        .distinct()
-                        .collect(Collectors.toList());
+            else
+                if (byName.get(i).getProductTagList().size() != 0) // null 일 수가 없어
+                    productTagList = Stream.concat(productTagList.stream(), byName.get(i).getProductTagList().stream())
+                            .distinct()
+                            .collect(Collectors.toList());
         }
 
         List<Product> searchResultProductList = productTagList.stream()

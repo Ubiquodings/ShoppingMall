@@ -1,6 +1,7 @@
 package com.ubic.shop.config;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -12,4 +13,6 @@ public class UbicConfig {
     public int productDetailPageSize = 20;
     public String baseUrl = "http://localhost:8080";
 
+//    @Value("${spring.profile.value}")
+    private String djangoServerUrl;
 }

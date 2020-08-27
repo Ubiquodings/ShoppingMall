@@ -1,5 +1,6 @@
 package com.ubic.shop.service;
 
+import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.ProductTag;
 import com.ubic.shop.domain.Tag;
@@ -25,6 +26,7 @@ public class TagService {
     private final TagRepository tagRepository;
     private final ProductTagRepository productTagRepository;
     private final RestTemplate restTemplate;
+    private final UbicConfig ubicConfig;
 
     @Transactional
     public void stemmingAndRegisterTag(Product product) {
@@ -72,7 +74,7 @@ public class TagService {
         SearchResponseDto result = null;
         try {
             result = restTemplate.getForObject(
-                    "http://127.0.0.1:8000/search/test/?text=" + productInfo,
+                    ubicConfig.getDjangoServerUrl()+"/search/test/?text=" + productInfo,
                     SearchResponseDto.class);
         } catch (Exception e) {
             return null;

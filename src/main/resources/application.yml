@@ -28,6 +28,7 @@ ubic:
   orders:
     productListPageSize: 28
     productDetailPageSize: 8
+    djangoServerUrl: http://ubic-env-08221710.ap-northeast-2.elasticbeanstalk.com
 
 # spring.profiles.include=oauth
 #spring.session.store-type: jdbc
