@@ -126,6 +126,8 @@ public class ProductController {
         List<String> result = tagService.stemmingProductInfo(searchText);
         // 한번에 찾아오는 기능 시도
 
+//        log.info("\nsearch result size: "+result.size()); // 2 ok
+
         /**
          * Tag 에서 찾아오는데,
          * 키를 ProductTag 가 갖고 있으니까
@@ -139,16 +141,29 @@ public class ProductController {
 //        List<String> byName = new ArrayList<>();
         List<Tag> byName = result.stream()
                 .map(tagName -> {
-                    return tagRepository.findByName(tagName).get(0); // 같은 이름 Tag 는 하나!
+                    log.info("\n debug tagName: "+tagName);
+                    if(tagRepository.findByName(tagName).size() == 0) {
+                        log.info("\ntag null");
+                        return null;
+                    }else {
+                        log.info("\ntagName: "+tagRepository.findByName(tagName).get(0).getName());
+                        return tagRepository.findByName(tagName).get(0); // 같은 이름 Tag 는 하나!
+                    }
                 })
+                .filter(x -> x!=null)
                 .collect(Collectors.toList());
+
+        log.info("\nsearch TagbyName size: "+byName.size()); // 2 ok
 
         //
         List<ProductTag> productTagList = new ArrayList<>();
-        for (Tag tag : byName) {
-            productTagList = Stream.concat(productTagList.stream(), tag.getProductTagList().stream())
-                    .distinct()
-                    .collect(Collectors.toList());
+        for (int i=0; i<byName.size(); i++) {
+            if(byName.get(i)==null)
+                log.info("\ntag list null"); // null
+            if (byName.get(i).getProductTagList().size() != 0) // null 일 수가 없어
+                productTagList = Stream.concat(productTagList.stream(), byName.get(i).getProductTagList().stream())
+                        .distinct()
+                        .collect(Collectors.toList());
         }
 
         List<Product> searchResultProductList = productTagList.stream()
