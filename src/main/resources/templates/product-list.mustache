@@ -12,8 +12,6 @@ product-list
 product-list
 
 
-<script>
-</script>
 
 
 
@@ -77,20 +75,29 @@ product-list
                                                                 &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
                                                             </div>
                                 -->
+                                <div>
+                                    <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
+                                    {{#ProductTagList}}<!--style="border:1px solid plum"-->
+                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>
+                                    {{/ProductTagList}}
+                                </div>
                             </div>
                         </div>
 
                         <div class="m-t text-left">
-                            <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
+                            <button type="button" style="margin-top: 10px"
+                                    class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
                                 <input type="hidden" value="{{id}}" id="product-detail-id"/>
                                 <!--<input type="hidden" value= "1"/>-->
-                                <input type="hidden" id="count" value= "1"/>
-                                장바구니</button>
+                                <input type="hidden" id="count" value="1"/>
+                                장바구니
+                            </button>
                             <!--<a href="#" class="" >장바구니 </a>-->
                         </div>
 
                     </div>
                 </div>
+
             </div>
         {{/products}}
     </div>

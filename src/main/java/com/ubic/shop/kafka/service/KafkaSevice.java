@@ -3,6 +3,7 @@ package com.ubic.shop.kafka.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
+import com.ubic.shop.kafka.dto.SearchActionRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -30,6 +31,7 @@ public class KafkaSevice {
 
     private final KafkaTemplate<String,String> kafkaTemplate;
     String topic = "ubic-shop-test";
+    String topicSearch = "ubic-shop-search";
     private final ObjectMapper objectMapper;
 
     public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
@@ -40,6 +42,30 @@ public class KafkaSevice {
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topic);
+
+        ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
+        listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                handleFailure(key, value, ex);
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, String> result) {
+                handleSuccess(key, value, result);
+            }
+        });
+        return listenableFuture;
+    }
+
+    public ListenableFuture<SendResult<String,String>> sendToTopic(SearchActionRequestDto requestDto) throws JsonProcessingException {
+
+        log.info("\nkafka send log");
+
+        // 카프카 토픽에 전송한다
+        String key = requestDto.toString();
+        String value = objectMapper.writeValueAsString(requestDto);
+        ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topicSearch);
 
         ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
         listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {

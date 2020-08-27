@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -32,6 +33,10 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     // category id 기반으로 검색하되, count 만 반환하는 함수
     // 이렇게 하면 전체 product 개수를 세는 함수인데!
     long countByCategoryId(Long categoryId);
+
+    @Query(value="select p from Product p where :results in p.ProductTagList")
+    List<Product> findBystemmingResults(@Param("results") String stemmingResults);
+
 
 //    List<Product> findAll();
 //    private final EntityManager em;
