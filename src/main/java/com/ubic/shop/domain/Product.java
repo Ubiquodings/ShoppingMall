@@ -31,11 +31,14 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToMany(mappedBy = "product") // ProductTag 쪽에서 Product 는 product 클래스멤버변수이름으로 관계가 설정되어 있다
+    private List<ProductTag> ProductTagList = new ArrayList<>();
+
 
     //==연관관계 메서드==//
-    public void addProductCategory(ProductCategory productCategory) {
-//        productCategories.add(productCategory);
-//        productCategory.setProduct(this);
+    public void addProductTag(ProductTag productTag) {
+        this.ProductTagList.add(productTag);
+//        child.setParent(this);
     }
 
     //==비즈니스 로직==//

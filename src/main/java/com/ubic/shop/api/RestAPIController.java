@@ -2,6 +2,8 @@ package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.config.UbicConfig;
+import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.*;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
@@ -34,6 +36,7 @@ public class RestAPIController {
     private final CategorySevice categoryService;
     private final KafkaSevice kafkaService;
     private final UserRepository userRepository;
+    private final UbicSecretConfig ubicConfig;
 
 
     @PostMapping("/api/products/new")
@@ -244,18 +247,30 @@ public class RestAPIController {
     }
 
 
-    @GetMapping("/api/search")
-    public String search(@RequestParam("keyword") String keyword, @LoginUser SessionUser user,
-                         HttpServletRequest request) throws JsonProcessingException {
 
-//        log.info("\n\n"+keyword); // ok
-
-        //회원+비회원
-
-        // 카프카에 전송하고 > 컨슈머 처리
-
-        // 결과 보여줘야지.. @Controller
-
-        return "{}";
-    }
+//    @GetMapping("/api/search")
+//    public String search(@RequestParam("keyword") String keyword,
+//                         @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+//
+//        log.info("\nkeyword: "+keyword+"\napi key: "+ubicConfig.etriApiKey); // ok
+//
+//        //회원+비회원
+//        Long userId=-1L;
+//        if(user != null){
+////            model.addAttribute("userName", user.getName());
+//            userId = user.getId();
+//        }else{ // 해시코드 다섯글자만 추출하기
+//            User nonMember = getTempUser(request);
+////            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+//            userId = nonMember.getId();
+//        }
+//
+//        // 카프카에 전송하고 > 컨슈머 처리
+//
+//
+//        // 결과 보여줘야지.. @Controller
+//
+//        return "{}";
+//    }
 }
+

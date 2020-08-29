@@ -11,13 +11,11 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 // data: JSON.stringify({})
             }).done(function () {
-
                 alert('삭제되었습니다.');
-                window.location.href=window.location.href;
+                window.location.href = window.location.href;
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
-            window.location.href = window.location.href;
             // window.location.href=window.location.href;
         });
 
@@ -35,20 +33,15 @@ var userAction = {
                 data: JSON.stringify(count)
             }).done(function () { // 왜 안되지 ?
                 alert('ok');
-                //location.reload(); //새로고침 추가
-                //$("order-list-row").load(window.location.href + "order-list-row");
-                window.location.href=window.location.href; // reloading ?
-
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
             });
-            //$("order-list-row").load(window.location.href + "order-list-row");
-             window.location.href=window.location.href; // reloading ?
+
+            // window.location.href=window.location.href; // reloading ?
         });
         // button 에 input 넣기
         // button class 수정
         $(".btn-order-immediately-from-detail").on('click', function (e) { // detail 페이지에서 가져와야지
-
             var productId = this.children[0].value;
             var count = $('#count').val();
             $.ajax({
@@ -58,7 +51,6 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(count)
             }).done(function () { // 왜 안되지 ?
-
                 alert('ok');
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
@@ -78,12 +70,11 @@ var userAction = {
                 window.location.href = window.location.href;
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
-
             });
 
         });
 
-        // 결제 페이지: 주문
+        // 결재 페이지: 주문
         $(".btn-order-all").on('click', function (e) {
             let shopListIdList = []; // = $("#input-shop-list-id").val(); // get list ? no
             let couponIdList = $("#input-coupon-id").val();
@@ -93,7 +84,6 @@ var userAction = {
                 shopListIdList.push(elem.value);
             });
             console.log('shopListIdList: ' + shopListIdList + "\ncouponIdList: " + couponIdList);
-
 
             // $.ajax({
             //     type: 'POST',
@@ -141,16 +131,17 @@ var userAction = {
             var keyword = $('#input-search-keyword').val();
             // var keyword = this.parent("div").parent("div").children[0].value;
 
-            $.ajax({
-                type: 'GET',
-                url: '/api/search?keyword=' + keyword,//$("input#input-cart-order").val(),
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8'
-            }).done(function () { // 왜 안되지 ?
-                alert('ok');
-            }).fail(function (e) {
-                alert('fail ' + JSON.stringify(e));
-            });
+            window.location.href = '/api/search?keyword=' + keyword;
+            // $.ajax({
+            //     type: 'GET',
+            //     url: '/api/search?keyword=' + keyword,//$("input#input-cart-order").val(),
+            //     dataType: 'json',
+            //     contentType: 'application/json; charset=utf-8'
+            // }).done(function () { // 왜 안되지 ?
+            //     alert('ok');
+            // }).fail(function (e) {
+            //     alert('fail ' + JSON.stringify(e));
+            // });
         });
 
         $('div.product-list-card-body').on('mouseenter', function (e) {

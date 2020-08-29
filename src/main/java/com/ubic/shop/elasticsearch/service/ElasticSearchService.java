@@ -99,8 +99,14 @@ public class ElasticSearchService {
     public void saveSearchData(SearchActionRequestDto requestDto) {
 //        String actionType = requestDto.getActionType();
 
-        SearchText allUserData = null;
-        allUserData = new SearchText(requestDto.getUserId(), requestDto.getSearchText());
+        SearchText allUserData = new SearchText(requestDto.getUserId(), requestDto.getSearchText());
+
+        // es index save
+        IndexQuery indexQuery = new IndexQueryBuilder()
+                .withId(allUserData.getUserId()) // _id
+                .withObject(allUserData) // list string
+                .build();
+        log.info("\nsearch data : " + esTemplate.index(indexQuery) + "\n");
 
     }
 

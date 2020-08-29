@@ -237,7 +237,7 @@ cart-list
                     <td colspan="2" class="hidden-xs"></td>
                     <td class="hidden-xs text-center" style="width:10%;"><strong>총금액:
                         <input type="text" id="allsum">
-                    <td><a href="#" class="btn btn-success btn-block">주문하기<i class="fa fa-angle-right"></i></a></td>
+                    <td><a href="/payment" class="btn btn-success btn-block">주문하기<i class="fa fa-angle-right"></i></a></td>
                 </tr>
                 </tfoot>
             </table>
@@ -256,12 +256,9 @@ cart-list
         console.log("form_list length " + form_list.length);
         /*var amount_list = document.getElementsByClassName("amount");
         console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...*/
-
         /*var test = 0;*/
         var totalSum = 0; // 채민: 임의대로 잠시 test -> totalSum으로 바꿔서 해볼게요!
-
         var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
-
         if (form_list.length == 1) { // list에 하나 있을때는 따로 처리해줘야 하는듯.. 잘 안나온다.
             sell_price = document.form.sell_price.value;
             amount = document.form.amount.value;
@@ -274,10 +271,8 @@ cart-list
                 hm.value = 0;
             }
             sum.value = parseInt(hm.value) * sell_price;
-
             totalSum = sum.value;
             document.getElementById("allsum").value = totalSum;
-
         } else {
             for (var i = 0; i < form_list.length; i++) {
                 sell_price = document.form[i].sell_price.value;
@@ -291,17 +286,14 @@ cart-list
                     hm.value = 0;
                 }
                 sum.value = parseInt(hm.value) * sell_price;
-
                 /**
                  * 윤진언니 총 합계 수량 메소드
                  * */
                 /*if(parseInt(sum.value)){
                     test += parseInt(sum.value);
                 }*/
-
                 totalSum = totalSum + parseInt(sum.value);
             }
-
             /*document.getElementById("allsum").value = test;*/
             document.getElementById("allsum").value = totalSum;
         }
@@ -316,18 +308,14 @@ cart-list
             if (hm.value > 1) {
                 hm.value -- ;
                 sum.value = parseInt(hm.value) * sell_price;
-
                 //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
                 // try 해보자..ㅎ
                 var totalSum = document.getElementById("allsum").value;
                 console.log("minus before totalSum " + totalSum);
-
                 totalSum = totalSum - sell_price;
-
                 document.getElementById("allsum").value = totalSum;
                 console.log("minus after totalSum " + totalSum);
             }
-
             /**
              * 윤진언니 총 합계 수량 메소드
              * */
@@ -346,18 +334,14 @@ cart-list
             if (hm.value > 1) {
                 hm.value -- ;
                 sum.value = parseInt(hm.value) * sell_price;
-
                 //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
                 // try 해보자..ㅎ
                 var totalSum = document.getElementById("allsum").value;
                 console.log("minus before totalSum " + totalSum);
-
                 totalSum = totalSum - sell_price;
-
                 document.getElementById("allsum").value = totalSum;
                 console.log("minus after totalSum " + totalSum);
             }
-
             /**
              * 윤진언니 총 합계 수량 메소드
              * */
@@ -377,12 +361,9 @@ cart-list
             sum = document.form.sum;
             hm.value ++ ;
             sum.value = parseInt(hm.value) * sell_price;
-
             var totalSum = document.getElementById("allsum").value;
             console.log("plus before totalSum " + totalSum);
-
             totalSum = parseInt(totalSum) + parseInt(sell_price);
-
             document.getElementById("allsum").value = totalSum;
             console.log("plus after totalSum " + totalSum);
         }
@@ -395,12 +376,9 @@ cart-list
             sum = document.form[plus_index].sum;
             hm.value ++ ;
             sum.value = parseInt(hm.value) * sell_price;
-
             var totalSum = document.getElementById("allsum").value;
             console.log("plus before totalSum " + totalSum);
-
             totalSum = parseInt(totalSum) + parseInt(sell_price);
-
             document.getElementById("allsum").value = totalSum;
             console.log("plus after totalSum " + totalSum);
         }
@@ -417,22 +395,18 @@ cart-list
                 hm.value = 0;
             }
             sum.value = parseInt(hm.value) * sell_price;
-
             /**
              * 윤진언니 총 합계 수량 메소드
              * */
             <!--이 밑에 함수가 안먹히는듯-->
             /*for (var i = 0; i < form_list.length; i++){
-
                 if(parseInt(sum.value)){
                     test += parseInt(document.form[i].sum.value);
                 }
                 document.getElementById("allsum").value = test;
             }*/
             <!-- 채민: 이게 지금 하나라서 아마 document.form[i]가 안먹힐거에요 ㅜㅜ-->
-
             document.getElementById("allsum").value = sum.value;
-
             console.log("change method after totalSum " + sum.value);
         }
         else {
@@ -447,23 +421,18 @@ cart-list
                 hm.value = 0;
             }
             sum.value = parseInt(hm.value) * sell_price;
-
             /**
              * 윤진언니 총 합계 수량 메소드
              * */
             <!--이 밑에 함수가 안먹히는듯-->
             /*for (var i = 0; i < form_list.length; i++){
-
                 if(parseInt(sum.value)){
                     test += parseInt(document.form[i].sum.value);
                 }
                 document.getElementById("allsum").value = test;
             }*/
-
             var totalSum = 0;
-
             for (var i = 0; i < form_list.length; i++){
-
                 totalSum = parseInt(totalSum) + parseInt(document.form[i].sum.value);
             }
             document.getElementById("allsum").value = totalSum;

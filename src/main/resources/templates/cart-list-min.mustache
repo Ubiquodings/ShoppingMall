@@ -1,4 +1,74 @@
 {{>layout/header}}
+cart-list
+{{#shopLists}} <!--List<ShopList>-->
+{{#shopListProducts}} <!--loop ? ok--> <!--List<ShopListProduct>-->
+<div class="row">
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            <img src="{{product.imgUrl}}" alt="상품 대표 이미지">
+            <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
+            <h5 class="card-title">{{product.description}}</h5>
+
+            <h5 class="card-title">{{shopListPrice}}</h5>
+            <h5 class="card-title">{{count}}</h5>
+
+            <body onload="init();">
+            <script language="JavaScript">
+                <!--
+                var sell_price;
+                var amount;
+
+                function init () {
+                    sell_price = document.form.sell_price.value;
+                    amount = document.form.amount.value;
+                    document.form.sum.value = sell_price;
+                    change();
+                }
+
+                function add () {
+                    hm = document.form.amount;
+                    sum = document.form.sum;
+                    hm.value ++ ;
+
+                    sum.value = parseInt(hm.value) * sell_price;
+                }
+
+                function del () {
+                    hm = document.form.amount;
+                    sum = document.form.sum;
+                    if (hm.value > 1) {
+                        hm.value -- ;
+                        sum.value = parseInt(hm.value) * sell_price;
+                    }
+                }
+
+                function change () {
+                    hm = document.form.amount;
+                    sum = document.form.sum;
+
+                    if (hm.value < 0) {
+                        hm.value = 0;
+                    }
+                    sum.value = parseInt(hm.value) * sell_price;
+                }
+                //-->
+            </script>
+            <form name="form" method="get">
+                <input type="hidden" name="amount" value="{{count}}" onchange="change();">
+
+                <input type=hidden name="sell_price" value="{{shopListPrice}}">
+                <input type="text" name="sum" style="border: none; background: transparent;" readonly>
+                <!--<h5 class="card-title" name="sum"></h5>-->
+            </form>
+
+            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{product.id}}"/>주문</button>
+            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
+            <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
+        </div>
+    </div>
+</div>
+{{/shopListProducts}}
+{{/shopLists}}
 
 cart-list
 
