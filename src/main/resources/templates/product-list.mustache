@@ -1,160 +1,136 @@
 {{>layout/header}}
 product-list
+
 <script>
-    function getPaging(page) {
-        $.getJSON("/replies/" + articleNo + "/" + page, function (data) {
-            console.log(data)
-         printPageNumbers(data.pageMaker);
 
+    $(document).ready(function () {
+        var pageItem = $(".pagination li").not(".prev,.next");
+        var prev = $(".pagination li.prev");
+        var next = $(".pagination li.next");
+        var currentPage = 0;
+
+        pageItem.click(function () {
+            pageItem.removeClass("active");
+            $(this).not(".prev,.next").addClass("active");
+            currentPage = new URLSearchParams(location.search).get('page');
+            if (currentPage != null) {
+                location.href = "http://localhost:8080/products?page=" + (Number(currentPage) + 1).toString(); //
+            }
         });
-    }
 
-    function printPageNumbers(pageMaker) {
-        var str = "";
+        next.click(function () {
+            $('li.active').removeClass('active').next().addClass('active');
+            currentPage = new URLSearchParams(location.search).get('page');
+            if (currentPage != null) {
+                location.href = "http://localhost:8080/products?page=" + (Number(currentPage) + 1).toString(); //
+            }
+        });
 
-        //이전 버튼 활성화
-        if (pageMaker.prev) {
-            str += "<li><a href='" + (pageMaker.startPage - 1) + "'>이전</a></li>";
-        }
+        prev.click(function () {
+            $('li.active').removeClass('active').prev().addClass('active');
+            currentPage = new URLSearchParams(location.search).get('page');
+            //location.href = "http://localhost:8080/products?page=" + (Number(currentPage) - 1).toString(); //
+            if (currentPage != null) {
+                if (Number(currentPage) - 1 > 0) {
+                    location.href = "http://localhost:8080/products?page=" + (Number(currentPage) - 1).toString(); //
+                } else {
+                    prev.addClass('disabled')
+                }
+            }
+        });
 
-        //페이지 번호
-        for (var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
-            var strCalss = pageMaker.criteria.page == i ? 'class=active' : '';
-            str += "<li " + strCalss + "><a href='" + i + "'>" + i + "</a></li>";
-        }
-        //다음 버튼 활성화
-        if (pageMaker.next) {
-            str += "<li><a href='" + (pageMaker.startPage + 1) + "'>다음</a></li>";
-        }
-        $(".pagination-sm").html(str)
-    }
-
-
-    //이전 버튼 이벤트
-
-    function fn_prev(page, range, rangeSize) {
-        var page = ((range - 2) * rangeSize) + 1;
-        var range = range - 1;
-        var url = "http://localhost:8080/products";
-        url = url + "?page=" + page;
-        url = url + "&range=" + range;
-        location.href = url;
-    }
-
-    //페이지 번호 클릭
-    function fn_pagination(page, range, rangeSize, searchType, keyword) {
-        var url = "http://localhost:8080/products";
-        url = url + "?page=" + page;
-        url = url + "&range=" + range;
-        location.href = url;
-    }
-
-    //다음 버튼 이벤트
-    function fn_next(page, range, rangeSize) {
-        var page = parseInt((range * rangeSize)) + 1;
-        var range = parseInt(range) + 1;
-        var url = "http://localhost:8080/products";
-        url = url + "?page=" + page;
-        url = url + "&range=" + range;
-        location.href = url;
-    }
+    });
 
 </script>
 
-<div class="ibox-footer">
-    <div class="text-center">
-        <ul class="pagination pagination-sm no-margin">
 
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/product-list.css">
+
+<div class="container">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center "> <!- -크게 pagination-lg - ->
+            <!- - class="disabled"는 앞 페이지가 존재하지 않는다는 뜻, 클릭하지 못하는 상태가 됨- ->
+            <!- -이전 페이지- ->
+            <li class="prev page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!- - li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. - ->
+            <!- - active의 의미는 현재 페이지의 의미이다. - ->
+            <!-- <li class="active"> active 보류 -->
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
+                                     +{{page-total-count}}>
+                {{page-total-count}} </a></li>
+
+            <!- -다음 페이지- ->
+            <li class="next">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
         </ul>
+    </nav>
+
+
+
+
+    <div class="row">
+        {{#products}}
+            <div class="col-md-3 ">
+                <!--<input type="hidden" value="{{id}}"/>-->
+                <div class="ibox">
+                    <div class="ibox-content product-box">
+
+                        <div class="product-list-card-body">
+                            <input type="hidden" value="{{id}}" class="product-detail-id"/>
+
+                            <!--이미지-->
+                            <div class="product-imitation">
+                                <img src="{{imgUrl}}"/> <!--[ 사진 ]-->
+                            </div>
+
+                            <div class="product-desc">
+                                <!-- <span class="product-discount">save 10%</span>-->
+                                <a href="#" class="product-name">{{name}}</a>
+                                <small class="product-price">{{price}}</small>
+                                <div class="small m-t-xs description">
+                                    <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
+                                    {{description}}
+                                </div>
+                                <!--
+                                                            <div class="m-t text-left">
+                                                                <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success" id="btn-shoplist">장바구니</button>
+                                                                &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
+                                                            </div>
+                                -->
+                            </div>
+                        </div>
+
+                        <div class="m-t text-left">
+                            <button type="button" style="margin-top: 10px"
+                                    class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
+                                <input type="hidden" value="{{id}}" id="product-detail-id"/>
+                                <!--<input type="hidden" value= "1"/>-->
+                                <input type="hidden" id="count" value="1"/>
+                                장바구니
+                            </button>
+                            <!--<a href="#" class="" >장바구니 </a>-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {{/products}}
     </div>
 
 </div>
-
-<!-- pagination{s} -->
-
-<div id="paginationBox">
-    <ul class="pagination justify-content-center">
-
-        <!--이전 버튼-->
-        <c:if test="${pagination.prev}">
-            <li class="page-item">
-                <a class="page-link" href="#"
-                   onClick="fn_prev('${pagination.page}', '${pagination.range}', '${pagination.rangeSize}')">&laquo;</a>
-            </li>
-        </c:if>
-        <c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="idx">
-
-            <li class="page-item">
-                <c:out value="${pagination.page == idx ? 'active' : ''}"/>
-                <a class="page-link" href="#"
-                   onClick="fn_pagination('${idx}', '${pagination.range}', '${pagination.rangeSize}')"> ${idx} </a>
-            </li>
-
-        </c:forEach>
-
-
-        <!--이후 버튼-->
-        <c:if test="${pagination.next}">
-            <li class="page-item"><a class="page-link" href="#" onClick="fn_next('${pagination.page}',
-'${pagination.range}', '${pagination.rangeSize}')">&raquo;</a></li>
-        </c:if>
-    </ul>
-
-
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/product-list.css">
-
-    <div class="container">
-
-        <div class="row">
-            {{#products}}
-                <div class="col-md-3 ">
-                    <!--<input type="hidden" value="{{id}}"/>-->
-                    <div class="ibox">
-                        <div class="ibox-content product-box">
-
-                            <div class="product-list-card-body">
-                                <input type="hidden" value="{{id}}" class="product-detail-id"/>
-
-                                <!--이미지-->
-                                <div class="product-imitation">
-                                    <img src="{{imgUrl}}"/> <!--[ 사진 ]-->
-                                </div>
-
-                                <div class="product-desc">
-                                    <!-- <span class="product-discount">save 10%</span>-->
-                                    <a href="#" class="product-name">{{name}}</a>
-                                    <small class="product-price">{{price}}</small>
-                                    <div class="small m-t-xs description">
-                                        <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
-                                        {{description}}
-                                    </div>
-                                    <!--
-                                                                <div class="m-t text-left">
-                                                                    <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success" id="btn-shoplist">장바구니</button>
-                                                                    &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
-                                                                </div>
-                                    -->
-                                </div>
-                            </div>
-
-                            <div class="m-t text-left">
-                                <button type="button" style="margin-top: 10px"
-                                        class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
-                                    <input type="hidden" value="{{id}}" id="product-detail-id"/>
-                                    <!--<input type="hidden" value= "1"/>-->
-                                    <input type="hidden" id="count" value="1"/>
-                                    장바구니
-                                </button>
-                                <!--<a href="#" class="" >장바구니 </a>-->
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            {{/products}}
-        </div>
-
-    </div>
 
 {{>layout/footer}}
