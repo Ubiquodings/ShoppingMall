@@ -6,21 +6,25 @@ cart-list
 <link rel="stylesheet" type="text/css" href="/css/cart-list-quantity.css">
 
 <style>
-    body{
+    body {
         background-color: #f5f5f5;
     }
-    .Product-img img{
+
+    .Product-img img {
         width: 100%;
     }
-    .main-section{
+
+    .main-section {
         font-family: 'Roboto Condensed', sans-serif;
-        margin-top:100px;
+        margin-top: 100px;
     }
+
     .init_c {
         border: none;
         background: transparent;
         width: 10px;
     }
+
     .init_td {
         width: 10px;
     }
@@ -30,7 +34,8 @@ cart-list
 <head>
     <!--    <title> 장바구니</title>-->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <!--시현:주석 끝-->
 
@@ -154,7 +159,6 @@ cart-list
                 </thead>
 
 
-
                 {{#shopLists}} <!--List<ShopList>-->
                     <!--                    &lt;!&ndash;loop ? ok&ndash;&gt; &lt;!&ndash;List<ShopListProduct>&ndash;&gt;-->
 
@@ -182,22 +186,22 @@ cart-list
                             <!--<input type="hidden" name="amount" value="{{count}}">-->
 
                             <td data-th="Quantity">
-                                <div class="quantity">
+                                <div class="quantity d-inline">
 
                                     <!--                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >-->
                                     <button class="minus-btn" type="button" name="button" value=" - ">
-
-                                        <img src="/icon/minus-cartlist.svg" alt="" />
+                                        <img src="/icon/minus-cartlist.svg" alt=""/>
                                     </button>
 
                                     <!--<input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">-->
                                     <!-- 시현이 준 로직 추가하기-->
-                                    <input type="text" name="amount" class="amount" id="cart-item-count" value="{{count}}" onchange="change();">
+                                    <input type="text" name="amount" class="amount" id="cart-item-count"
+                                           value="{{count}}" onchange="change();" />
 
                                     <!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
                                     <button class="plus-btn" type="button" name="button" value=" + ">
 
-                                        <img src="/icon/plus-cartlist.svg" alt="" />
+                                        <img src="/icon/plus-cartlist.svg" alt=""/>
                                     </button>
                                 </div>
                             </td>
@@ -224,10 +228,7 @@ cart-list
                             </button>
                             <input type="hidden" value="{{product.id}}" id="input-cart-order"/>-->
                     </tr>
-
                     </tbody>
-
-
 
                 {{/shopLists}}
 
@@ -235,9 +236,10 @@ cart-list
                 <tr>
                     <td><a href="#" class="btn btn-warning text-white"><i class="fa fa-angle-left"></i> 쇼핑계속하기</a></td>
                     <td colspan="2" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center" style="width:10%;"><strong>총금액:
-                        <input type="text" id="allsum">
-                    <td><a href="/payment" class="btn btn-success btn-block">주문하기<i class="fa fa-angle-right"></i></a></td>
+                    <td  class="hidden-xs text-center" style="width:10%;"><strong>총 금액:</strong></td>
+                       <td align="center"> <input type="text" id="allsum" readonly /></td>
+                    <td><a href="/payment" class="btn btn-success btn-block">주문하기<i class="fa fa-angle-right"></i></a>
+                    </td>
                 </tr>
                 </tfoot>
             </table>
@@ -245,10 +247,11 @@ cart-list
     </div>
 </div>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         init();
     });
-    function init () {
+
+    function init() {
         var sell_price;
         var amount;
         //var init = 0;
@@ -279,7 +282,7 @@ cart-list
                 amount = document.form[i].amount.value;
                 document.form[i].sum.value = sell_price;
                 /*console.log("i " + i); 확인! 잘 나온다.*/
-                $(init_list[i]).val(i+1); // 0번째부터 나와서 그냥 +1 해줬다.
+                $(init_list[i]).val(i + 1); // 0번째부터 나와서 그냥 +1 해줬다.
                 hm = document.form[i].amount;
                 sum = document.form[i].sum;
                 if (hm.value < 0) {
@@ -298,7 +301,8 @@ cart-list
             document.getElementById("allsum").value = totalSum;
         }
     }
-    $('.minus-btn').on('click', function() {
+
+    $('.minus-btn').on('click', function () {
         var form_list = document.getElementsByClassName("formlist");
         if (form_list.length == 1) {
             console.log("minus button click alone");
@@ -306,7 +310,7 @@ cart-list
             hm = document.form.amount;
             sum = document.form.sum;
             if (hm.value > 1) {
-                hm.value -- ;
+                hm.value--;
                 sum.value = parseInt(hm.value) * sell_price;
                 //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
                 // try 해보자..ㅎ
@@ -323,8 +327,7 @@ cart-list
                 test -= parseInt(sum.value);
             }
             document.getElementById("allsum").value = test;*/
-        }
-        else {
+        } else {
             console.log("minus button click");
             var minus_index = $('.minus-btn').index($(this));
             console.log("minus_index " + minus_index);
@@ -332,7 +335,7 @@ cart-list
             hm = document.form[minus_index].amount;
             sum = document.form[minus_index].sum;
             if (hm.value > 1) {
-                hm.value -- ;
+                hm.value--;
                 sum.value = parseInt(hm.value) * sell_price;
                 //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
                 // try 해보자..ㅎ
@@ -352,29 +355,28 @@ cart-list
             document.getElementById("allsum").value = test;*/
         }
     });
-    $('.plus-btn').on('click', function() {
+    $('.plus-btn').on('click', function () {
         var form_list = document.getElementsByClassName("formlist");
         if (form_list.length == 1) {
             console.log("plus button click alone");
             var sell_price = document.form.sell_price.value;
             hm = document.form.amount;
             sum = document.form.sum;
-            hm.value ++ ;
+            hm.value++;
             sum.value = parseInt(hm.value) * sell_price;
             var totalSum = document.getElementById("allsum").value;
             console.log("plus before totalSum " + totalSum);
             totalSum = parseInt(totalSum) + parseInt(sell_price);
             document.getElementById("allsum").value = totalSum;
             console.log("plus after totalSum " + totalSum);
-        }
-        else {
+        } else {
             console.log("plus button click");
             var plus_index = $('.plus-btn').index($(this));
             console.log("plus_index " + plus_index);
             var sell_price = document.form[plus_index].sell_price.value;
             hm = document.form[plus_index].amount;
             sum = document.form[plus_index].sum;
-            hm.value ++ ;
+            hm.value++;
             sum.value = parseInt(hm.value) * sell_price;
             var totalSum = document.getElementById("allsum").value;
             console.log("plus before totalSum " + totalSum);
@@ -383,7 +385,8 @@ cart-list
             console.log("plus after totalSum " + totalSum);
         }
     });
-    function change () {
+
+    function change() {
         var form_list = document.getElementsByClassName("formlist");
         if (form_list.length == 1) {
             var sell_price = document.form.sell_price.value;
@@ -408,8 +411,7 @@ cart-list
             <!-- 채민: 이게 지금 하나라서 아마 document.form[i]가 안먹힐거에요 ㅜㅜ-->
             document.getElementById("allsum").value = sum.value;
             console.log("change method after totalSum " + sum.value);
-        }
-        else {
+        } else {
             var change_index = $('.amount').index();
             console.log(change_index);
             var sell_price = document.form[change_index].sell_price.value;
@@ -432,7 +434,7 @@ cart-list
                 document.getElementById("allsum").value = test;
             }*/
             var totalSum = 0;
-            for (var i = 0; i < form_list.length; i++){
+            for (var i = 0; i < form_list.length; i++) {
                 totalSum = parseInt(totalSum) + parseInt(document.form[i].sum.value);
             }
             document.getElementById("allsum").value = totalSum;
@@ -440,8 +442,7 @@ cart-list
         }
     }
 </script>
-</body>
-</html>
+
 
 <!--<script src="/js/app/cart-list-quantity.js"></script>-->
 {{>layout/footer}}

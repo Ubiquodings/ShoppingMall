@@ -74,7 +74,7 @@ var userAction = {
 
         });
 
-        // 결재 페이지: 주문
+        // 결제 페이지: 주문
         $(".btn-order-all").on('click', function (e) {
             let shopListIdList = []; // = $("#input-shop-list-id").val(); // get list ? no
             let couponIdList = $("#input-coupon-id").val();
