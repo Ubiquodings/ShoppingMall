@@ -19,6 +19,41 @@ var userAction = {
             // window.location.href=window.location.href;
         });
 
+        /**
+         * 이걸 userAction에 넣어도, cart-list-action.js에 넣어도 상관 없는거같아요.
+         * 장바구니 페이지에서만 적용되는거여서 따로 뺄지 아니면 userAction에 넣을지 고민입니다만
+         * 저는 명령에 따르겠습니다!! 어디든 보기 편한거 같아요.
+         * 일단 주석으로 남겨놓겠습니다.
+         */
+        /*$('.btn-cart-cancel').on('click', function(e) {
+
+            console.log("상품 여러개 delete button click");
+            var shopListId_List = document.getElementsByClassName("cart-item-id");
+            console.log("상품 여러개일때 shopListId length " + shopListId_List.length);
+
+            //delete 버튼의 index를 가져온다.
+            var delete_index = $('.btn-cart-cancel').index($(this)); // 왜 index 0만 되는거지..
+
+            var shopListId = shopListId_List[delete_index].value;
+
+            console.log("delete index " + delete_index);
+            console.log("shopListId " + shopListId);
+
+            /!*$.ajax({
+                type: 'DELETE',
+                url: '/api/carts/'+ shopListId, // order id
+                dataType: 'json',// Accept ?
+                contentType:'application/json; charset=utf-8',
+                // data: JSON.stringify({})
+            }).done(function() {
+                alert('장바구니에서 삭제되었습니다.');
+                window.location.href=window.location.href;
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });*!/
+
+        });*/
+
 
         $(".btn-shoplist").on('click',function(e){ // product-detail 페이지에서 가져와야지 & 및 product-list에서의 장바구니 버튼도.
             var productId = this.children[0].value;
