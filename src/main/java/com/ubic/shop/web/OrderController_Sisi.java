@@ -1,7 +1,7 @@
+/*
 package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
-import com.ubic.shop.domain.Order;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.domain.User;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-public class OrderController {
+public class OrderController_Sisi {
 
     private final OrderService orderService;
     private final UserRepository userRepository;
@@ -36,6 +34,14 @@ public class OrderController {
 
     @GetMapping("/orders")
     public String list(Model model, @LoginUser SessionUser user, HttpServletRequest request) { // 화면 :: 채민
+
+//        if(user != null){
+//            model.addAttribute("userName", user.getName());
+//            model.addAttribute("shopLists", // List<Order> -- Order :: createdDate
+////                    orderService.findAllOrders(user.getId()) // ordered/canceled 모두 포함
+//                    orderService.findAllOrdered(user.getId()) // ordered 만 포함
+//            ); // order status 가 order 인 것만 가져와야 겠는데 ?
+//        }
 
         Long clientId = -1L;
         if (user != null) {
@@ -54,7 +60,9 @@ public class OrderController {
     }
 
     //TODO
-    @GetMapping("/orders/{id}") /*아마 지금 이거 사용안할걸*/
+    @GetMapping("/orders/{id}") */
+/*아마 지금 이거 사용안할걸*//*
+
     public String detail(@PathVariable int id, Model model, @LoginUser SessionUser user) {
         if (user != null) {
             model.addAttribute("userName", user.getName());
@@ -62,7 +70,7 @@ public class OrderController {
         return "order-detail";
     }
 
-    @RequestMapping(value="/payment", method = {RequestMethod.GET, RequestMethod.POST})
+    @GetMapping("/payment")
     public String payment(Model model, @LoginUser SessionUser user, HttpServletRequest request) {
         Long clientId = -1L;
         if (user != null) {
@@ -74,17 +82,17 @@ public class OrderController {
             clientId = nonMember.getId();
         }
 
-        //주문 누른 상품 모두 가져오기.
-        List<Order> allOrdered = orderService.findAllOrdered(clientId);
-        model.addAttribute("shopLists", // List<ShopList>
-                allOrdered);
+        // 장바구니에서 모든 아이템 가져오기
+        List<ShopList> allShopList = shopListService.findAllShopLists(clientId);
+        model.addAttribute("allShopList", allShopList);
 
-        /*List<Long> idList = allOrdered.stream()
-                .map(m -> m.getOrderProducts().getId()) // 각 장바구니 아이템의 상품 아이디 가져오기
+        List<Long> idList = allShopList.stream()
+                .map(m -> m.getProduct().getId()) // 각 장바구니 아이템의 상품 아이디 가져오기
                 .collect(Collectors.toList());
+//        log.info("\nidList: "+)
 
         // 상품 아이디 기반으로 쿠폰 가져오기
-        model.addAttribute("couponList", couponRepository.findByIds(idList));*/
+        model.addAttribute("couponList", couponRepository.findByIds(idList));
 
         return "payment";
     }
@@ -108,4 +116,4 @@ public class OrderController {
         return nonMember;
     }
 
-}
+}*/

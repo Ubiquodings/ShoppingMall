@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -140,6 +141,45 @@ public class RestAPIController {
         // 주문 저장
         orderService.orderOneFromShopList(shopListUserId, product.getId(), count, shopListId);
 
+        return "{}";
+    }
+
+    @PostMapping("/api/orders/AllfromShopList") // 장바구니에서 여러개 주문하는 기능
+    public String orderAllFromShopList(@RequestParam(value="shopListId_List[]") List<Long> shopListId,
+                                    @RequestParam(value="shopListCount_List[]") List<Integer> shopListCount,
+                                    @LoginUser SessionUser user,
+                                    HttpServletRequest request) throws JsonProcessingException {
+
+        String clientId = null;
+        Long shopListUserId;
+        if (user != null) {
+            clientId = user.getId().toString();
+            shopListUserId = user.getId();
+        } else {
+            clientId = request.getSession().getId();
+            User nonMember = getTempUser(request);
+            shopListUserId = nonMember.getId();
+        }
+
+        String action = "order";
+
+        System.out.println("shopListId.size " + shopListId.size());
+
+
+        for(int i=0; i<shopListId.size(); i++) {
+            /*Long shopListId_L = Long.parseLong(shopListId.get(i));*/
+            Long shopListId_L = shopListId.get(i);
+            ShopList shopList = shopListRepository.findById(shopListId_L).get();
+            Product product = shopList.getProduct();
+
+            kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
+
+            /*int shopListCount_I = Integer.parseInt(shopListCount.get(i));*/
+            int shopListCount_I = shopListCount.get(i);
+
+            // 주문 저장
+            orderService.orderAllFromShopList(shopListUserId, product.getId(), shopListCount_I, shopListId_L);
+        }
         return "{}";
     }
 

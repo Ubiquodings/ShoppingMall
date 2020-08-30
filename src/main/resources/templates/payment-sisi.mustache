@@ -1,0 +1,33 @@
+{{>layout/header}}
+여기는 결재 페이지<br/>
+
+- 장바구니에 있는 모든 상품을 가져옵니다
+{{#allShopList}}
+    <div class="row">
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <input type="hidden" value="{{id}}" class="input-shop-list-id"/>
+                <h5 class="card-title">{{product.name}}</h5>
+                <h5 class="card-title">{{count}}</h5>
+            </div>
+        </div>
+    </div>
+{{/allShopList}}
+
+- 가져온 상품 관련 쿠폰을 가져옵니다
+{{#couponList}} <!--List<Coupon>-->
+<div class="row">
+    <div class="card" style="width: 100%;">
+        <input type="hidden" value="{{id}}" class="input-coupon-id"/>
+        <div class="card-body">
+            <h5 class="card-title">{{id}}</h5> <!--id 확인테스트-->
+            <h5 class="card-title">{{name}}</h5>
+        </div>
+    </div>
+</div>
+{{/couponList}}
+
+
+- 최종 주문 버튼을 누르면, 장바구니의 모든 아이템이 삭제되고 주문처리됩니다<br/>
+<button type="button" class="btn btn-primary btn-lg btn-order-all">주문</button>
+{{>layout/footer}}
