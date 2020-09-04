@@ -138,6 +138,9 @@ public class ProductController {
 
         // 검색어 형태소 분석
         List<String> result = tagService.stemmingProductInfo(searchText);
+        if(result == null){
+            return "product-list";
+        }
         // 한번에 찾아오는 기능 시도
 
 //        log.info("\nsearch result size: "+result.size()); // 2 ok
