@@ -108,6 +108,7 @@ public class SocketController {
             log.info("has content");
         } else {
             log.info("has not content");
+            return;
         }
         long pageCount = productPageFindByCategoryId.getTotalPages(); // 해당 카테고리 전체 페이지 수
         log.info("pageCount: " + pageCount);

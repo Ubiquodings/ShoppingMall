@@ -33,7 +33,7 @@ product-detail
         /*border-bottom:2px dashed #337AB7;*/
     }
 
-    .modal-content{
+    .modal-font{
         font-family: 'Do Hyeon', sans-serif;
     }
 </style>
@@ -178,18 +178,29 @@ product-detail
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">장바구니 이동</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><p class="modal-font"> 장바구니 이동</p></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <p class="modal-font">
                 장바구니에 상품이 담겼습니다. <br />
                 장바구니로 이동하시겠습니까?
+                </p>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-warning" href="/carts" role="button">장바구니로 이동</a>
-                <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
+                <p class="modal-font">
+                    <!-- 1. 글꼴 적용이 안되서 다른방법 시도-->
+                    <!--<a class="btn btn-warning" href="/carts" role="button">장바구니로 이동</a>-->
+
+                    <!--2. 이렇게 했는데 /carts로 이동을 안한다 ㅎㅎ...-->
+                    <!--<a href="/carts"><button type="button" class="btn btn-warning" data-dismiss="modal">장바구니로 이동</button></a>-->
+
+                    <!-- 3. 구글링으로..-->
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="location.href='/carts'">장바구니로 이동</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
+                </p>
             </div>
         </div>
     </div>

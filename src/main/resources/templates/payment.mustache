@@ -1,16 +1,16 @@
 {{>layout/header}}
 여기는 결재 페이지<br/>
 
-{{#shopLists}} <!--List<Order>-->
+{{#allPayments}} <!--List<Order>-->
 
 <input type="hidden" value="{{id}}" id="input-order-id"/> <!-- Order 의 id -->
 
-{{#orderProducts}} <!--loop ? ok--> <!--List<OrderProduct>-->
 <div class="row" id="order-list-row">
     <div class="card" style="width: 100%;">
         <div class="card-body">
             <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
-            <h5 class="card-title">{{count}}</h5>
+            <h5 class="card-title">상품 원가 : {{product.price}}</h5>
+            <h5 class="card-title">개수 : {{count}}</h5>
             <!--            <button type="button" class="btn btn-primary btn-lg" id="btn-cart-order">주문</button>-->
             <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
             <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
@@ -31,8 +31,7 @@
 
     </div>
 </div>
-{{/orderProducts}}
-{{/shopLists}}
+{{/allPayments}}
 
 - 가져온 상품 관련 쿠폰을 가져옵니다
 {{#couponList}} <!--List<Coupon>-->

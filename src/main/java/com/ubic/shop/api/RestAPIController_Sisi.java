@@ -1,3 +1,4 @@
+/*
 package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,7 +9,6 @@ import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.*;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
-import com.ubic.shop.repository.PaymentRepository;
 import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.*;
@@ -20,21 +20,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-public class RestAPIController {
+public class RestAPIController_Sisi {
 
     Logger logger = LoggerFactory.getLogger(RestAPIController.class);
 
     private final ProductService productService;
     private final ShopListService shopListService;
     private final ShopListRepository shopListRepository;
-    private final PaymentService paymentService;
-    private final PaymentRepository paymentRepository;
     private final OrderService orderService;
     private final ProductCategoryService productCategoryService;
     private final CategorySevice categoryService;
@@ -62,8 +59,10 @@ public class RestAPIController {
 
     // CartOrderRequestDto : Long productId
     @PostMapping("/api/carts/new/{id}") // TODO  restful 하진 않다
-    /*public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
-                       HttpServletRequest request) throws JsonProcessingException {*/
+    */
+/*public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
+                       HttpServletRequest request) throws JsonProcessingException {*//*
+
     public String cart(@PathVariable(name = "id") Long productId, @RequestBody int count,
                        @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
@@ -83,7 +82,9 @@ public class RestAPIController {
 
         String action = "cart";
         Product product = productService.findById(productId);
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product*/
+/*.getCategory()*//*
+.getId()));
 
         //Long count = shopListService.findAllShopLists()
         // 장바구니 저장
@@ -150,58 +151,6 @@ public class RestAPIController {
         return "{}";
     }
 
-    @PostMapping("/api/orders/AllfromShopList") // 장바구니에서 여러개 주문하는 기능
-    /*public String orderAllFromShopList(@RequestBody(value="shopListId_List[]") List<Long> shopListId,
-                                    @RequestBody(value="shopListCount_List[]") List<Integer> shopListCount,
-                                    @LoginUser SessionUser user,
-                                    HttpServletRequest request) throws JsonProcessingException {*/
-    public String orderAllFromShopList(@RequestBody List<String> FromShopList,
-                                       @LoginUser SessionUser user,
-                                       HttpServletRequest request) throws JsonProcessingException {
-
-        String clientId = null;
-        Long paymentUserId;
-        if (user != null) {
-            clientId = user.getId().toString();
-            paymentUserId = user.getId();
-        } else {
-            clientId = request.getSession().getId();
-            User nonMember = getTempUser(request);
-            paymentUserId = nonMember.getId();
-        }
-
-        //String action = "order"; // 이건 어떤 역할을 하는거지?
-
-
-        System.out.println("리스트 사이즈" + FromShopList.size());
-        for(int i=0; i<FromShopList.size(); i=i+2) {
-
-            System.out.println("==========================================================================");
-            System.out.println(i + "FromShopList.get(i)" + FromShopList.get(i));
-            System.out.println(i + "Long.parseLong(FromShopList.get(i))" + Long.parseLong(FromShopList.get(i)));
-            System.out.println(i + "Integer.parseInt(FromShopList.get(i+1))" + Integer.parseInt(FromShopList.get(i+1)));
-            System.out.println("==========================================================================");
-            Long shopListId_L = Long.parseLong(FromShopList.get(i));
-            ShopList shopList = shopListRepository.findById(shopListId_L).get();
-            Product product = shopList.getProduct();
-
-            //정보가 없는데 가져오라고 한건가..? ㅎ..
-            /*Payment payment_list = paymentRepository.findById(shopListId_L).get();
-            Product product = payment_list.getProduct();*/
-
-            //kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
-
-            /*int shopListCount_I = Integer.parseInt(shopListCount.get(i));*/
-            int shopListCount_I = Integer.parseInt(FromShopList.get(i+1));
-
-            // 주문 저장
-            /*orderService.orderAllFromShopList(shopListUserId, product.getId(), shopListCount_I, shopListId_L);*/
-            paymentService.payment(paymentUserId, product.getId(), shopListCount_I);
-
-        }
-        return "{}";
-    }
-
     @PostMapping("/api/orderAll") // TODO  restful 하진 않다
     public String orderAll(OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
@@ -247,7 +196,9 @@ public class RestAPIController {
         logger.info("\n/click " + productId);
         Product product = productService.findById(productId);
 
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product*/
+/*.getCategory()*//*
+.getId()));
 
         return "{}";
     }
@@ -270,7 +221,9 @@ public class RestAPIController {
         logger.info("\n/hover " + productId);
         Product product = productService.findById(productId);
 
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product*/
+/*.getCategory()*//*
+.getId()));
 
         return "{}";
     }
@@ -329,4 +282,4 @@ public class RestAPIController {
 //        return "{}";
 //    }
 }
-
+*/

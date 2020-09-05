@@ -11,7 +11,6 @@ product-list
 
 product-list
 
-
 <script>
     $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
@@ -38,7 +37,7 @@ product-list
         /*border-bottom:2px dashed #337AB7;*/
     }
 
-    .modal-content{
+    .modal-font {
         font-family: 'Do Hyeon', sans-serif;
     }
 </style>
@@ -105,22 +104,32 @@ product-list
                                                                 &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
                                                             </div>
                                 -->
+                                <div>
+                                    <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
+                                    {{#ProductTagList}}<!--style="border:1px solid plum"-->
+                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>
+                                    {{/ProductTagList}}
+                                </div>
                             </div>
                         </div>
 
                         <div class="m-t text-left">
+
                             <!--<button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">-->
                             <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist"
                                     data-toggle="modal" data-target="#exampleModal">
+
                                 <input type="hidden" value="{{id}}" id="product-detail-id"/>
                                 <!--<input type="hidden" value= "1"/>-->
-                                <input type="hidden" id="count" value= "1"/>
-                                장바구니</button>
+                                <input type="hidden" id="count" value="1"/>
+                                장바구니
+                            </button>
                             <!--<a href="#" class="" >장바구니 </a>-->
                         </div>
 
                     </div>
                 </div>
+
             </div>
         {{/products}}
 
@@ -134,22 +143,46 @@ product-list
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">장바구니 이동</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><p class="modal-font">장바구니 이동</p></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <p class="modal-font">
                         장바구니에 상품이 담겼습니다. <br />
                         장바구니로 이동하시겠습니까?
+                        </p>
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-warning" href="/carts" role="button">장바구니로 이동</a>
-                        <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
+                        <p class="modal-font">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="location.href='/carts'">장바구니로 이동</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal HTML -->
+        <!--https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=elegant-success-modal-->
+        <!--<div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <div class="icon-box">
+                            <i class="material-icons">&#xE876;</i>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h4>Great!</h4>
+                        <p>Your account has been created successfully.</p>
+                        <button class="btn btn-success" data-dismiss="modal"><span>Start Exploring</span> <i class="material-icons">&#xE5C8;</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
     </div>
     <!--
         <nav aria-label="Page navigation example">
