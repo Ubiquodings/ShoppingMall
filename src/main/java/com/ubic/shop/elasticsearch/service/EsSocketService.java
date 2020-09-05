@@ -21,7 +21,7 @@ public class EsSocketService {
     private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장 ?
 
     public long plusUserCount(long productId, long count) {
-        log.info("\nplusUserCount : count : "+count);
+        log.info("\nplusUserCount : count : " + count);
 
         // 업데이트
         // 기존 es 객체 가져와야 한다

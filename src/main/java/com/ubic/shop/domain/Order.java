@@ -1,4 +1,5 @@
 package com.ubic.shop.domain;
+
 import lombok.*;
 //import org.springframework.data.annotation.Id;
 
@@ -14,10 +15,11 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "order_id")
     private Long id;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; //주문 회원
@@ -46,7 +48,10 @@ public class Order extends BaseTimeEntity {
     }
 
     //==비즈니스 로직==//
-    /** 주문 취소 */
+
+    /**
+     * 주문 취소
+     */
     public void cancel() { // TODO  Delivery 추가 ?
 //        if (delivery.getStatus() == DeliveryStatus.COMP) {
 //            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니
@@ -59,7 +64,10 @@ public class Order extends BaseTimeEntity {
     }
 
     //==조회 로직==//
-    /** 전체 주문 가격 조회 */
+
+    /**
+     * 전체 주문 가격 조회
+     */
     public int getTotalPrice() {
         int totalPrice = 0;
         for (OrderProduct orderProduct : orderProducts) {

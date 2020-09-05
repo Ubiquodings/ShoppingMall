@@ -90,6 +90,7 @@ public class ProductController {
 
     }
 
+
     @GetMapping("/products/{id}")
     public String detail(@PathVariable Long id, Model model, @LoginUser SessionUser user,
                          @RequestParam(name = "page", defaultValue = "0") String page,
@@ -116,6 +117,7 @@ public class ProductController {
         model.addAttribute("recommendedList", recommendService.getRecommendList(clientId, page));
         return "product-detail";
     }
+
 
     List<Tag> byName = new ArrayList<>();
 

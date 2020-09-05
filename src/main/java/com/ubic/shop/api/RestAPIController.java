@@ -247,7 +247,6 @@ public class RestAPIController {
     }
 
 
-
 //    @GetMapping("/api/search")
 //    public String search(@RequestParam("keyword") String keyword,
 //                         @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {

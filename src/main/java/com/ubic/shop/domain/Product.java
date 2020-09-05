@@ -1,4 +1,5 @@
 package com.ubic.shop.domain;
+
 import com.ubic.shop.exception.NotEnoughStockException;
 import lombok.*;
 
@@ -19,12 +20,12 @@ public class Product extends BaseTimeEntity {
 
     private String name;
     private int price;
-    private int stockQuantity=50;
+    private int stockQuantity = 50;
 
     private String description;
     private String imgUrl;
 
-//    @OneToMany
+    //    @OneToMany
 //    @JoinColumn(name = "order_id")
 //    private List<ProductCategory> productCategories = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -67,22 +68,23 @@ public class Product extends BaseTimeEntity {
         this.category = category; // 이렇게가 안먹히네!
         this.imgUrl = imgUrl;
     }
-/*
-*     //==생성 메서드==//
-    public static OrderProduct createOrderProduct(Product product, int orderPrice, int count) {
-        OrderProduct orderProduct = new OrderProduct();
-        orderProduct.setProduct(product); //
-        orderProduct.setOrderPrice(orderPrice);
-        orderProduct.setCount(count);
-        product.removeStock(count);
-        return orderProduct;
-    }
 
-* */
+    /*
+    *     //==생성 메서드==//
+        public static OrderProduct createOrderProduct(Product product, int orderPrice, int count) {
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setProduct(product); //
+            orderProduct.setOrderPrice(orderPrice);
+            orderProduct.setCount(count);
+            product.removeStock(count);
+            return orderProduct;
+        }
+    
+    * */
     //==생성 메서드==//
     public static Product createProduct(String name, int price, int stockQuantity,
                                         String description, String imgUrl,
-                                        Category category){
+                                        Category category) {
         Product product = new Product();
         product.setName(name);
         product.setPrice(price);

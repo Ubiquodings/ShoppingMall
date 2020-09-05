@@ -18,31 +18,31 @@ cart-list
                 var sell_price;
                 var amount;
 
-                function init () {
+                function init() {
                     sell_price = document.form.sell_price.value;
                     amount = document.form.amount.value;
                     document.form.sum.value = sell_price;
                     change();
                 }
 
-                function add () {
+                function add() {
                     hm = document.form.amount;
                     sum = document.form.sum;
-                    hm.value ++ ;
+                    hm.value++;
 
                     sum.value = parseInt(hm.value) * sell_price;
                 }
 
-                function del () {
+                function del() {
                     hm = document.form.amount;
                     sum = document.form.sum;
                     if (hm.value > 1) {
-                        hm.value -- ;
+                        hm.value--;
                         sum.value = parseInt(hm.value) * sell_price;
                     }
                 }
 
-                function change () {
+                function change() {
                     hm = document.form.amount;
                     sum = document.form.sum;
 
@@ -51,6 +51,7 @@ cart-list
                     }
                     sum.value = parseInt(hm.value) * sell_price;
                 }
+
                 //-->
             </script>
             <form name="form" method="get">
@@ -61,7 +62,8 @@ cart-list
                 <!--<h5 class="card-title" name="sum"></h5>-->
             </form>
 
-            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{product.id}}"/>주문</button>
+            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value="{{product.id}}"/>주문
+            </button>
             <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
             <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
         </div>
@@ -75,15 +77,17 @@ cart-list
 <link rel="stylesheet" type="text/css" href="/css/cart-list-quantity.css">
 
 <style>
-    body{
+    body {
         background-color: #f5f5f5;
     }
-    .Product-img img{
+
+    .Product-img img {
         width: 100%;
     }
-    .main-section{
+
+    .main-section {
         font-family: 'Roboto Condensed', sans-serif;
-        margin-top:100px;
+        margin-top: 100px;
     }
 
 </style>
@@ -92,7 +96,8 @@ cart-list
 <head>
     <title> 장바구니</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="custom.css">
 
@@ -152,19 +157,19 @@ cart-list
                             <!--<body onload="init();">-->
                             <script language="JavaScript">
 
-                                $(document).ready(function() {
+                                $(document).ready(function () {
                                     init();
                                 });
 
                                 var sell_price;
                                 var amount;
                                 //var sum;
-                                var i=0;
+                                var i = 0;
 
-                                for(var i=0;i<1;i++){
+                                for (var i = 0; i < 1; i++) {
 
 
-                                    function init () {
+                                    function init() {
                                         sell_price = document.form[0].sell_price.value;
                                         //sell_price=document.getElementById("sell_price").value;
                                         amount = document.form[0].amount.value;
@@ -173,24 +178,24 @@ cart-list
                                         change();
                                     }
 
-                                    function add () {
+                                    function add() {
                                         hm = document.form[0].amount;
                                         sum = document.form[0].sum;
-                                        hm.value ++ ;
+                                        hm.value++;
 
                                         sum.value = parseInt(hm.value) * sell_price;
                                     }
 
-                                    function del () {
+                                    function del() {
                                         hm = document.form[0].amount;
                                         sum = document.form[0].sum;
                                         if (hm.value > 1) {
-                                            hm.value -- ;
+                                            hm.value--;
                                             sum.value = parseInt(hm.value) * sell_price;
                                         }
                                     }
 
-                                    function change () {
+                                    function change() {
                                         sell_price = document.form[0].sell_price.value;
                                         amount = document.form[0].amount.value;
                                         document.form[0].sum.value = sell_price;
@@ -209,7 +214,6 @@ cart-list
                                 }
 
 
-
                                 //-->
                             </script>
 
@@ -221,16 +225,18 @@ cart-list
                                 <td data-th="Quantity">
                                     <div class="quantity">
 
-                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >
+                                        <button class="minus-btn" type="button" name="button" value=" - "
+                                                onclick="del();">
 
-                                            <img src="/icon/minus-cartlist.svg" alt="" />
+                                            <img src="/icon/minus-cartlist.svg" alt=""/>
                                         </button>
 
                                         <input type="text" name="amount" value="{{count}}" onchange="change();">
 
-                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
+                                        <button class="plus-btn" type="button" name="button" value=" + "
+                                                onclick="add();">
 
-                                            <img src="/icon/plus-cartlist.svg" alt="" />
+                                            <img src="/icon/plus-cartlist.svg" alt=""/>
                                         </button>
                                     </div>
                                 </td>

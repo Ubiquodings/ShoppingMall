@@ -19,7 +19,7 @@ public class CategorySaveRequestDto {
     }
 
     @Builder
-    public CategorySaveRequestDto(long kurlyId,String name) {
+    public CategorySaveRequestDto(long kurlyId, String name) {
         this.kurlyId = kurlyId;
         this.name = name;
     }

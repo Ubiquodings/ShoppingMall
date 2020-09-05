@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.2.RELEASE' //2.1.13.
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.2.2.RELEASE' //2.1.13.
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
 }
 
 group = 'com.ubic'
@@ -9,49 +9,49 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	implementation 'org.springframework.kafka:spring-kafka'  // kafka
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2:1.4.199' // 1.4.199
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
-	compile('org.webjars:stomp-websocket:2.3.3')
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
-	compile('org.springframework.session:spring-session-jdbc')
+    implementation 'org.springframework.kafka:spring-kafka'  // kafka
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2:1.4.199' // 1.4.199
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    compile('org.webjars:stomp-websocket:2.3.3')
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
+    compile('org.springframework.session:spring-session-jdbc')
 
-	// input excel file
-	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
-	compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    // input excel file
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
-	// elastic search
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    // elastic search
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
 // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
-	compile group: 'org.elasticsearch', name: 'elasticsearch', version: '6.8.5'
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '6.8.5'
 
-	// websocket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-	//mariadb
-	implementation 'org.mariadb.jdbc:mariadb-java-client'
+    //mariadb
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
 }

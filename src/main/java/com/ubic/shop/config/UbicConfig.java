@@ -13,6 +13,6 @@ public class UbicConfig {
     public int productDetailPageSize = 20;
     public String baseUrl = "http://localhost:8080";
 
-//    @Value("${spring.profile.value}")
+    //    @Value("${spring.profile.value}")
     private String djangoServerUrl;
 }

@@ -22,14 +22,14 @@ public class ProductSaveRequestDto {
     private String description;
     private String imgUrl;
 
-//    private List<String> categoryList;
+    //    private List<String> categoryList;
     private Long categoryId; // category 먼저 setting 하고, product input 할 때 category id 기반으로 삽입하기
 
     public Product toEntity(Category category) {
 //        Category category =
         /*
-        * String name, price, stockQuantity, description, imgUrl, category
-        * */
+         * String name, price, stockQuantity, description, imgUrl, category
+         * */
         return Product.createProduct(name, price, stockQuantity, description, imgUrl, category);/*.builder()
                 .name(name)
                 .price(price)

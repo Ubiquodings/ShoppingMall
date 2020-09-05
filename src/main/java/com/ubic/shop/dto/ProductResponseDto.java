@@ -20,7 +20,7 @@ public class ProductResponseDto {
         this.price = entity.getPrice();
         this.stockQuantity = entity.getStockQuantity();
         categoryId = entity.getCategory().getId();
-        description=entity.getDescription();
+        description = entity.getDescription();
         imgUrl = entity.getImgUrl();
     }
 }

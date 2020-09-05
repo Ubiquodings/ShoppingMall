@@ -26,7 +26,7 @@ public class ShopListController {
     private final UserRepository userRepository;
 
     @GetMapping("/carts")
-    public String list(Model model, @LoginUser SessionUser user, HttpServletRequest request){
+    public String list(Model model, @LoginUser SessionUser user, HttpServletRequest request) {
 
 //        if(user != null){
 //            model.addAttribute("userName", user.getName());
@@ -35,12 +35,12 @@ public class ShopListController {
 //        }
 
         Long clientId = -1L;
-        if(user != null){
+        if (user != null) {
             model.addAttribute("userName", user.getName());
             clientId = user.getId();
-        }else{ // 해시코드 다섯글자만 추출하기
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getId();
         }
         model.addAttribute("shopLists", // List<ShopList>
@@ -59,9 +59,9 @@ public class ShopListController {
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User nonMember=null;
-        if(session.isNew()){
-            log.info("\nsession is new : "+session.getId());
+        User nonMember = null;
+        if (session.isNew()) {
+            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -70,7 +70,7 @@ public class ShopListController {
                     .role(Role.GUEST)
                     .build();
             userRepository.save(nonMember);
-        }else{ // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
+        } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;

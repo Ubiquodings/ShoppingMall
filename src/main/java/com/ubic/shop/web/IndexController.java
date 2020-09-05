@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class IndexController {
 
-//    private final SessionRepository sessionRepository; // 주입해주나 ?
+    //    private final SessionRepository sessionRepository; // 주입해주나 ?
     private final UserRepository userRepository;
 
 //    private final FindByIndexNameSessionRepository sessionRepository;
@@ -36,13 +36,13 @@ public class IndexController {
     @Transactional
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user, /*HttpSession session, */
-                        HttpServletRequest request){
+                        HttpServletRequest request) {
 
-        if(user != null){
+        if (user != null) {
             model.addAttribute("userName", user.getName());
-        }else{ // 해시코드 다섯글자만 추출하기
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
         }
 
         return "index";
@@ -50,9 +50,9 @@ public class IndexController {
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User nonMember=null;
-        if(session.isNew()){
-            log.info("\nsession is new : "+session.getId());
+        User nonMember = null;
+        if (session.isNew()) {
+            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -61,7 +61,7 @@ public class IndexController {
                     .role(Role.GUEST)
                     .build();
             userRepository.save(nonMember);
-        }else{ // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
+        } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;

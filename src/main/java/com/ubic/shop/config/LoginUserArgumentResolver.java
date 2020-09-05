@@ -21,7 +21,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        log.info("\n supportsParameter session id : "+httpSession.getId());
+        log.info("\n supportsParameter session id : " + httpSession.getId());
 
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
         boolean isUserClass = SessionUser.class.equals(parameter.getParameterType());
@@ -30,7 +30,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        log.info("\n resolveArgument session id : "+httpSession.getId());
+        log.info("\n resolveArgument session id : " + httpSession.getId());
         return httpSession.getAttribute("user");
     }
 }

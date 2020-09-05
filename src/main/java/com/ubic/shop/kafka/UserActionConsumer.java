@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class UserActionConsumer {
 
     private final ObjectMapper objectMapper;
-//    private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장 ?
+    //    private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장 ?
     private final ElasticSearchService elasticSearchService;
 
     @KafkaListener(topics = {"ubic-shop-test"}, containerFactory = "defaultKafkaListenerContainerFactory")

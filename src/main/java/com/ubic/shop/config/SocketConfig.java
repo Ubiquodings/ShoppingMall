@@ -91,9 +91,9 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
             return message;
         }
 
-        private Long getHeaderValue(Message<?> message, String keyName){
-            Map header = (Map)message.getHeaders().get("nativeHeaders");
-            if(header==null){
+        private Long getHeaderValue(Message<?> message, String keyName) {
+            Map header = (Map) message.getHeaders().get("nativeHeaders");
+            if (header == null) {
                 return -1L;
             }
             log.info("\nsocket subscribed : header - " + header.toString());
@@ -101,9 +101,10 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
             List<Long> listId;
             Long productId = -1L;
             assert header != null;
-            if(header.containsKey(keyName)){
+            if (header.containsKey(keyName)) {
                 try {
-                    listId = objectMapper.readValue(header.get(keyName).toString(), new TypeReference<List<Long>>(){});
+                    listId = objectMapper.readValue(header.get(keyName).toString(), new TypeReference<List<Long>>() {
+                    });
                     productId = listId.get(0); // Integer ? - Long 으로 타입변화하자 ?
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();

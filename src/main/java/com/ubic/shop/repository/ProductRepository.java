@@ -20,7 +20,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     List<Product> findByName(String name);
 
-    @Query(value="select * from Product limit 40", nativeQuery = true)
+    @Query(value = "select * from Product limit 40", nativeQuery = true)
     List<Product> findDefaultProducts();
 
     // 카운트 쿼리 분리
@@ -34,7 +34,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     // 이렇게 하면 전체 product 개수를 세는 함수인데!
     long countByCategoryId(Long categoryId);
 
-    @Query(value="select p from Product p where :results in p.ProductTagList")
+    @Query(value = "select p from Product p where :results in p.ProductTagList")
     List<Product> findBystemmingResults(@Param("results") String stemmingResults);
 
 

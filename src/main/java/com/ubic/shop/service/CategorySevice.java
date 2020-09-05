@@ -23,7 +23,7 @@ public class CategorySevice {
     @Transactional
     public Category saveCategory(CategorySaveRequestDto requestDto) {
         Category category = requestDto.toEntity();
-        if(!validateDuplicateCategory(category)){ // false 이면
+        if (!validateDuplicateCategory(category)) { // false 이면
             return null;
         } //중복 카테고리 검증 true 이면 정상
         return categoryRepository.save(category);
@@ -32,7 +32,7 @@ public class CategorySevice {
     private boolean validateDuplicateCategory(Category category) {
 //        List<Category> findCategoryList
         Optional<Category> optionalCategory = categoryRepository.findByKurlyId(category.getKurlyId());
-        if(optionalCategory.isPresent()){ // 존재한다
+        if (optionalCategory.isPresent()) { // 존재한다
             log.info("\n존재하는 카테고리 {}", optionalCategory.get().getName());
             return false;//throw new IllegalStateException("이미 존재하는 카테고리입니다.");
         }
@@ -42,9 +42,9 @@ public class CategorySevice {
 //        }
     }
 
-    public Category getCategoryById(Long categoryId){
+    public Category getCategoryById(Long categoryId) {
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
-        if(optionalCategory.isPresent()){ // 존재한다
+        if (optionalCategory.isPresent()) { // 존재한다
             return optionalCategory.get();
         }
         return null;
@@ -52,7 +52,7 @@ public class CategorySevice {
 
     public Category getCategoryByKurlyId(Long categoryId) {
         Optional<Category> optionalCategory = categoryRepository.findByKurlyId(categoryId);
-        if(optionalCategory.isPresent()){ // 존재한다
+        if (optionalCategory.isPresent()) { // 존재한다
             return optionalCategory.get();
         }
         return null;

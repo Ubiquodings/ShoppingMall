@@ -79,12 +79,12 @@ public class ExcelController {
                     .imgUrl(row.getCell(6).getStringCellValue())
                     .build();
 
-            try{
+            try {
                 ProductSaveRequestDto result = restTemplate.postForObject(
                         ubicConfig.baseUrl + "/api/products/new",
                         requestDto, ProductSaveRequestDto.class);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 return;
             }
 //            if (result != null)

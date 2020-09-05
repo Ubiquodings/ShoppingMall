@@ -12,7 +12,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Document(indexName="ubic_product_user_number", type="_doc")
+@Document(indexName = "ubic_product_user_number", type = "_doc")
 public class ProductPageUserNumber {
-    private HashMap<Long,Long> userNumber = new HashMap<>(); // 인덱스 생성
+    private HashMap<Long, Long> userNumber = new HashMap<>(); // 인덱스 생성
 }

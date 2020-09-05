@@ -24,7 +24,7 @@ public class DefaultConsumerConfig {
 
     /**
      * for <String, String>
-     * */
+     */
     @Bean
     public Map<String, Object> defaultConsumerConfigs() {
         KafkaProperties.Consumer consumerProps = kafkaProperties.getConsumer();
@@ -35,14 +35,14 @@ public class DefaultConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String,String> defaultConsumerFactory() {
+    public ConsumerFactory<String, String> defaultConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(defaultConsumerConfigs(), new StringDeserializer(), new StringDeserializer()); // 여기에 key/value deserilaizer 추가하면 될듯!
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String,String>> defaultKafkaListenerContainerFactory() {
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> defaultKafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<String,String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(defaultConsumerFactory());
         factory.setConcurrency(1);
         return factory;
@@ -50,7 +50,7 @@ public class DefaultConsumerConfig {
 
     /**
      * for <String, Long>
-     * */
+     */
     @Bean
     public Map<String, Object> consumerConfigs() {
         KafkaProperties.Consumer consumerProps = kafkaProperties.getConsumer();
@@ -61,14 +61,14 @@ public class DefaultConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String,Long/*String,String*/> consumerFactory() {
+    public ConsumerFactory<String, Long/*String,String*/> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(), new LongDeserializer()); // 여기에 key/value deserilaizer 추가하면 될듯!
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String,Long>>/*ConcurrentKafkaListenerContainerFactory<String,Long>*/
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Long>>/*ConcurrentKafkaListenerContainerFactory<String,Long>*/
     kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String,Long> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, Long> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(1);
 

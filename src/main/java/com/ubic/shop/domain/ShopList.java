@@ -1,4 +1,5 @@
 package com.ubic.shop.domain;
+
 import lombok.*;
 //import org.springframework.data.annotation.Id;
 
@@ -13,7 +14,8 @@ import java.util.List;
 @Table(name = "shop_list")
 public class ShopList extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "shop_list_id")
     private Long id;
 

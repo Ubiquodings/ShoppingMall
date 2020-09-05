@@ -30,8 +30,8 @@ var productSocket = {
             }, {"productId": productId});
 
             /*[구독] 해당 유저에게만 추천 목록 갱신*/
-            stompClient.subscribe('/topic/products/'+userId, function (result) {
-                let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
+            stompClient.subscribe('/topic/products/' + userId, function (result) {
+                let resultList = JSON.parse(result.body); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
                 // 결과로 화면 조작
@@ -39,13 +39,13 @@ var productSocket = {
             }, {});
 
             /*[구독] 망설이지마세요 쿠폰*/
-            stompClient.subscribe('/topic/coupons/'+userId, function (result) {
-                result = JSON.parse(result.body ); /*JSON.stringify(*/
-                console.log('/topic/coupons/{userId} 결과 :  \n'+ result);
+            stompClient.subscribe('/topic/coupons/' + userId, function (result) {
+                result = JSON.parse(result.body); /*JSON.stringify(*/
+                console.log('/topic/coupons/{userId} 결과 :  \n' + result);
 
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
-                $("#btn-my-coupons").css("color","red");
+                $("#btn-my-coupons").css("color", "red");
                 // alert('쿠폰이 발급되었습니다!');
             }, {});
 
@@ -75,21 +75,21 @@ var productSocket = {
         userNumberDiv.innerHTML = "";
         userNumberDiv.innerHTML += `${number} 명`;
     },
-    setSchedulingTasks: function(stompClient, userId, currentPage){
+    setSchedulingTasks: function (stompClient, userId, currentPage) {
         // 추천 목록 주기적 요청
-        setInterval(function(){
+        setInterval(function () {
             currentPage += 1
             // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
-            stompClient.send('/app/products/' + userId + '/page/'+currentPage,
+            stompClient.send('/app/products/' + userId + '/page/' + currentPage,
                 {}, {});
         }, 2000);
     },
-    updateRecommendedList: function(resultList){
+    updateRecommendedList: function (resultList) {
         let _this = this;
         let recomList = document.querySelector('div.recommended-product-list');
         recomList.innerHTML = "";
 
-        Array.from(resultList).forEach((product)=>{
+        Array.from(resultList).forEach((product) => {
             // console.log(product); // ok
             /*
 {categoryId: 1
@@ -109,7 +109,7 @@ stockQuantity: 50}
             recomList.innerHTML += _this.buildHTML(id, imgUrl, name, price, description); // 출력 ok
         });
     },
-    buildHTML: function(id, imgUrl, name, price, description){
+    buildHTML: function (id, imgUrl, name, price, description) {
 
         return `<div class="col-md-3 product-list-card-body">
             <input type="hidden" value="${id}"/>
@@ -137,8 +137,8 @@ stockQuantity: 50}
             </div>
         </div>`
     },
-    requestDoNotHesitateCoupon: function(stompClient, userId, productId){
-        setTimeout(function(){
+    requestDoNotHesitateCoupon: function (stompClient, userId, productId) {
+        setTimeout(function () {
             console.log('망설이지마세요 쿠폰 요청');
             stompClient.send('/app/coupons/' + userId,
                 {}, JSON.stringify({ // body 에 string 처리 꼭 해줘야하는구나!

@@ -4,6 +4,7 @@
     font-family: 'Roboto', sans-serif;
     /*width: 80px;*/
 }
+
 .quantity input {
     -webkit-appearance: none;
     border: none;
@@ -23,6 +24,7 @@
     font-weight: bold;
     width: 80px;
 }
+
 .product_total_price input {
     /*-webkit-appearance: none;*/
     border: none;
@@ -45,6 +47,7 @@
 
     /*float: right;*/
 }
+
 .minus-btn {
     width: 20px;
     height: 20px;
@@ -62,14 +65,16 @@
     border: none;
     cursor: pointer;
 }
+
 .minus-btn img {
     margin-bottom: 3px;
 }
+
 .plus-btn img {
     margin-top: 0px;
 }
 
 button:focus,
 input:focus {
-    outline:0;
+    outline: 0;
 }

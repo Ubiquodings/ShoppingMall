@@ -6,6 +6,7 @@ import lombok.Setter;
 //import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+
 @NoArgsConstructor
 @Entity
 @Table(name = "shop_list_product")
@@ -40,13 +41,19 @@ public class ShopListProduct extends BaseTimeEntity {
     }
 
     //==비즈니스 로직==//
-    /** 주문 취소 */
+
+    /**
+     * 주문 취소
+     */
     public void cancel() {
 //        getProduct().addStock(count);
     }
 
     //==조회 로직==//
-    /** 주문상품 전체 가격 조회 */
+
+    /**
+     * 주문상품 전체 가격 조회
+     */
     public int getTotalPrice() {
         return getShopListPrice() * getCount();
     }

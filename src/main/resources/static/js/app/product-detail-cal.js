@@ -1,5 +1,5 @@
 var countCal = {
-    init: function(){
+    init: function () {
         $(document).ready(function () { // 문서가 준비되면
             init();
         });

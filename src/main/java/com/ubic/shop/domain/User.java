@@ -14,7 +14,8 @@ import javax.persistence.Id;
 @Setter(AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 
@@ -23,13 +24,13 @@ public class User extends BaseTimeEntity {
     private String picture;
     private Role role;
 
-    public User update(String name, String picture){
+    public User update(String name, String picture) {
         this.name = name;
         this.picture = picture;
         return this;
     }
 
-    public String getRoleKey(){
+    public String getRoleKey() {
         return this.role.getKey();
     }
 

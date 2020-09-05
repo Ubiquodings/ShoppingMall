@@ -33,7 +33,7 @@ public class ElasticSearchService {
         String actionType = received.getActionType();
 
         long score = 0;
-        switch (actionType){
+        switch (actionType) {
             case "click":
                 score = 1;
                 break;
@@ -53,16 +53,16 @@ public class ElasticSearchService {
         Long categoryId = product.getCategory().getId();
 
         HashMap<Long, Long> map;
-        if(actionScore == null) { // 결과가 없으면 객체 새로 생성해서 작업 진행
+        if (actionScore == null) { // 결과가 없으면 객체 새로 생성해서 작업 진행
             actionScore = new CategoryScore();
             map = actionScore.getUserCategoryScore();
             map.put(categoryId, score); // 새 값 추가
-        }else{ // 결과가 있는 상태라면
+        } else { // 결과가 있는 상태라면
             map = actionScore.getUserCategoryScore(); // 가져오기
             // 키 값이 있는지도 확인했어야 했다!
-            if(map.containsKey(categoryId)){ // 키 있다면
-                map.put(categoryId, map.get(categoryId)+score); // 기존값에 추가
-            }else{ // 키 없다면
+            if (map.containsKey(categoryId)) { // 키 있다면
+                map.put(categoryId, map.get(categoryId) + score); // 기존값에 추가
+            } else { // 키 없다면
                 map.put(categoryId, score); // 새 값 추가
             }
         }
@@ -73,7 +73,7 @@ public class ElasticSearchService {
         putESUserAction(id, actionScore); // 카테고리 점수
 
         // 사용자 행동 수집 -- ES 저장
-        ClickProductAction clickProductAction = new ClickProductAction(received.getUserId(),received.getProductId(),received.getActionType());
+        ClickProductAction clickProductAction = new ClickProductAction(received.getUserId(), received.getProductId(), received.getActionType());
         IndexQuery indexQuery = new IndexQueryBuilder()
                 .withId(id + clickProductAction.getNow()) // _id : userId
                 .withObject(clickProductAction) // class string?
@@ -92,7 +92,7 @@ public class ElasticSearchService {
 
     public CategoryScore getESUserActionById(String id) {
         return esTemplate.queryForObject(
-                    GetQuery.getById(id), CategoryScore.class);
+                GetQuery.getById(id), CategoryScore.class);
     }
 
 

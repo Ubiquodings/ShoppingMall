@@ -20,17 +20,17 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class ShopApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ShopApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ShopApplication.class, args);
+    }
 
-	@Bean
-	public RestTemplate restTemplate(){
-		return new RestTemplate();
-	}
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
-	@Bean
-	public SessionRepository jdbcIndexedSessionRepository(JdbcTemplate jdbcTemplate, TransactionTemplate transactionTemplate){
-		return new JdbcIndexedSessionRepository(jdbcTemplate, transactionTemplate);
-	}
+    @Bean
+    public SessionRepository jdbcIndexedSessionRepository(JdbcTemplate jdbcTemplate, TransactionTemplate transactionTemplate) {
+        return new JdbcIndexedSessionRepository(jdbcTemplate, transactionTemplate);
+    }
 }

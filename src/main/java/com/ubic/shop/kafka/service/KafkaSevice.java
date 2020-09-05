@@ -29,21 +29,21 @@ public class KafkaSevice {
 
 //    ProductRepository
 
-    private final KafkaTemplate<String,String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
     String topic = "ubic-shop-test";
     String topicSearch = "ubic-shop-search";
     private final ObjectMapper objectMapper;
 
-    public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
+    public ListenableFuture<SendResult<String, String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
 
         log.info("\nkafka send log");
 
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
-        ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topic);
+        ProducerRecord<String, String> producerRecord = buildProducerRecord(key, value, topic);
 
-        ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
+        ListenableFuture<SendResult<String, String>> listenableFuture = kafkaTemplate.send(producerRecord);
         listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override
             public void onFailure(Throwable ex) {
@@ -58,16 +58,16 @@ public class KafkaSevice {
         return listenableFuture;
     }
 
-    public ListenableFuture<SendResult<String,String>> sendToTopic(SearchActionRequestDto requestDto) throws JsonProcessingException {
+    public ListenableFuture<SendResult<String, String>> sendToTopic(SearchActionRequestDto requestDto) throws JsonProcessingException {
 
         log.info("\nkafka send log");
 
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
-        ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topicSearch);
+        ProducerRecord<String, String> producerRecord = buildProducerRecord(key, value, topicSearch);
 
-        ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
+        ListenableFuture<SendResult<String, String>> listenableFuture = kafkaTemplate.send(producerRecord);
         listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override
             public void onFailure(Throwable ex) {
@@ -84,7 +84,7 @@ public class KafkaSevice {
 
     private ProducerRecord<String, String> buildProducerRecord(String key, String value, String topic) {
         List<Header> recordHeaders = /*List.of(new RecordHeader("event-source", "scanner".getBytes()));*/
-            new ArrayList<>(Arrays.asList(new RecordHeader("event-source", "scanner".getBytes())));
+                new ArrayList<>(Arrays.asList(new RecordHeader("event-source", "scanner".getBytes())));
 //        출처: https://ilovejinwon.tistory.com/54 [사랑해 마니마니]
         return new ProducerRecord<>(topic, null, key, value, recordHeaders);
     }

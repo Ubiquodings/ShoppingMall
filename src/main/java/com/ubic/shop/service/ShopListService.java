@@ -21,7 +21,9 @@ public class ShopListService {
     private final ShopListRepository shopListRepository;
     private final ProductService productService;
 
-    /** 장바구니 */
+    /**
+     * 장바구니
+     */
     @Transactional
     public Long shopList(Long userId, Long productId, int count) {
         //엔티티 조회
@@ -42,7 +44,9 @@ public class ShopListService {
         return shopList.getId();
     }
 
-    /** 장바구니 취소 */
+    /**
+     * 장바구니 취소
+     */
     @Transactional
     public void cancelShopList(Long shopListId) {
         //취소
@@ -51,7 +55,7 @@ public class ShopListService {
 
     /*장바구니 수정*/
     @Transactional
-    public void modifyShopList(Long shopListId, Long count){
+    public void modifyShopList(Long shopListId, Long count) {
         ShopList shopList = shopListRepository.findById(shopListId).get();
         shopList.changeCount(count); // 더티체킹 해주겠지 ?
     }

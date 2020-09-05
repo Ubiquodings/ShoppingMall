@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 public class RecommendService {
 
     private final ElasticSearchService elasticSearchService;
-//    private final CategoryRepository categoryRepository;
+    //    private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final UbicConfig ubicConfig;
 
@@ -49,7 +49,7 @@ public class RecommendService {
         CategoryScore userAction = elasticSearchService.getESUserActionById(userId);
 
         Long categoryId = 1L;
-        if(userAction != null) { // es 에 useraction 정상적으로 가져왔다면
+        if (userAction != null) { // es 에 useraction 정상적으로 가져왔다면
             HashMap<Long, Long> map = userAction.getUserCategoryScore();
             List<Entry<Long, Long>> list = new ArrayList<>(map.entrySet());
             list.sort(Entry.comparingByValue());

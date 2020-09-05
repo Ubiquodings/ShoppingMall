@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ClickActionRequestDto {
     String userId;
     String actionType;
-//    Long categoryId;
+    //    Long categoryId;
     Long productId;
 //    String searchText;
 

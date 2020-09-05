@@ -3,6 +3,7 @@
     margin-right: 60px;
     font-family: 'Roboto', sans-serif;
 }
+
 .quantity input {
     -webkit-appearance: none;
     border: none;
@@ -23,6 +24,7 @@
     /*float: left;*/
     /*float-displace: auto;*/
 }
+
 /*
 .product_total_price h4{
     font-family: 'Roboto', sans-serif;
@@ -52,6 +54,7 @@
 
     /*float: right;*/
 }
+
 /*
 button[class*=btn] {
     width: 30px;
@@ -79,14 +82,16 @@ button[class*=btn] {
     border: none;
     cursor: pointer;
 }
+
 .minus-btn img {
     margin-bottom: 3px;
 }
+
 .plus-btn img {
     margin-top: 0px;
 }
 
 button:focus,
 input:focus {
-    outline:0;
+    outline: 0;
 }

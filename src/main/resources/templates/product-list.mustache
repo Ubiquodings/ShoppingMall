@@ -25,127 +25,143 @@ product-list
             </button>
             <!--이렇게 무식한 방법 말고 뭐 없을까..?-->
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">채소</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">과일·견과·쌀</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">수산·해산·건어물</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">정육·계란</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">국·반찬·메인요리</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">샐러드·간편식</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">면·양념·오일</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">음료·우유·떡·간식</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">베이커리·치즈·델리</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">건강식품</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item">생활용품·리빙</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">뷰티·바디케어</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">주방용품</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">가전제품</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">베이비·키즈</a>
-                <a href="http://localhost:8080/products?category=907" class="list-group-item list-group-item-action dropdown-item ">반려동물</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">채소</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">과일·견과·쌀</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">수산·해산·건어물</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">정육·계란</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">국·반찬·메인요리</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">샐러드·간편식</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">면·양념·오일</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">음료·우유·떡·간식</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">베이커리·치즈·델리</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">건강식품</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item">생활용품·리빙</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">뷰티·바디케어</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">주방용품</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">가전제품</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">베이비·키즈</a>
+                <a href="http://localhost:8080/products?category=907"
+                   class="list-group-item list-group-item-action dropdown-item ">반려동물</a>
             </div>
         </div>
 
-</nav>
+    </nav>
 
 
-<div class="row">
-    {{#products}}
-        <div class="col-md-3 ">
-            <!--<input type="hidden" value="{{id}}"/>-->
-            <div class="ibox">
-                <div class="ibox-content product-box">
+    <div class="row">
+        {{#products}}
+            <div class="col-md-3 ">
+                <!--<input type="hidden" value="{{id}}"/>-->
+                <div class="ibox">
+                    <div class="ibox-content product-box">
 
-                    <div class="product-list-card-body">
-                        <input type="hidden" value="{{id}}" class="product-detail-id"/>
+                        <div class="product-list-card-body">
+                            <input type="hidden" value="{{id}}" class="product-detail-id"/>
 
-                        <!--이미지-->
-                        <div class="product-imitation">
-                            <img src="{{imgUrl}}"/> <!--[ 사진 ]-->
+                            <!--이미지-->
+                            <div class="product-imitation">
+                                <img src="{{imgUrl}}"/> <!--[ 사진 ]-->
+                            </div>
+
+                            <div class="product-desc">
+                                <!-- <span class="product-discount">save 10%</span>-->
+                                <a href="#" class="product-name">{{name}}</a>
+                                <small class="product-price">{{price}}</small>
+                                <div class="small m-t-xs description">
+                                    <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
+                                    {{description}}
+                                </div>
+                                <!--
+                                                            <div class="m-t text-left">
+                                                                <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success" id="btn-shoplist">장바구니</button>
+                                                                &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
+                                                            </div>
+                                -->
+                                <div>
+                                    <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
+                                    {{#ProductTagList}}<!--style="border:1px solid plum"-->
+                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>
+                                    {{/ProductTagList}}
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="product-desc">
-                            <!-- <span class="product-discount">save 10%</span>-->
-                            <a href="#" class="product-name">{{name}}</a>
-                            <small class="product-price">{{price}}</small>
-                            <div class="small m-t-xs description">
-                                <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
-                                {{description}}
-                            </div>
-                            <!--
-                                                        <div class="m-t text-left">
-                                                            <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success" id="btn-shoplist">장바구니</button>
-                                                            &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
-                                                        </div>
-                            -->
-                            <div>
-                                <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
-                                {{#ProductTagList}}<!--style="border:1px solid plum"-->
-                                    <span padding="1px" style="background-color:pink">{{tag.name}}</span>
-                                {{/ProductTagList}}
-                            </div>
+                        <div class="m-t text-left">
+                            <button type="button" style="margin-top: 10px"
+                                    class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
+                                <input type="hidden" value="{{id}}" id="product-detail-id"/>
+                                <!--<input type="hidden" value= "1"/>-->
+                                <input type="hidden" id="count" value="1"/>
+                                장바구니
+                            </button>
+                            <!--<a href="#" class="" >장바구니 </a>-->
                         </div>
-                    </div>
 
-                    <div class="m-t text-left">
-                        <button type="button" style="margin-top: 10px"
-                                class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">
-                            <input type="hidden" value="{{id}}" id="product-detail-id"/>
-                            <!--<input type="hidden" value= "1"/>-->
-                            <input type="hidden" id="count" value="1"/>
-                            장바구니
-                        </button>
-                        <!--<a href="#" class="" >장바구니 </a>-->
                     </div>
-
                 </div>
-            </div>
 
-        </div>
-    {{/products}}
-</div>
-<!--
-    <nav aria-label="Page navigation example">
+            </div>
+        {{/products}}
+    </div>
+    <!--
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
+                <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
+                <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        -->
+
+
+    <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
+            <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
+            <li class="disabled page-item">
+                <a class="page-link" href="#">
+                    <span>«</span>
+                </a>
             </li>
+            <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
+            <!-- active의 의미는 현재 페이지의 의미이다. -->
+            <!-- <li class="active"> active 보류 -->
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
+                                     +{{page-total-count}}>
+                {{page-total-count}} </a></li>
             <li class="page-item">
-                <a class="page-link" href="#">Next</a>
+                <a class="page-link" href="#">
+                    <span>»</span>
+                </a>
             </li>
         </ul>
     </nav>
-    -->
-
-
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-        <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
-        <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
-        <li class="disabled page-item">
-            <a class="page-link" href="#">
-                <span>«</span>
-            </a>
-        </li>
-        <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
-        <!-- active의 의미는 현재 페이지의 의미이다. -->
-        <!-- <li class="active"> active 보류 -->
-        <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
-        <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
-        <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
-        <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
-        <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
-        <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
-                                 +{{page-total-count}}>
-            {{page-total-count}} </a></li>
-        <li class="page-item">
-            <a class="page-link" href="#">
-                <span>»</span>
-            </a>
-        </li>
-    </ul>
-</nav>
 
 </div>
 

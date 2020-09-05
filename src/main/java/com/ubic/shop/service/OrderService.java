@@ -21,7 +21,9 @@ public class OrderService {
     private final ShopListRepository shopListRepository;
 
 
-    /** 주문 */ // 장바구니에서 하나 주문
+    /**
+     * 주문
+     */ // 장바구니에서 하나 주문
     // 주문은 - 장바구니에서 하나 이상 주문, - 장바구니에서 전체 주문,
     @Transactional
     public Long orderOneFromShopList(Long userId, Long productId, int count, Long shopListId) {
@@ -61,7 +63,9 @@ public class OrderService {
     }
 
 
-    /** 주문 취소 */
+    /**
+     * 주문 취소
+     */
     @Transactional
     public void cancelOrder(Long orderId) {
         //주문 엔티티 조회

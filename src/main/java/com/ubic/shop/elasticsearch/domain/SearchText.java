@@ -12,20 +12,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Document(indexName="ubic_search_action", type="_doc") // 이전 : ubic_all_user_action
+@Document(indexName = "ubic_search_action", type = "_doc") // 이전 : ubic_all_user_action
 public class SearchText {
     String now = LocalDateTime.now().toString();
 
-//    String actionType;
+    //    String actionType;
     String userId;
-//    Long productId;
+    //    Long productId;
     String searchText;
 
     /*검색용*/
-    public SearchText(String userId, String searchText){
+    public SearchText(String userId, String searchText) {
 //        this.actionType=actionType;
-        this.userId=userId;
-        this.searchText=searchText;
+        this.userId = userId;
+        this.searchText = searchText;
     }
 
 //    /*클릭,장바구니,구매용*/ Coupon
