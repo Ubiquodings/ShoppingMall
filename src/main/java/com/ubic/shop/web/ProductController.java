@@ -179,10 +179,10 @@ public class ProductController {
             if(byName.get(i)==null)
                 log.info("\ntag list null"); // null
             else
-                if (byName.get(i).getProductTagList().size() != 0) // null 일 수가 없어
-                    productTagList = Stream.concat(productTagList.stream(), byName.get(i).getProductTagList().stream())
-                            .distinct()
-                            .collect(Collectors.toList());
+            if (byName.get(i).getProductTagList().size() != 0) // null 일 수가 없어
+                productTagList = Stream.concat(productTagList.stream(), byName.get(i).getProductTagList().stream())
+                        .distinct()
+                        .collect(Collectors.toList());
         }
 
         List<Product> searchResultProductList = productTagList.stream()
