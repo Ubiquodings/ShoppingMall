@@ -2,6 +2,29 @@ var userAction = {
     init: function () {
         var _this = this;
 
+        /*결재페이지에서 주문*/
+        $(".btn-order-at-payment").on('click',function(e){
+
+            // var productId = this.children[0].value;
+            //var count = this.children[1].value;
+            // var count = $('#count').val();
+            $.ajax({
+                type: 'POST',
+                url: '/api/orderAll', // RestAPIController
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    'couponIdList': null, // TODO 체크된 쿠폰 list 가져오기
+                })
+            }).done(function(){ // 왜 안되지 ?
+                alert('주문 ok');
+            }).fail(function(e){
+                alert('fail '+JSON.stringify(e));
+            });
+            // window.location.href=window.location.href; // reloading ?
+        });
+
+
         $("#btn-order-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
             // var productId = this.children[0].value;
             $.ajax({

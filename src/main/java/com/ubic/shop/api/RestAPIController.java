@@ -206,6 +206,7 @@ public class RestAPIController {
     public String orderAll(OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
+        log.info("\n모두 주문 server api");
         return "{}";
     }
 
