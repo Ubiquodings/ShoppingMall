@@ -18,6 +18,56 @@ var userAction = {
             });
             // window.location.href=window.location.href;
         });
+        /*장바구니 수정*/
+        $(".btn-cart-modify").on('click', function (e) { // detail 페이지에서 가져와야지
+            var shopListId = this.children[0].value;
+            var form_list = document.getElementsByClassName("formlist");
+            var index; var count;
+            if (form_list.length == 1) {
+                count = document.form.amount.value;
+                console.log("no index");
+            }else{
+                index = $('.btn-cart-modify').index($(this));
+                console.log("index: "+index);
+                count = document.form[index].amount.value;
+            }
+            // var count = this.children[1].value;
+            console.log("modify: "+shopListId+" "+count);
+            $.ajax({
+                type: 'PUT',
+                url: '/api/carts',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    'cartId': shopListId, // ' ' 문자열 처리 안되어 있으면 null server error 난다!
+                    'count': count,
+                })
+            }).done(function () {
+                alert('수정되었습니다.');
+                window.location.href = window.location.href;
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+            // window.location.href=window.location.href;
+        });
+        /*장바구니 삭제*/
+        $(".btn-cart-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
+            var shopListId = this.children[0].value;
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/carts/' + shopListId, // order id
+                dataType: 'json',// Accept ?
+                contentType: 'application/json; charset=utf-8',
+                // data: JSON.stringify({})
+            }).done(function () {
+                alert('삭제되었습니다.');
+                window.location.href = window.location.href;
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+            // window.location.href=window.location.href;
+        });
+
 
         /**
          * 이걸 userAction에 넣어도, cart-list-action.js에 넣어도 상관 없는거같아요.
@@ -141,10 +191,10 @@ var userAction = {
                 console.log("shopListCount[i].value " + shopListCount[i].value);
                 //ToOrder_shopListId.push(shopListId[i].value);
                 //ToOrder_shopListCount.push(shopListCount[i].value);
-                ShopToOrder_IdAndCount.push(shopListId[i].value);
+                ShopToOrder_IdAndCount.push(shopListId[i].value); // ? 서버에서 index+2 씩 루프한다
                 ShopToOrder_IdAndCount.push(shopListCount[i].value);
 
-            }
+            }//end for
 
 
             /*var data = {
@@ -162,8 +212,8 @@ var userAction = {
                 /*data: JSON.stringify(data)*/
                 data: JSON.stringify(ShopToOrder_IdAndCount)
             }).done(function(){
-                alert('ok');
-                window.location.href = window.location.href;
+                // alert('ok');
+                window.location.href = '/payment';
             }).fail(function(e){
                 alert('fail '+JSON.stringify(e));
             });

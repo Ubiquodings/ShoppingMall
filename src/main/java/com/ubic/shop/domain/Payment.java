@@ -29,4 +29,9 @@ public class Payment extends BaseTimeEntity {
         this.product = product;
         this.count = count;
     }
+
+    public void changeCount(Long count) {
+        this.count = count;
+    }
+
 }

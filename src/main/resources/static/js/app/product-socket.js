@@ -45,7 +45,7 @@ var productSocket = {
 
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
-                $("#btn-my-coupons").css("color","red");
+                // $("#btn-my-coupons").css("color","red");
                 document.querySelector('#btn-my-coupons').innerHTML += ` <span class="badge badge-light">1</span>`;
                 // console.log($("#btn-my-coupons").innerHTML);
 

@@ -82,7 +82,7 @@ $('.minus-btn').on('click', function () {
             test -= parseInt(sum.value);
         }
         document.getElementById("allsum").value = test;*/
-    } else {
+    } else { // length 가 1 아님
         console.log("minus button click");
         var minus_index = $('.minus-btn').index($(this));
         console.log("minus_index " + minus_index);

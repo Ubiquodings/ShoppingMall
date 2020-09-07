@@ -33,7 +33,12 @@
 </div>
 {{/allPayments}}
 
-- 가져온 상품 관련 쿠폰을 가져옵니다
+<div class="card">
+    <div class="card-body">
+        - 가져온 상품 관련 쿠폰을 가져옵니다
+    </div>
+</div>
+
 {{#couponList}} <!--List<Coupon>-->
 <div class="row">
     <div class="card" style="width: 100%;">
@@ -50,6 +55,11 @@
 {{/couponList}}
 
 
-- 최종 주문 버튼을 누르면, 장바구니의 모든 아이템이 삭제되고 주문처리됩니다<br/>
+<div class="card">
+    <div class="card-body">
+        - 최종 주문 버튼을 누르면, 장바구니의 모든 아이템이 삭제되고 주문처리됩니다
+    </div>
+</div>
+
 <button type="button" class="btn btn-primary btn-lg btn-order-all btn-block">주문</button>
 {{>layout/footer}}

@@ -177,11 +177,11 @@ public class RestAPIController {
         for(int i=0; i<FromShopList.size(); i=i+2) {
 
             System.out.println("==========================================================================");
-            System.out.println(i + "FromShopList.get(i)" + FromShopList.get(i));
+            System.out.println(i + "FromShopList.get(i)" + FromShopList.get(i)); // shopList id
             System.out.println(i + "Long.parseLong(FromShopList.get(i))" + Long.parseLong(FromShopList.get(i)));
             System.out.println(i + "Integer.parseInt(FromShopList.get(i+1))" + Integer.parseInt(FromShopList.get(i+1)));
             System.out.println("==========================================================================");
-            Long shopListId_L = Long.parseLong(FromShopList.get(i));
+            Long shopListId_L = Long.parseLong(FromShopList.get(i)); // shopList id
             ShopList shopList = shopListRepository.findById(shopListId_L).get();
             Product product = shopList.getProduct();
 
@@ -192,13 +192,13 @@ public class RestAPIController {
             //kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
 
             /*int shopListCount_I = Integer.parseInt(shopListCount.get(i));*/
-            int shopListCount_I = Integer.parseInt(FromShopList.get(i+1));
+            Long shopListCount_I = Long.parseLong(FromShopList.get(i+1)); // shopList item count
 
             // 주문 저장
             /*orderService.orderAllFromShopList(shopListUserId, product.getId(), shopListCount_I, shopListId_L);*/
             paymentService.payment(paymentUserId, product.getId(), shopListCount_I);
 
-        }
+        }//end for
         return "{}";
     }
 
@@ -296,8 +296,9 @@ public class RestAPIController {
     }
 
     // 장바구니 수정
-    @PutMapping("/api/carts/{id}")
-    public String modifyCartItem(ShopListModifyRequestDto requestDto, @PathVariable Long id, @LoginUser SessionUser user) {
+    @PutMapping("/api/carts")
+    public String modifyCartItem(@RequestBody ShopListModifyRequestDto requestDto, /*@PathVariable Long id, */@LoginUser SessionUser user) {
+        log.info("\n장바구니 수정: "+requestDto.getCartId());
         shopListService.modifyShopList(requestDto.getCartId(), requestDto.getCount());
         return "{}";
     }

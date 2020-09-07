@@ -163,10 +163,10 @@ cart-list
                         <td class="init_td"><input type=text class="init_c" name="init_c"></td>
                         <td>
                             <div class="row">
-                                <div class="col-lg-2 Product-img">
+                                <div class="col-lg-6 Product-img">
                                     <img src="{{product.imgUrl}}" alt="..." class="img-responsive"/>
                                 </div>
-                                <div class="col-lg-10">
+                                <div class="col-lg-6">
                                     <h4 class="nomargin">{{product.name}}</h4>
                                     <p>{{product.description}}</p>
                                 </div>
@@ -212,9 +212,9 @@ cart-list
                         </form>
 
                         <td class="actions" data-th="" style="width:10%;">
-                            <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-info btn-sm btn-cart-modify"><input type="hidden" value="{{id}}"/><i class="fa fa-refresh"></i></button>
                             <!--<button class="btn btn-danger btn-sm" id="btn-cart-cancel"><i class="fa fa-trash-o"></i></button>-->
-                            <button class="btn btn-danger btn-sm btn-cart-cancel"><i class="fa fa-trash-o"></i></button>
+                            <button class="btn btn-danger btn-sm btn-cart-cancel"><input type="hidden" value="{{id}}"/><i class="fa fa-trash-o"></i></button>
                         </td>
 
                         <!-- 시현이가 추가한 부분(바로 주문하기 버튼)-->
