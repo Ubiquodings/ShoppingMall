@@ -77,6 +77,7 @@ public class TagService {
                     ubicConfig.getDjangoServerUrl()+"/search/test/?text=" + productInfo,
                     SearchResponseDto.class);
         } catch (Exception e) {
+            log.info("\n태그 분석 요청 실패 : null 을 반환합니다 !");
             return null;
         }
 
