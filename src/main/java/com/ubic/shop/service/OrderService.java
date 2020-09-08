@@ -98,4 +98,8 @@ public class OrderService {
         return orderRepository.findAllOrdered(userId);
     }
 
+    @Transactional
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
 }

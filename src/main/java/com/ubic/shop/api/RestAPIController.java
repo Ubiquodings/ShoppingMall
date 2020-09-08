@@ -8,9 +8,7 @@ import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.*;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
-import com.ubic.shop.repository.PaymentRepository;
-import com.ubic.shop.repository.ShopListRepository;
-import com.ubic.shop.repository.UserRepository;
+import com.ubic.shop.repository.*;
 import com.ubic.shop.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,12 +35,13 @@ public class RestAPIController {
     private final PaymentService paymentService;
     private final PaymentRepository paymentRepository;
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
     private final ProductCategoryService productCategoryService;
     private final CategorySevice categoryService;
     private final KafkaSevice kafkaService;
     private final UserRepository userRepository;
     private final UbicSecretConfig ubicConfig;
-
+    private final CouponRepository couponRepository;
 
     @PostMapping("/api/products/new")
     public ProductResponseDto save(@RequestBody ProductSaveRequestDto requestDto) {
@@ -174,12 +174,12 @@ public class RestAPIController {
 
 
         System.out.println("리스트 사이즈" + FromShopList.size());
-        for(int i=0; i<FromShopList.size(); i=i+2) {
+        for (int i = 0; i < FromShopList.size(); i = i + 2) {
 
             System.out.println("==========================================================================");
             System.out.println(i + "FromShopList.get(i)" + FromShopList.get(i)); // shopList id
             System.out.println(i + "Long.parseLong(FromShopList.get(i))" + Long.parseLong(FromShopList.get(i)));
-            System.out.println(i + "Integer.parseInt(FromShopList.get(i+1))" + Integer.parseInt(FromShopList.get(i+1)));
+            System.out.println(i + "Integer.parseInt(FromShopList.get(i+1))" + Integer.parseInt(FromShopList.get(i + 1)));
             System.out.println("==========================================================================");
             Long shopListId_L = Long.parseLong(FromShopList.get(i)); // shopList id
             ShopList shopList = shopListRepository.findById(shopListId_L).get();
@@ -192,7 +192,7 @@ public class RestAPIController {
             //kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
 
             /*int shopListCount_I = Integer.parseInt(shopListCount.get(i));*/
-            Long shopListCount_I = Long.parseLong(FromShopList.get(i+1)); // shopList item count
+            Long shopListCount_I = Long.parseLong(FromShopList.get(i + 1)); // shopList item count
 
             // 주문 저장
             /*orderService.orderAllFromShopList(shopListUserId, product.getId(), shopListCount_I, shopListId_L);*/
@@ -203,10 +203,48 @@ public class RestAPIController {
     }
 
     @PostMapping("/api/orderAll") // TODO  restful 하진 않다
-    public String orderAll(OrderAllRequestDto requestDto,
+    public String orderAll(@RequestBody OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
-        log.info("\n모두 주문 server api");
+        String clientId = null;
+        Long shopListUserId;
+        User userEntity;
+        if (user != null) {
+            clientId = user.getId().toString();
+            shopListUserId = user.getId();
+            userEntity = userRepository.findById(shopListUserId).get();
+        } else {
+            clientId = request.getSession().getId();
+            User nonMember = getTempUser(request);
+            shopListUserId = nonMember.getId();
+            userEntity = nonMember;
+        }
+
+
+        // 모든 payment 객체 삭제하기 : 해당 회원의
+        List<Payment> paymentAllByUserId = paymentRepository.findAllByUserId(shopListUserId);
+        paymentAllByUserId
+                .forEach(payment -> paymentRepository.deleteById(payment.getId()));
+
+        //장바구니 모든 객체 삭제하기 && Order 객체 생성
+        List<ShopList> shopListAllByUserId = shopListRepository.findAllByUserId(shopListUserId);
+        List<OrderProduct> orderProductList = new ArrayList<>();
+        shopListAllByUserId
+                .forEach(shopList -> {
+                    // order 객체 생성해야지 !
+                    OrderProduct orderProduct = OrderProduct.createOrderProduct(shopList.getProduct(), shopList.getProduct().getPrice(), shopList.getCount());
+                    orderProductList.add(orderProduct);
+                    shopListRepository.deleteById(shopList.getId());
+
+                });
+        Order order = Order.createOrder(userEntity, orderProductList.toArray(new OrderProduct[0]));
+        orderService.save(order);
+
+        // 체크된 쿠폰 삭제하기
+        List<Coupon> couponByUserIdandIds = couponRepository.findByUserIdandIds(requestDto.getCouponIdList(), shopListUserId);
+        couponByUserIdandIds
+                .forEach(coupon -> couponRepository.deleteById(coupon.getId()));
+
         return "{}";
     }
 
@@ -299,11 +337,10 @@ public class RestAPIController {
     // 장바구니 수정
     @PutMapping("/api/carts")
     public String modifyCartItem(@RequestBody ShopListModifyRequestDto requestDto, /*@PathVariable Long id, */@LoginUser SessionUser user) {
-        log.info("\n장바구니 수정: "+requestDto.getCartId());
+        log.info("\n장바구니 수정: " + requestDto.getCartId());
         shopListService.modifyShopList(requestDto.getCartId(), requestDto.getCount());
         return "{}";
     }
-
 
 
 //    @GetMapping("/api/search")

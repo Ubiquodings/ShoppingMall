@@ -21,16 +21,16 @@ public class OrderProduct extends BaseTimeEntity {
     @JoinColumn(name = "order_id")
     private Order order; //주문
 
-    private int orderPrice; //주문 가격
-    private int count; //주문 수량
+    private long orderPrice; //주문 가격
+    private long count; //주문 수량
 
     //==생성 메서드==//
-    public static OrderProduct createOrderProduct(Product product, int orderPrice, int count) {
+    public static OrderProduct createOrderProduct(Product product, long orderPrice, long count) {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProduct(product); //
         orderProduct.setOrderPrice(orderPrice);
         orderProduct.setCount(count);
-        product.removeStock(count);
+//        product.removeStock(count); // 재고관리는 안한다 !
         return orderProduct;
     }
     //==비즈니스 로직==//
@@ -40,7 +40,7 @@ public class OrderProduct extends BaseTimeEntity {
     }
     //==조회 로직==//
     /** 주문상품 전체 가격 조회 */
-    public int getTotalPrice() {
+    public long getTotalPrice() {
         return getOrderPrice() * getCount();
     }
 }

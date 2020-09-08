@@ -15,4 +15,8 @@ public interface CouponRepository extends CrudRepository<Coupon, Long> {
 
     @Query("select distinct m from Coupon m where m.product.id in :ids and m.user.id = :userId")
     List<Coupon> findByIds(@Param("ids") List<Long> productIds, @Param("userId") long userId);
+
+    @Query("select m from Coupon m where m.id in :ids and m.user.id = :userId")
+    List<Coupon> findByUserIdandIds(@Param("ids") List<Long> ids, @Param("userId") long userId);
+
 }

@@ -5,19 +5,28 @@ var userAction = {
         /*결재페이지에서 주문*/
         $(".btn-order-at-payment").on('click',function(e){
 
-            // var productId = this.children[0].value;
-            //var count = this.children[1].value;
-            // var count = $('#count').val();
+            var checkboxesChecked = [];
+            Array.from(document.getElementsByClassName('form-check-input')).forEach((checkbox)=>{
+                // get checked checkbox
+                if (checkbox.checked) {
+                    let id = checkbox.parentElement.children[1].innerHTML; // id ok
+                    // console.log(id);
+                    checkboxesChecked.push(id);
+                }
+            });
+            console.log(checkboxesChecked);
+
             $.ajax({
                 type: 'POST',
                 url: '/api/orderAll', // RestAPIController
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({
-                    'couponIdList': null, // TODO 체크된 쿠폰 list 가져오기
+                    'couponIdList': checkboxesChecked, // TODO 체크된 쿠폰 list 가져오기
                 })
             }).done(function(){ // 왜 안되지 ?
                 alert('주문 ok');
+                window.location.href = '/products';
             }).fail(function(e){
                 alert('fail '+JSON.stringify(e));
             });
