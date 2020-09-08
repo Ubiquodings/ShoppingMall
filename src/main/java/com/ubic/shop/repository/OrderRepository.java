@@ -3,16 +3,26 @@ package com.ubic.shop.repository;
 import com.ubic.shop.domain.Order;
 import com.ubic.shop.domain.Order;
 import com.ubic.shop.domain.OrderStatus;
+import com.ubic.shop.domain.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Repository
-@RequiredArgsConstructor
-public class OrderRepository {
+//@Repository
+//@RequiredArgsConstructor
+public interface OrderRepository extends CrudRepository<Order, Long> {
 
+    List<Order> findByUserId(Long userId);
+
+    @Query(value="select o from Order o where o.user.id = :userId and o.status = :status")
+    List<Order> findByUserIdAndOrderStatus(@Param("userId") Long userId, @Param("status") OrderStatus status);
+
+/*
     private final EntityManager em;
 
     public void save(Order order) {
@@ -35,4 +45,5 @@ public class OrderRepository {
                 .setParameter("orderStatus", OrderStatus.ORDER)
                 .getResultList();
     }
+*/
 }

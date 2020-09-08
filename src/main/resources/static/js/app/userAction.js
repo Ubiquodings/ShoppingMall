@@ -34,11 +34,12 @@ var userAction = {
         });
 
 
-        $("#btn-order-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
-            // var productId = this.children[0].value;
+        $(".btn-order-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
+            var orderId = this.children[0].value;
+            console.log(orderId);
             $.ajax({
                 type: 'DELETE',
-                url: '/api/orders/' + $("input#input-order-id").val(), // order id
+                url: '/api/orders/' + orderId, // order id
                 dataType: 'json',// Accept ?
                 contentType: 'application/json; charset=utf-8',
                 // data: JSON.stringify({})

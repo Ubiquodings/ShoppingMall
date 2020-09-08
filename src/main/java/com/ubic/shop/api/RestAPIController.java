@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 public class RestAPIController {
 
-    Logger logger = LoggerFactory.getLogger(RestAPIController.class);
+//    Logger logger = LoggerFactory.getLogger(RestAPIController.class);
 
     private final ProductService productService;
     private final ShopListService shopListService;
@@ -202,6 +202,7 @@ public class RestAPIController {
         return "{}";
     }
 
+    /*결재페이지에서 주문 api*/
     @PostMapping("/api/orderAll") // TODO  restful 하진 않다
     public String orderAll(@RequestBody OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
@@ -238,6 +239,7 @@ public class RestAPIController {
 
                 });
         Order order = Order.createOrder(userEntity, orderProductList.toArray(new OrderProduct[0]));
+        order.initTitleAndTotalPrice();
         orderService.save(order);
 
         // 체크된 쿠폰 삭제하기
@@ -283,7 +285,7 @@ public class RestAPIController {
         }
 
         String action = "click";
-        logger.info("\n/click " + productId);
+        log.info("\n/click " + productId);
         Product product = productService.findById(productId);
 
         kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
@@ -306,7 +308,7 @@ public class RestAPIController {
         }
 
         String action = "hover";
-        logger.info("\n/hover " + productId);
+        log.info("\n/hover " + productId);
         Product product = productService.findById(productId);
 
         kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));

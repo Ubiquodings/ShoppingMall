@@ -1,6 +1,7 @@
 package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.domain.Order;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.domain.User;
@@ -51,8 +52,11 @@ public class OrderController {
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getId();
         }
-        model.addAttribute("shopLists", // List<ShopList>
-                orderService.findAllOrdered(clientId));
+
+        List<Order> allOrdered = orderService.findAllOrdered(clientId);
+        log.info("\nordered size: "+allOrdered.size());
+        model.addAttribute("orderList", // List<Order>
+                allOrdered);
 
 
         return "order-list";
