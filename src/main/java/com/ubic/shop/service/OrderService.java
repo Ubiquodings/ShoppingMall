@@ -43,6 +43,26 @@ public class OrderService {
         return order.getId();
     }
 
+    @Transactional
+    public Long orderAllFromShopList(Long userId, Long productId, int count, Long shopListId) {
+        //엔티티 조회
+        User user = userRepository.findById(userId).get();
+        Product product = productService.findById(productId);
+
+        //주문상품 생성
+        OrderProduct orderProduct = OrderProduct.createOrderProduct(product, product.getPrice(),
+                count);
+        //주문 생성
+        Order order = Order.createOrder(user, /*delivery, */orderProduct);
+        //주문 저장
+        orderRepository.save(order);
+
+        // 장바구니에서 삭제
+        //shopListRepository.deleteById(shopListId);
+
+        return order.getId();
+    }
+
     @Transactional // - 상품 디테일에서 바로 주문:장바구니가 없구만 : 개수 하나 이상
     public Long orderOneFromDetail(Long userId, Long productId, int count) {
         //엔티티 조회
@@ -78,4 +98,8 @@ public class OrderService {
         return orderRepository.findAllOrdered(userId);
     }
 
+    @Transactional
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
 }

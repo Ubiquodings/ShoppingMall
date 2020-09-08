@@ -45,7 +45,7 @@ var productSocket = {
 
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
-                $("#btn-my-coupons").css("color","red");
+                // $("#btn-my-coupons").css("color","red");
                 document.querySelector('#btn-my-coupons').innerHTML += ` <span class="badge badge-light">1</span>`;
                 // console.log($("#btn-my-coupons").innerHTML);
 
@@ -74,9 +74,9 @@ var productSocket = {
 
     },
     updateUserNumber: function (number) {
-        let userNumberDiv = document.querySelector('div#userNumber');
-        userNumberDiv.innerHTML = "";
-        userNumberDiv.innerHTML += `${number} 명`;
+        let userNumberDiv = document.querySelector('p#userNumber');
+        userNumberDiv.innerHTML = "이 상품을 ";
+        userNumberDiv.innerHTML += `${number} 명과 함께보고 있습니다!`;
     },
     setSchedulingTasks: function(stompClient, userId, currentPage){
         // 추천 목록 주기적 요청

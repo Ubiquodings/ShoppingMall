@@ -59,7 +59,8 @@ public class OrderController {
     }
 
     //TODO
-    @GetMapping("/orders/{id}") /*아마 지금 이거 사용안할걸*/
+    @GetMapping("/orders/{id}") //아마 지금 이거 사용안할걸
+
     public String detail(@PathVariable int id, Model model, @LoginUser SessionUser user) {
         if (user != null) {
             model.addAttribute("userName", user.getName());
@@ -67,7 +68,7 @@ public class OrderController {
         return "order-detail";
     }
 
-    @GetMapping("/payment")
+    /*@GetMapping("/payment")
     public String payment(Model model, @LoginUser SessionUser user, HttpServletRequest request) {
         Long clientId = -1L;
         if (user != null) {
@@ -92,7 +93,7 @@ public class OrderController {
         model.addAttribute("couponList", couponRepository.findByIds(idList));
 
         return "payment";
-    }
+    }*/
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();

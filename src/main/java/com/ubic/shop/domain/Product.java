@@ -19,7 +19,7 @@ public class Product extends BaseTimeEntity {
 
     private String name;
     private int price;
-    private int stockQuantity=50;
+    private long stockQuantity=5000000;
 
     private String description;
     private String imgUrl;
@@ -42,12 +42,12 @@ public class Product extends BaseTimeEntity {
     }
 
     //==비즈니스 로직==//
-    public void addStock(int quantity) {
+    public void addStock(long quantity) {
         this.stockQuantity += quantity;
     }
 
-    public void removeStock(int quantity) {
-        int restStock = this.stockQuantity - quantity;
+    public void removeStock(long quantity) {
+        long restStock = this.stockQuantity - quantity;
         if (restStock < 0) {
             throw new NotEnoughStockException("need more stock");
         }
