@@ -5,11 +5,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
 @Entity
 @Getter
 @Setter(AccessLevel.PROTECTED)
-public class Coupon extends BaseTimeEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -21,17 +23,37 @@ public class Coupon extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private int discountRate; // 할인율 10 > 10%
 
-    @Builder
-    public Coupon(String name, User user, Product product) {
+    @Enumerated(EnumType.STRING)
+    private CouponStatus status = CouponStatus.Created; //상태 [Used, Created]
+
+    protected Coupon(String name, User user, int discountRate) {
         this.name = name;
         this.user = user;
-        this.product = product;
+        this.discountRate = discountRate;
     }
 
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id")
+//    private Product product;
+
+
+//    @Builder
+//    public Coupon(String name, User user/*, Product product*/) {
+//        this.name = name;
+//        this.user = user;
+////        this.product = product;
+//    }
+
+    public void changeStatusUsed() {
+        this.status = CouponStatus.Used;
+    }
+
+
+//    public void changeStatus(CouponStatus used) {
+//        this.status =
+//    }
 }
 

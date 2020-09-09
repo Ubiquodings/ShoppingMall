@@ -9,7 +9,6 @@ product-list
 &lt;!&ndash;리스트&ndash;&gt;
 -->
 
-product-list
 
 <script>
     $('#myModal').on('shown.bs.modal', function () {
@@ -23,17 +22,18 @@ product-list
     .modal-dialog {
         width: 400px;
     }
+
     .modal-header {
         background-color: #4c65b7;
-        padding:16px 16px;
-        color:#FFF;
+        padding: 16px 16px;
+        color: #FFF;
         /*border-bottom:2px dashed #337AB7;*/
     }
 
     .modal-footer {
         background-color: #748fb7;
-        padding:16px 16px;
-        color:#FFF;
+        padding: 16px 16px;
+        color: #FFF;
         /*border-bottom:2px dashed #337AB7;*/
     }
 
@@ -41,7 +41,6 @@ product-list
         font-family: 'Do Hyeon', sans-serif;
     }
 </style>
-
 
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -73,11 +72,9 @@ product-list
     </ul>
 
 
-
-
     <div class="row">
         {{#products}}
-            <div class="col-md-3 " >
+            <div class="col-md-3 ">
                 <!--<input type="hidden" value="{{id}}"/>-->
                 <div class="ibox">
                     <div class="ibox-content product-box">
@@ -94,7 +91,7 @@ product-list
                                 <!-- <span class="product-discount">save 10%</span>-->
                                 <a href="#" class="product-name">{{name}}</a>
                                 <small class="product-price">{{price}}</small>
-                                <div class="small m-t-xs description" >
+                                <div class="small m-t-xs description">
                                     <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
                                     {{description}}
                                 </div>
@@ -107,8 +104,9 @@ product-list
                                 <div>
                                     <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
                                     {{#ProductTagList}}<!--style="border:1px solid plum"-->
-                                        <span class="badge badge-warning" style="background-color:pink">{{tag.name}}</span>
-<!--                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>-->
+                                        <span class="badge badge-warning"
+                                              style="background-color:pink">{{tag.name}}</span>
+                                        <!--                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>-->
                                     {{/ProductTagList}}
                                 </div>
                             </div>
@@ -117,7 +115,8 @@ product-list
                         <div class="m-t text-left">
 
                             <!--<button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">-->
-                            <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist"
+                            <button type="button" style="margin-top: 10px"
+                                    class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist"
                                     data-toggle="modal" data-target="#exampleModal">
 
                                 <input type="hidden" value="{{id}}" id="product-detail-id"/>
@@ -140,7 +139,8 @@ product-list
         </button>-->
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -151,13 +151,15 @@ product-list
                     </div>
                     <div class="modal-body">
                         <p class="modal-font">
-                        장바구니에 상품이 담겼습니다. <br />
-                        장바구니로 이동하시겠습니까?
+                            장바구니에 상품이 담겼습니다. <br/>
+                            장바구니로 이동하시겠습니까?
                         </p>
                     </div>
                     <div class="modal-footer">
                         <p class="modal-font">
-                            <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="location.href='/carts'">장바구니로 이동</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal"
+                                    onclick="location.href='/carts'">장바구니로 이동
+                            </button>
                             <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
                         </p>
                     </div>

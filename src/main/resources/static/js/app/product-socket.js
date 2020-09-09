@@ -24,12 +24,16 @@ var productSocket = {
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
 
             /*[구독] 해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+            /* send: /app/users/{productId} , subscribe: /topic/users/{productId}
+            * */
             stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
                 _this.updateUserNumber(JSON.parse(result.body).number);
             }, {"productId": productId});
 
-            /*[구독] 해당 유저에게만 추천 목록 갱신*/
+            /*[구독] 해당 유저에게만 추천 목록 갱신: 카테고리 기반*/
+            /* send: /app/products/{userId}/page/{currentPage} , subscribe: /topic/products/{userId}
+            * */
             stompClient.subscribe('/topic/products/'+userId, function (result) {
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
@@ -39,13 +43,16 @@ var productSocket = {
             }, {});
 
             /*[구독] 망설이지마세요 쿠폰*/
+            /* send: /app/coupons/{userId} , subscribe: /topic/coupons/{userId}
+            * */
             stompClient.subscribe('/topic/coupons/'+userId, function (result) {
                 result = JSON.parse(result.body ); /*JSON.stringify(*/
-                console.log('/topic/coupons/{userId} 결과 :  \n'+ result);
+                console.log('/topic/coupons/{userId} 결과 :  \n'+ result.couponName); // coupone name ok
 
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
                 // $("#btn-my-coupons").css("color","red");
+                alert("쿠폰이 도착했습니다!\n"+result.couponName);
                 document.querySelector('#btn-my-coupons').innerHTML += ` <span class="badge badge-light">1</span>`;
                 // console.log($("#btn-my-coupons").innerHTML);
 

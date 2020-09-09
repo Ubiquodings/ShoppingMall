@@ -15,8 +15,9 @@ import java.util.Optional;
 //@RequiredArgsConstructor
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
+    // Kurly id 없이도 잘 구현할 수 있다! - 근데 상품 생성할 때 필요함
     @Query("select u from Category u where u.kurlyId = ?1")
-    Optional<Category> findByKurlyId(Long categoryId);
+    Category findByKurlyId(Long categoryId);
 
 //    private final EntityManager em;
 //

@@ -41,6 +41,7 @@ public class KafkaSevice {
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
+        log.info("\nkafka send log: "+value);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topic);
 
         ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);

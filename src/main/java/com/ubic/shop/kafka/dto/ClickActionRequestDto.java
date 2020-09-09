@@ -1,16 +1,15 @@
 package com.ubic.shop.kafka.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder @ToString
 public class ClickActionRequestDto {
-    String userId;
+    Long userId;
     String actionType;
-//    Long categoryId;
+    Long categoryId;
     Long productId;
 //    String searchText;
 

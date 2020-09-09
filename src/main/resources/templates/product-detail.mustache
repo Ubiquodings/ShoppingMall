@@ -141,7 +141,7 @@ product-detail
                                 <img src="/icon/minus.svg" alt=""/>
                             </button>
 
-                            <input type="text" name="amount" value="1" id="count" onchange="change();">
+                            <input type="text" name="amount" value="1" id="count" class="count" onchange="change();">
 
                             <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
                                 <!--<img src="plus.svg" alt="" />-->
@@ -163,7 +163,7 @@ product-detail
                         <!--
                                 <button type="button" class="btn btn-primary btn-lg" id="btn-shoplist">장바구니</button>
                                 <button type="button" class="btn btn-primary btn-lg" id="btn-order">바로주문</button>
-                        -->
+                        -->  <!--  -from-detail -->
                         <button type="button" class="btn btn-primary btn-lg btn-shoplist"
                                 data-toggle="modal" data-target="#exampleModal">
                             <input type="hidden" value="{{id}}"/>

@@ -5,6 +5,7 @@ import com.ubic.shop.repository.OrderRepository;
 import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final UserRepository userRepository;
@@ -74,6 +76,8 @@ public class OrderService {
                 count);
         //주문 생성
         Order order = Order.createOrder(user, /*delivery, */orderProduct);
+        order.initTitleAndTotalPrice();
+
         //주문 저장
         orderRepository.save(order);
 

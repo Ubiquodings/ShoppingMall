@@ -50,7 +50,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #create # , create-drop update #
+      ddl-auto: update # create # , create-drop update
     properties:
       hibernate:
         #     show_sql: true

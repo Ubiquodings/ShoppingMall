@@ -18,7 +18,7 @@ public class Category extends BaseTimeEntity {
     private Long id;
 
     private String name;
-    private Long kurlyId;
+    private Long kurlyId; // 얘가 진짜 카테고리 id 인데!
 
 //    @OneToOne(mappedBy = "category", fetch = FetchType.LAZY)
 //    private Product product;

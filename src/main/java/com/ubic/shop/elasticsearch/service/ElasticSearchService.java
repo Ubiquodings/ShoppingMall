@@ -1,12 +1,15 @@
 package com.ubic.shop.elasticsearch.service;
 
 import com.ubic.shop.domain.Product;
+import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.elasticsearch.domain.ClickProductAction;
 import com.ubic.shop.elasticsearch.domain.ProductPageUserNumber;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.elasticsearch.domain.SearchText;
 import com.ubic.shop.elasticsearch.domain.CategoryScore;
 import com.ubic.shop.kafka.dto.SearchActionRequestDto;
+import com.ubic.shop.repository.ShopListRepository;
+import com.ubic.shop.service.CouponService;
 import com.ubic.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +21,11 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,6 +35,8 @@ public class ElasticSearchService {
 
     private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장 ?
     private final ProductService productService;
+    private final ShopListRepository shopListRepository;
+    private final CouponService couponService;
 
     public void updateCategoryScore(ClickActionRequestDto received) {
         String actionType = received.getActionType();
@@ -46,7 +55,7 @@ public class ElasticSearchService {
         }
 
         // 기존 es 객체 가져와야 한다
-        String id = received.getUserId();
+        String id = received.getUserId().toString();
         CategoryScore actionScore = getESUserActionById(id);
 
         Product product = productService.findById(received.getProductId());
@@ -73,7 +82,16 @@ public class ElasticSearchService {
         putESUserAction(id, actionScore); // 카테고리 점수
 
         // 사용자 행동 수집 -- ES 저장
-        ClickProductAction clickProductAction = new ClickProductAction(received.getUserId(),received.getProductId(),received.getActionType());
+        log.info("\n사용자행동 저장: 카테고리 "+received.getCategoryId());
+        ClickProductAction clickProductAction = ClickProductAction.builder()
+                .now(LocalDateTime.now().toString())
+                .userId(id)
+                .productId(received.getProductId())
+                .categoryId(received.getCategoryId())
+                .actionType(received.getActionType())
+                .build();
+        log.info("\n사용자행동 객체: "+clickProductAction.toString());
+//        new ClickProductAction(,,);
         IndexQuery indexQuery = new IndexQueryBuilder()
                 .withId(id + clickProductAction.getNow()) // _id : userId
                 .withObject(clickProductAction) // class string?
