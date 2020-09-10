@@ -92,7 +92,10 @@ public class CouponService {
         String couponName = "장바구니에 담아두신 " + category.getName() + " 쿠폰드려요! + 20% 쿠폰!!";
 
         // 쿠폰 이미 있는지 확인
-        List<Coupon> byCategoryAndUserAndCouponType = couponRepository.findByCategoryAndUserAndCouponType(categoryId, userId, type);
+        log.info("\n쿠폰 발급 심사 userId : "+userId);
+        List<Coupon> byCategoryAndUserAndCouponType = couponRepository
+                .findByCategoryAndUserAndCouponType(categoryId, userId, type);
+
         log.info("\nbyCategoryAndUserAndCouponType : "+byCategoryAndUserAndCouponType.size());
         if (byCategoryAndUserAndCouponType.size() != 0) { // 이미 있다면
             log.info("\n이미 갖고있는 쿠폰: " + couponName);
@@ -109,6 +112,7 @@ public class CouponService {
                 .category(category)
                 .type(type)
                 .build();
+        log.info("\n쿠폰 발급 userId : "+user.getId());
 
         coupon = couponRepository.save(coupon);
         em.flush();

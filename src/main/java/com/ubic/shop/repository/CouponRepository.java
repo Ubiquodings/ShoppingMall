@@ -25,6 +25,6 @@ public interface CouponRepository extends CrudRepository<Coupon, Long> {
     List<Coupon> findByProductAndUser(@Param("productId") long productId, @Param("userId") long userId);
 
 //  @Query(value="select o from Order o where o.user.id = :userId and o.status = :status")
-    @Query("select m from Coupon m where m.id = :id and m.user.id = :userId and m.type = :couponType")
-    List<Coupon> findByCategoryAndUserAndCouponType(@Param("id") long categoryId, @Param("userId") long userId, @Param("couponType") CategoryCouponType type);
+    @Query("select m from Coupon m where m.category.id = :categoryId and m.user.id = :userId and m.type = :couponType order by m.createdDate desc")
+    List<Coupon> findByCategoryAndUserAndCouponType(@Param("categoryId") long categoryId, @Param("userId") long userId, @Param("couponType") CategoryCouponType type);
 }

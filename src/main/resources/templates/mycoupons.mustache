@@ -5,10 +5,28 @@ coupons
 <div class="row">
     <div class="card" style="width: 100%;">
         <div class="card-body">
-            <h5 class="card-title">{{name}}</h5> <!--잘나온다!-->
-<!--            <h5 class="card-title"></h5>-->
-<!--            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value=""/>주문</button>-->
-<!--            <input type="hidden" value="" id="input-cart-order"/>-->
+            <div class="row">
+                <div class="col">
+                    <span class="badge badge-secondary"
+                          style="background-color:darkorange">{{createdDate}}</span>
+
+                    {{#dtype}} <!-- product, category, all 구분하는 badge! -->
+                        <span class="badge badge-secondary"
+                              style="background-color:darkorange">{{dtype}}</span>
+                    {{/dtype}}
+
+                    {{#category}}
+                        <span class="badge badge-secondary"
+                              style="background-color:darkorange">{{type}}</span>
+                    {{/category}}
+                </div>
+            </div>
+            <div class="row">
+                <h5 class="card-title">{{name}}</h5> <!--잘나온다!-->
+            </div>
+            <!--            <h5 class="card-title"></h5>-->
+            <!--            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value=""/>주문</button>-->
+            <!--            <input type="hidden" value="" id="input-cart-order"/>-->
             <!--                    <a href="/orders/new/" class="btn btn-info active" role="button">주문</a>-->
         </div>
     </div>
