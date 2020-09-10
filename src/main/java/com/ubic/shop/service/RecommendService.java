@@ -45,18 +45,7 @@ public class RecommendService {
     }
 
     public Long getHighestCategoryId(String userId) {
-        CategoryScore userAction = elasticSearchService.getESUserActionById(userId);
 
-        Long categoryId = 1L;
-        if(userAction != null) { // es 에 useraction 정상적으로 가져왔다면
-            HashMap<Long, Long> map = userAction.getUserCategoryScore();
-            List<Entry<Long, Long>> list = new ArrayList<>(map.entrySet());
-            list.sort(Entry.comparingByValue());
-            Entry<Long, Long> highestEntry = list.get(list.size() - 1);//list.get(0); -- 이건 오름차 정렬. 마지막이 최대 점수!
-            categoryId = highestEntry.getKey();
-            log.info("\nhighestCategoryId :: {}\nValue :: {}", categoryId, highestEntry.getValue());
-            // 해당 카테고리의 상품 4개 반환하기
-        }
-        return categoryId;
+        return elasticSearchService.getESUserActionById(userId);
     }
 }

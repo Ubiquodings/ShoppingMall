@@ -51,7 +51,7 @@ public class UserActionConsumer {
             couponService.checkCartCategoryCoupon(received);
         }
 
-        // 사용자-카테고리 점수 계산 로직
+        // 사용자 행동 es 에 저장하는 로직
         elasticSearchService.updateCategoryScore(received);
 
     }

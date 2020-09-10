@@ -102,8 +102,8 @@ product-list
                                                             </div>
                                 -->
                                 <div>
-                                    <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
-                                    {{#ProductTagList}}<!--style="border:1px solid plum"-->
+                                    <!--태그 출력 ProductTagList List<ProductTag>-->
+                                    {{#ProductTagList}}
                                         <span class="badge badge-warning"
                                               style="background-color:pink">{{tag.name}}</span>
                                         <!--                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>-->
@@ -112,6 +112,8 @@ product-list
                                 <div> <!--카테고리 이름-->
                                     <span class="badge badge-secondary"
                                           style="background-color:darkorange">{{category.name}}</span>
+                                    <span class="badge badge-secondary"
+                                          style="background-color:darkorange">{{category.id}}</span>
 
                                 </div>
                             </div>

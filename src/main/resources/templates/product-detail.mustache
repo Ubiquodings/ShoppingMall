@@ -54,6 +54,15 @@ product-detail
 
     <div class="card-product card">
         <div class="container-fliud">
+<!--            <div class="row">-->
+<!--                <div class="col">-->
+<!--                    &lt;!&ndash;태그 출력 ProductTagList List<ProductTag>&ndash;&gt;-->
+<!--                    {{#ProductTagList}}-->
+<!--                        <span class="badge badge-warning"-->
+<!--                              style="background-color:pink">{{tag.name}}</span>-->
+<!--                    {{/ProductTagList}}-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="wrapper row">
                 <div class="preview col-md-6">
 
@@ -67,6 +76,12 @@ product-detail
 
                 <div class="details col-md-6">
                     <h3 class="product-title">{{name}}</h3>
+                    <div>
+                        {{#ProductTagList}}
+                            <span class="badge badge-warning"
+                                  style="background-color:pink">{{tag.name}}</span>
+                        {{/ProductTagList}}
+                    </div>
                     <div class="rating">
                         <div class="stars">
                             <span class="fa fa-star checked"></span>

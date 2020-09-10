@@ -104,7 +104,7 @@ public class RestAPIController {
     }
     // 빈 데이터 리턴도 json 형태로 해야 한다! -- 이유 :: https://vvh-avv.tistory.com/159
 
-
+    // 상품 디테일에서 바로 주문 기능
     @PostMapping("/api/orders/fromDetail/{id}") // 상품 상세 페이지에서 바로 하나 주문하는 기능
     public String orderOneFromDetail(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
                                      @RequestBody int count,
@@ -132,39 +132,9 @@ public class RestAPIController {
 
     }
 
-    @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능
-    public String orderFromShopList(@PathVariable(name = "id") Long shopListId, @LoginUser SessionUser user,
-                                    @RequestBody int count,
-                                    HttpServletRequest request) throws JsonProcessingException {
 
-        Long clientId = -1L;
-        clientId = getUserIdFromSession(user, request);
-
-        String action = "order";
-        ShopList shopList = shopListRepository.findById(shopListId).get();
-        Product product = shopList.getProduct();
-
-        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
-                .userId(clientId)
-                .actionType(action)
-                .categoryId(product.getCategory().getId())
-                .productId(product.getId())
-                .build();
-        kafkaService.sendToTopic(requestDto);
-
-//        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
-
-        // 주문 저장
-        orderService.orderOneFromShopList(clientId, product.getId(), count, shopListId);
-
-        return "{}";
-    }
-
+    /*장바구니에서 주문하기 버튼을 누르면 실행된다*/
     @PostMapping("/api/orders/AllfromShopList") // 장바구니에서 여러개 주문하는 기능
-    /*public String orderAllFromShopList(@RequestBody(value="shopListId_List[]") List<Long> shopListId,
-                                    @RequestBody(value="shopListCount_List[]") List<Integer> shopListCount,
-                                    @LoginUser SessionUser user,
-                                    HttpServletRequest request) throws JsonProcessingException {*/
     public String orderAllFromShopList(@RequestBody List<String> FromShopList,
                                        @LoginUser SessionUser user,
                                        HttpServletRequest request) throws JsonProcessingException {
@@ -323,11 +293,6 @@ public class RestAPIController {
     @DeleteMapping("/api/orders/{id}")
     public String cancelOrder(@PathVariable Long id, @LoginUser SessionUser user) {
         orderService.cancelOrder(id);
-//        if(user != null){
-//            model.addAttribute("userName", user.getName());
-//        }
-        // 취소 어떻게 하랬더라 ?
-        // order id 로 아이템 가져와서 remove ?
         return "{}";
     }
 
@@ -345,6 +310,35 @@ public class RestAPIController {
         shopListService.modifyShopList(requestDto.getCartId(), requestDto.getCount());
         return "{}";
     }
+
+    /*없어졌다!*/
+//    @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능
+//    public String orderFromShopList(@PathVariable(name = "id") Long shopListId, @LoginUser SessionUser user,
+//                                    @RequestBody int count,
+//                                    HttpServletRequest request) throws JsonProcessingException {
+//
+//        Long clientId = -1L;
+//        clientId = getUserIdFromSession(user, request);
+//
+//        String action = "order";
+//        ShopList shopList = shopListRepository.findById(shopListId).get();
+//        Product product = shopList.getProduct();
+//
+//        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+//                .userId(clientId)
+//                .actionType(action)
+//                .categoryId(product.getCategory().getId())
+//                .productId(product.getId())
+//                .build();
+//        kafkaService.sendToTopic(requestDto);
+//
+////        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
+//
+//        // 주문 저장
+//        orderService.orderOneFromShopList(clientId, product.getId(), count, shopListId);
+//
+//        return "{}";
+//    }
 
 
 }

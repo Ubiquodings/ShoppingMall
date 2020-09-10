@@ -58,7 +58,11 @@ public class ShopListService {
     @Transactional
     public void cancelShopList(Long shopListId) {
         //취소
-        shopListRepository.deleteById(shopListId);
+        if(shopListRepository.findById(shopListId).isPresent()){
+            shopListRepository.deleteById(shopListId);
+        }
+        em.flush();
+        em.clear();
     }
 
     /*장바구니 수정*/

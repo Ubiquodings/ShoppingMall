@@ -121,23 +121,6 @@ public class ExcelController {
         return result;
     }
 
-//    @Getter
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    static class SearchResponseDto {
-//        List<SearchContent> result;
-//    }
-
-//    @Getter
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    static class SearchContentDto {
-//        Double id;
-//        String lemma;
-//        String type;
-//        Double position;
-//        Double weight; // 가중치가 좀 신경쓰이는데 일단 다 해보자!
-//    }
 
     @Getter
     @AllArgsConstructor
@@ -155,16 +138,6 @@ public class ExcelController {
         String text;
     }
 
-
-//    @Async
-//    void stemmingProductName() { // 상품 이름&설명 일반화할 수 있지 않을까!
-//
-//    }
-
-//    @Async
-//    private stemmingProductDecs(){
-//
-//    }
 
 
     @PostMapping("/excel/read/categories")
