@@ -131,7 +131,7 @@ public class ElasticSearchService {
 
         } catch (Exception e) {
             log.info("\ndjango 에 es 분석결과 요청이 실패하였습니다\n"+e.getMessage());
-            return -1L;
+            return 1L;
         }
         log.info("\ndjango 에 es 분석결과 로깅합니다: "+result.toString());
 

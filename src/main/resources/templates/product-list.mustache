@@ -43,33 +43,33 @@ product-list
 </style>
 
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
 <link rel="stylesheet" type="text/css" href="/css/product-list.css">
 
 
 <div class="container">
-    <ul class="pagination justify-content-center">
-        <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
-        <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
-        <li class="disabled">
-            <a href="#">
-                <span>«</span>
-            </a>
-        </li>
-        <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
-        <!-- active의 의미는 현재 페이지의 의미이다. -->
-        <!-- <li class="active"> active 보류 -->
-        <li><a href="http://localhost:8080/products?page=1">1</a></li>
-        <li><a href="http://localhost:8080/products?page=2">2</a></li>
-        <li><a href="http://localhost:8080/products?page=3">3</a></li>
-        <li><a href="http://localhost:8080/products?page=4">4</a></li>
-        <li><a href="http://localhost:8080/products?page=5">5</a></li>
-        <li>
-            <a href="#">
-                <span>»</span>
-            </a>
-        </li>
-    </ul>
+    <!--    <ul class="pagination justify-content-center">-->
+    <!--        &lt;!&ndash; li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.&ndash;&gt;-->
+    <!--        &lt;!&ndash; disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. &ndash;&gt;-->
+    <!--        <li class="disabled">-->
+    <!--            <a href="#">-->
+    <!--                <span>«</span>-->
+    <!--            </a>-->
+    <!--        </li>-->
+    <!--        &lt;!&ndash; li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. &ndash;&gt;-->
+    <!--        &lt;!&ndash; active의 의미는 현재 페이지의 의미이다. &ndash;&gt;-->
+    <!--        &lt;!&ndash; <li class="active"> active 보류 &ndash;&gt;-->
+    <!--        <li><a href="http://localhost:8080/products?page=1">1</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=2">2</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=3">3</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=4">4</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=5">5</a></li>-->
+    <!--        <li>-->
+    <!--            <a href="#">-->
+    <!--                <span>»</span>-->
+    <!--            </a>-->
+    <!--        </li>-->
+    <!--    </ul>-->
 
 
     <div class="row">
@@ -119,20 +119,49 @@ product-list
                             </div>
                         </div>
 
-                        <div class="m-t text-left">
+                        <div class="m-t row">
+                            <div class="col-4">
+                                <!--<button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">-->
+                                <!--margin-top: 10px-->
+                                <button type="button" style="margin-left:10px"
+                                        class="btn btn-sm btn-outline btn-success btn-shoplist" id="btn-shoplist"
+                                        data-toggle="modal" data-target="#exampleModal">
 
-                            <!--<button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">-->
-                            <button type="button" style="margin-top: 10px"
-                                    class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist"
-                                    data-toggle="modal" data-target="#exampleModal">
+                                    <input type="hidden" value="{{id}}" id="product-detail-id"/>
+                                    <!--<input type="hidden" value= "1"/>-->
+                                    <input type="hidden" id="count" value="1"/>
+<!--                                    장바구니--><span class="material-icons white00">shopping_cart</span>
+                                </button>
+                            </div>
 
-                                <input type="hidden" value="{{id}}" id="product-detail-id"/>
-                                <!--<input type="hidden" value= "1"/>-->
-                                <input type="hidden" id="count" value="1"/>
-                                장바구니
-                            </button>
-                            <!--<a href="#" class="" >장바구니 </a>-->
+                            <!--아이콘2-->
+                            <!--함께 보고있는 사용자 수-->
+                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}" id="productUserNumber-{{id}}" style="padding:0; margin: 0">
+                                <span class="material-icons light-green">visibility</span> <span class="align-text-bottom">11명</span>
+                            </div>
+
+                            <!--구매한 사용자 수-->
+                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}" id="productUserNumber-{{id}}" style="padding:0; margin: 0">
+                                <span class="material-icons light-green">payment</span> <span class="align-text-bottom">0명</span>
+                            </div>
+
                         </div>
+
+<!--
+                        &lt;!&ndash;되면 공통 로직으로 따로 빼자&ndash;&gt;
+                        <div class="row" style="padding:0; margin: 0"> &lt;!&ndash;text-left&ndash;&gt;
+                            <div class="col-2" style="padding:0; margin: 0"></div>
+                            &lt;!&ndash;아이콘2&ndash;&gt;
+                            &lt;!&ndash;함께 보고있는 사용자 수&ndash;&gt;
+                            <div class=" col-5 list-mini-text-font productUserNumber-{{id}}" id="productUserNumber-{{id}}">
+                                <span class="material-icons light-green">visibility</span> <span class="align-text-bottom">0명</span>
+                            </div>
+
+                            &lt;!&ndash;구매한 사용자 수&ndash;&gt;
+                            <div class="col-5" >
+                            </div>
+                        </div>
+-->
 
                     </div>
                 </div>
@@ -209,6 +238,37 @@ product-list
             </ul>
         </nav>
         -->
+
+    <!--유연언니 페이지네이션 복붙해왔다-->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
+            <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
+            <li class="disabled page-item">
+                <a class="page-link" href="#">
+                    <span>«</span>
+                </a>
+            </li>
+            <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
+            <!-- active의 의미는 현재 페이지의 의미이다. -->
+            <!-- <li class="active"> active 보류 -->
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=">...</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
+                                     +{{page-total-count}}>
+                {{page-total-count}} </a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span>»</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
 
 {{>layout/footer}}

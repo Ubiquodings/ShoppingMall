@@ -13,9 +13,9 @@
 <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
 <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
     <style>
@@ -45,6 +45,30 @@
         div#input-group-append {
             display: inline-block;
         }
+
+        .material-icons.orange600 { color: #FB8C00; }
+
+        .material-icons.light-green { color: #9AFE2E; }
+
+        .material-icons.white00{
+            color: white;
+        }
+
+        .material-icons.pink00 { color: tomato; }
+
+        .mini-text-font {
+            font-size: 70%;
+        }
+
+        .list-mini-text-font{
+            font-size: 50%;
+            text-align: start;
+        }
+
+        .detail-info-number{
+            padding:0px 0px;
+        }
+
     </style>
 
 
@@ -77,6 +101,22 @@
         </div>
     </div>
 </div>
+
+
+<!--전체 접속자 수-->
+<div class="card"> <!---->
+    <div class="card-body detail-info-number" >
+        <div class="row">
+            <div class="col-11"></div> <!-- -lg 붙여야 하나 ? 괜츈-->
+
+            <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
+            <div class="col-1 mini-text-font" id="allUserNumber">
+                <span class="material-icons orange600">accessibility_new</span> <span class="align-text-bottom">22명</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <nav class="px-4 justify-content-start navbar navbar-light bg-list my-2 border border-dark rounded">
     <a class="navbar-brand" href="/">home</a>

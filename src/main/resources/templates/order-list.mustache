@@ -21,15 +21,21 @@
         </div>
 
         <div>
-            <div class="main2">
-                <div id="main21">
-                    <button type="button" class="btn btn-primary btn-lg btn-order-cancel">
+            <div class="main2" > <!--x y ?-->
+                <div id="main21" class="row" >
+                    <button type="button" class="btn btn-primary btn-xs btn-order-cancel col-2" style="margin-left: 40px; margin-bottom: 20px;"> <!--y x 였다!!-->
                         <input type="hidden" value="{{id}}" class="input-order-id"/>환불 요청
                     </button>
 
+                    <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+                    <div class="col mini-text-font" id="userOrderNumber" style="margin-top: 10px; margin-left: 0">
+                        <span class="material-icons pink00">payment</span> <span class="align-text-bottom">6명</span>
+                    </div>
+
+
                     <!--                    <button> 환불 요청(주문취소) </button>-->
-                    <button> 교환 요청</button>
-                    <button> 리뷰 쓰기</button>
+<!--                    <button> 교환 요청</button>-->
+<!--                    <button> 리뷰 쓰기</button>-->
                 </div>
             </div>
         </div>

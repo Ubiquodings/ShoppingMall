@@ -36,17 +36,36 @@ product-detail
     .modal-font{
         font-family: 'Do Hyeon', sans-serif;
     }
+
+
 </style>
 
 <!--이 상품을 함께보고 있는 사람 수-->
 <div class="card"> <!---->
-    <div class="card-body" >
-        <p class="row" id="userNumber">이 상품을 함께보고 있는 사람 수</p>
-        <p class="row" id="userShopListNumber">이 상품을 장바구니에 담은 사람 수</p>
-        <p class="row" id="userOrderNumber">이 상품을 구매한 사람 수</p>
+    <div class="card-body detail-info-number" >
+        <div class="row">
+            <div class="col-9"></div> <!-- -lg 붙여야 하나 ?-->
+            <!-- https://material.io/resources/icons/?search=eye&icon=visibility&style=outline -->
+            <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
+            <div class="col-1  mini-text-font" id="userNumber">
+                <span class="material-icons orange600">visibility</span> <span class="align-text-bottom">0명</span>
+            </div>
+            <!--이 상품을 장바구니에 담은 사람 수--> <!--가방 or 카트-->
+            <div class="col-1 mini-text-font" id="userShopListNumber">
+                <span class="material-icons orange600">shopping_cart</span> <span class="align-text-bottom">4명</span>
+            </div>
+            <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+            <div class="col-1 mini-text-font" id="userOrderNumber">
+                <span class="material-icons orange600">payment</span> <span class="align-text-bottom">6명</span>
+            </div>
+        </div>
+<!--        <p class="row" id="userNumber">이 상품을 함께보고 있는 사람 수</p>-->
+<!--        <p class="row" id="userShopListNumber">이 상품을 장바구니에 담은 사람 수</p> &lt;!&ndash;가방 or 카트&ndash;&gt;-->
+<!--        <p class="row" id="userOrderNumber">이 상품을 구매한 사람 수</p> &lt;!&ndash;돈 다발&ndash;&gt;-->
     </div>
 </div>
 
+<!--상품 상세 정보 출력-->
 {{#product}}
     <!--{{name}}-->
     <input type="hidden" value="{{id}}" id="input-product-id"/>
@@ -54,15 +73,7 @@ product-detail
 
     <div class="card-product card">
         <div class="container-fliud">
-<!--            <div class="row">-->
-<!--                <div class="col">-->
-<!--                    &lt;!&ndash;태그 출력 ProductTagList List<ProductTag>&ndash;&gt;-->
-<!--                    {{#ProductTagList}}-->
-<!--                        <span class="badge badge-warning"-->
-<!--                              style="background-color:pink">{{tag.name}}</span>-->
-<!--                    {{/ProductTagList}}-->
-<!--                </div>-->
-<!--            </div>-->
+
             <div class="wrapper row">
                 <div class="preview col-md-6">
 
@@ -76,12 +87,6 @@ product-detail
 
                 <div class="details col-md-6">
                     <h3 class="product-title">{{name}}</h3>
-                    <div>
-                        {{#ProductTagList}}
-                            <span class="badge badge-warning"
-                                  style="background-color:pink">{{tag.name}}</span>
-                        {{/ProductTagList}}
-                    </div>
                     <div class="rating">
                         <div class="stars">
                             <span class="fa fa-star checked"></span>
@@ -90,6 +95,12 @@ product-detail
                             <span class="fa fa-star"></span>
                             <span class="fa fa-star"></span>
                         </div>
+                    </div>
+                    <div style="margin-bottom: 20px">
+                        {{#ProductTagList}}
+                            <span class="badge badge-warning"
+                                  style="background-color:pink">{{tag.name}}</span>
+                        {{/ProductTagList}}
                     </div>
                     <p class="product-description">{{description}}</p>
                     <h4 class="price">Price: <span>{{price}}</span> <span class="won">원</span></h4>
