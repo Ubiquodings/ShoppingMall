@@ -1,7 +1,9 @@
 package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.*;
@@ -9,14 +11,19 @@ import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.*;
 import com.ubic.shop.service.*;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -37,8 +44,12 @@ public class RestAPIController {
     private final CategorySevice categoryService;
     private final KafkaSevice kafkaService;
     private final UserRepository userRepository;
-    private final UbicSecretConfig ubicConfig;
+    private final UbicSecretConfig ubicSecretConfig;
+    private final UbicConfig ubicConfig;
     private final CouponRepository couponRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final ObjectMapper objectMapper;
 
 
     @PostMapping("/api/products/new")
@@ -310,6 +321,84 @@ public class RestAPIController {
         shopListService.modifyShopList(requestDto.getCartId(), requestDto.getCount());
         return "{}";
     }
+
+    // dashboard 에서 추천목록 가져오는 api 4가지
+    @GetMapping("/api/recommendations/tmp")
+    public List<RecommendationProductListResponseDto> getUserCfRecommendationList(
+            @RequestParam(name = "page", defaultValue = "0") String page) throws JsonProcessingException {
+        // 카테고리 id 전부 가져와서
+        List<Long> allCategoryIdList = categoryRepository.getAllCategoryId();
+        log.info("\ngetUserCfRecommendationList category id list 출력: "+allCategoryIdList.toString());
+//        List<Long> randomCategoryId4 = new ArrayList<>();
+
+        // 랜덤 id 추출 : 상품이 하나도 없는 카테고리가 있어서 안되겠다 !
+//        Random rand = new Random(); //Long randomCategoryId;
+        Long randomCategoryId = 3L;//allCategoryIdList.get(rand.nextInt(allCategoryIdList.size()));
+        log.info("\ngetUserCfRecommendationList random category id  출력: "+ randomCategoryId);
+
+        // 각 category id 에 대해 4개씩 product List 를 가져온다
+        // model 에 담아 화면에 전달한다
+        PageRequest pageRequest = PageRequest.of(Integer.parseInt(page), ubicConfig.dashBoardProductListPageSize,
+                Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<Product> productListByCategoryId = productRepository.findByCategoryId(randomCategoryId, pageRequest);
+        log.info("\ngetUserCfRecommendationList 찾아온 product list size 출력: "+productListByCategoryId.getTotalElements());
+
+        List<RecommendationProductListResponseDto> collect = productListByCategoryId.stream()
+                .map((product) -> {
+                    // Product > ProductTag > Tag 접근하는 로직
+                    List<String> tagNameList = new ArrayList<>();
+                    List<ProductTag> productTagList = product.getProductTagList();
+                    for (ProductTag productTag : productTagList) {
+                        tagNameList.add(productTag.getTag().getName());
+                    }
+
+                    return RecommendationProductListResponseDto.builder()
+                            .productId(product.getId())
+                            .productImgUrl(product.getImgUrl())
+                            .productName(product.getName())
+                            .productPrice(product.getPrice())
+                            .productDescription(product.getDescription())
+
+                            .tagNameList(tagNameList)
+                            .categoryName(product.getCategory().getName())
+                            .categoryId(product.getCategory().getId())
+                            .build();
+
+                }).collect(Collectors.toList());
+        String result = objectMapper.writeValueAsString(collect);
+        log.info("\n추천목록 하나 리턴: "+result);
+        return collect;
+
+    }
+
+    @AllArgsConstructor
+    @Getter /*@Setter*/ @Builder @ToString
+    static class RecommendationProductListResponseDto {
+        Long productId;
+        String productImgUrl;
+        String productName;
+        int productPrice;
+        String productDescription;
+
+        List<String> tagNameList;
+
+        String categoryName;
+        Long categoryId;
+    }
+
+//    public List<Tag> TagNameListForRecommendation(List<ProductTag> productTagList){
+//
+//    }
+
+
+//    @AllArgsConstructor
+//    @Getter
+//    static class TagNameListForRecommendation {
+//        List<String> tagNameList;
+//
+//    }
+
 
     /*없어졌다!*/
 //    @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능

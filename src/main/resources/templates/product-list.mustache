@@ -9,7 +9,7 @@ product-list
 &lt;!&ndash;리스트&ndash;&gt;
 -->
 
-
+<!--대시보드랑 겹치는 내용-->
 <script>
     $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
@@ -95,12 +95,7 @@ product-list
                                     <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
                                     {{description}}
                                 </div>
-                                <!--
-                                                            <div class="m-t text-left">
-                                                                <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success" id="btn-shoplist">장바구니</button>
-                                                                &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
-                                                            </div>
-                                -->
+
                                 <div>
                                     <!--태그 출력 ProductTagList List<ProductTag>-->
                                     {{#ProductTagList}}
@@ -121,108 +116,72 @@ product-list
 
                         <div class="m-t row">
                             <div class="col-4">
-                                <!--<button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">-->
-                                <!--margin-top: 10px-->
+
                                 <button type="button" style="margin-left:10px"
                                         class="btn btn-sm btn-outline btn-success btn-shoplist" id="btn-shoplist"
                                         data-toggle="modal" data-target="#exampleModal">
 
                                     <input type="hidden" value="{{id}}" id="product-detail-id"/>
-                                    <!--<input type="hidden" value= "1"/>-->
+
                                     <input type="hidden" id="count" value="1"/>
-<!--                                    장바구니--><span class="material-icons white00">shopping_cart</span>
+                                    <!--                                    장바구니--><span class="material-icons white00">shopping_cart</span>
                                 </button>
                             </div>
 
                             <!--아이콘2-->
                             <!--함께 보고있는 사용자 수-->
-                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}" id="productUserNumber-{{id}}" style="padding:0; margin: 0">
-                                <span class="material-icons light-green">visibility</span> <span class="align-text-bottom">11명</span>
+                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}"
+                                 id="productUserNumber-{{id}}" style="padding:0; margin: 0">
+                                <span class="material-icons light-green">visibility</span> <span
+                                    class="align-text-bottom">11명</span>
                             </div>
 
                             <!--구매한 사용자 수-->
-                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}" id="productUserNumber-{{id}}" style="padding:0; margin: 0">
+                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}"
+                                 id="productUserNumber-{{id}}" style="padding:0; margin: 0">
                                 <span class="material-icons light-green">payment</span> <span class="align-text-bottom">0명</span>
                             </div>
 
                         </div>
-
-<!--
-                        &lt;!&ndash;되면 공통 로직으로 따로 빼자&ndash;&gt;
-                        <div class="row" style="padding:0; margin: 0"> &lt;!&ndash;text-left&ndash;&gt;
-                            <div class="col-2" style="padding:0; margin: 0"></div>
-                            &lt;!&ndash;아이콘2&ndash;&gt;
-                            &lt;!&ndash;함께 보고있는 사용자 수&ndash;&gt;
-                            <div class=" col-5 list-mini-text-font productUserNumber-{{id}}" id="productUserNumber-{{id}}">
-                                <span class="material-icons light-green">visibility</span> <span class="align-text-bottom">0명</span>
-                            </div>
-
-                            &lt;!&ndash;구매한 사용자 수&ndash;&gt;
-                            <div class="col-5" >
-                            </div>
-                        </div>
--->
-
                     </div>
                 </div>
 
             </div>
         {{/products}}
+    </div>
 
-        <!-- Button trigger modal -->
-        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-        </button>-->
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><p class="modal-font">장바구니 이동</p></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><p class="modal-font">장바구니 이동</p></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-font">
+                        장바구니에 상품이 담겼습니다. <br/>
+                        장바구니로 이동하시겠습니까?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <p class="modal-font">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"
+                                onclick="location.href='/carts'">장바구니로 이동
                         </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="modal-font">
-                            장바구니에 상품이 담겼습니다. <br/>
-                            장바구니로 이동하시겠습니까?
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <p class="modal-font">
-                            <button type="button" class="btn btn-warning" data-dismiss="modal"
-                                    onclick="location.href='/carts'">장바구니로 이동
-                            </button>
-                            <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
-                        </p>
-                    </div>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
+                    </p>
                 </div>
             </div>
         </div>
-
-        <!-- Modal HTML -->
-        <!--https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=elegant-success-modal-->
-        <!--<div id="myModal" class="modal fade">
-            <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                    <div class="modal-header justify-content-center">
-                        <div class="icon-box">
-                            <i class="material-icons">&#xE876;</i>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <h4>Great!</h4>
-                        <p>Your account has been created successfully.</p>
-                        <button class="btn btn-success" data-dismiss="modal"><span>Start Exploring</span> <i class="material-icons">&#xE5C8;</i></button>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
+
+
+
+    <!--페이지네이션-->
     <!--
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">

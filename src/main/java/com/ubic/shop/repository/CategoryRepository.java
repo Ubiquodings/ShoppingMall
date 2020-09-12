@@ -19,6 +19,9 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
     @Query("select u from Category u where u.kurlyId = ?1")
     Category findByKurlyId(Long categoryId);
 
+    @Query("select u.id from Category u ")
+    List<Long> getAllCategoryId();
+
 //    private final EntityManager em;
 //
 //    public Category save(Category category) {

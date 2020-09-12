@@ -39,6 +39,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Query(value="select p from Product p where :results in p.ProductTagList")
     List<Product> findBystemmingResults(@Param("results") String stemmingResults);
 
+//    List<Product> findByCategoryIdForDashBoardByPaging(, Pageable pageable)
 
 //    List<Product> findAll();
 //    private final EntityManager em;
