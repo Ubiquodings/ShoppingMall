@@ -3,10 +3,11 @@ var userAction = {
         var _this = this;
 
         /*결재페이지에서 주문*/
-        $(".btn-order-at-payment").on('click',function(e){
-
+        $(document).on('click', '.btn-order-at-payment', function (e) {
+            // $(".btn-order-at-payment").on('click', function (e) {
+            // 체크된 쿠폰 list 가져오기
             var checkboxesChecked = [];
-            Array.from(document.getElementsByClassName('form-check-input')).forEach((checkbox)=>{
+            Array.from(document.getElementsByClassName('form-check-input')).forEach((checkbox) => {
                 // get checked checkbox
                 if (checkbox.checked) {
                     let id = checkbox.parentElement.children[1].innerHTML; // id ok
@@ -16,30 +17,32 @@ var userAction = {
             });
             console.log(checkboxesChecked);
 
-            $.ajax({
+            $.ajax({  /*결재페이지에서 주문*/ // RestAPIController
                 type: 'POST',
-                url: '/api/orderAll', // RestAPIController
+                url: '/api/orderAll',
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({
-                    'couponIdList': checkboxesChecked, // TODO 체크된 쿠폰 list 가져오기
+                    'couponIdList': checkboxesChecked,
                 })
-            }).done(function(){ // 왜 안되지 ?
+            }).done(function () { // 왜 안되지 ?
                 alert('주문 ok');
                 window.location.href = '/products';
-            }).fail(function(e){
-                alert('fail '+JSON.stringify(e));
+            }).fail(function (e) {
+                alert('fail ' + JSON.stringify(e));
             });
             // window.location.href=window.location.href; // reloading ?
         });
 
-
-        $("#btn-order-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
-            // var productId = this.children[0].value;
+        /*주문삭제*/
+        $(document).on('click', '.btn-order-cancel', function (e) {
+            // $(".btn-order-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
+            var orderId = this.children[0].value;
+            console.log(orderId);
             $.ajax({
                 type: 'DELETE',
-                url: '/api/orders/' + $("input#input-order-id").val(), // order id
-                dataType: 'json',// Accept ?
+                url: '/api/orders/' + orderId, // order id
+                dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 // data: JSON.stringify({})
             }).done(function () {
@@ -50,22 +53,25 @@ var userAction = {
             });
             // window.location.href=window.location.href;
         });
+
         /*장바구니 수정*/
-        $(".btn-cart-modify").on('click', function (e) { // detail 페이지에서 가져와야지
+        $(document).on('click', '.btn-cart-modify', function (e) {
+            // $(".btn-cart-modify").on('click', function (e) { // detail 페이지에서 가져와야지
             var shopListId = this.children[0].value;
             var form_list = document.getElementsByClassName("formlist");
-            var index; var count;
+            var index;
+            var count;
             if (form_list.length == 1) {
                 count = document.form.amount.value;
                 console.log("no index");
-            }else{
+            } else {
                 index = $('.btn-cart-modify').index($(this));
-                console.log("index: "+index);
+                console.log("index: " + index);
                 count = document.form[index].amount.value;
             }
             // var count = this.children[1].value;
-            console.log("modify: "+shopListId+" "+count);
-            $.ajax({
+            console.log("modify: " + shopListId + " " + count);
+            $.ajax({ /*장바구니 수정*/
                 type: 'PUT',
                 url: '/api/carts',
                 dataType: 'json',
@@ -75,15 +81,17 @@ var userAction = {
                     'count': count,
                 })
             }).done(function () {
-                alert('수정되었습니다.');
+                // alert('수정되었습니다.');
                 window.location.href = window.location.href;
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
             // window.location.href=window.location.href;
         });
+
         /*장바구니 삭제*/
-        $(".btn-cart-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
+        $(document).on('click', '.btn-cart-cancel', function (e) {
+            // $(".btn-cart-cancel").on('click', function (e) { // detail 페이지에서 가져와야지
             var shopListId = this.children[0].value;
             $.ajax({
                 type: 'DELETE',
@@ -92,7 +100,7 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 // data: JSON.stringify({})
             }).done(function () {
-                alert('삭제되었습니다.');
+                // alert('삭제되었습니다.');
                 window.location.href = window.location.href;
             }).fail(function (error) {
                 alert(JSON.stringify(error));
@@ -136,12 +144,22 @@ var userAction = {
 
         });*/
 
+        /*장바구니: 디테일&리스트*/
+        $(document).on('click', '.btn-shoplist', function (e) {
+            // $(".btn-shoplist").on('click', function (e) { // product-detail 페이지에서 가져와야지 & 및 product-list에서의 장바구니 버튼도.
 
-        $(".btn-shoplist").on('click',function(e){ // product-detail 페이지에서 가져와야지 & 및 product-list에서의 장바구니 버튼도.
-
+            var countEList = document.getElementsByClassName("count");
+            var count = -1;
+            if (countEList.length == 1) { // 디테일
+                count = countEList[0].value;
+                console.log('countEList.length == 1\nand count is ' + count);
+            } else { // 리스트
+                count = this.children[1].value; // 리스트
+            }
             var productId = this.children[0].value;
-            //var count = this.children[1].value;
-            var count = $('#count').val();
+            // var
+            // var count = $('#count').val(); // 디테일 - 안먹힌다 : 근데 장바구니에 넣어도 잘 동작했는데
+            console.log("cart: " + productId + " " + count);
             $.ajax({
                 type: 'POST',
                 url: '/api/carts/new/' + productId,
@@ -149,16 +167,20 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 //data: JSON.stringify({}) // TODO 간단하게 url param 으로 대체
                 data: JSON.stringify(count)
-            }).done(function(){ // 왜 안되지 ?
+            }).done(function () { // 왜 안되지 ?
                 //alert('ok'); //0827 채민: modal 테스트중이라 잠시 껐습니다!
-            }).fail(function(e){
-                alert('fail '+JSON.stringify(e));
+                console.log('/api/carts/new/ : 요청함');
+            }).fail(function (e) {
+                alert('fail ' + JSON.stringify(e));
             });
             // window.location.href=window.location.href; // reloading ?
         });
+
+        /*디테일에서 바로 주문*/
         // button 에 input 넣기
         // button class 수정
-        $(".btn-order-immediately-from-detail").on('click', function (e) { // detail 페이지에서 가져와야지
+        $(document).on('click', '.btn-order-immediately-from-detail', function (e) {
+                // $(".btn-order-immediately-from-detail").on('click', function (e) { // detail 페이지에서 가져와야지
             var productId = this.children[0].value;
             var count = $('#count').val();
             $.ajax({
@@ -168,30 +190,34 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(count)
             }).done(function () { // 왜 안되지 ?
-                alert('ok');
+                alert('바로 주문되었습니다!');
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
             });
         });
-        $(".btn-order-immediately-from-cart").on('click', function (e) { // detail 페이지에서 가져와야지
-            var shopListId = this.children[0].value;
-            var count = this.children[1].value;
-            $.ajax({
-                type: 'POST',
-                url: '/api/orders/fromShopList/' + shopListId,//$("input#input-cart-order").val(),
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(count)
-            }).done(function () {
-                alert('ok');
-                window.location.href = window.location.href;
-            }).fail(function (e) {
-                alert('fail ' + JSON.stringify(e));
-            });
 
-        });
+        /*카트에서 바로주문은 없어졌다!*/
+        // $(".btn-order-immediately-from-cart").on('click', function (e) { // detail 페이지에서 가져와야지
+        //     var shopListId = this.children[0].value;
+        //     var count = this.children[1].value;
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/api/orders/fromShopList/' + shopListId,//$("input#input-cart-order").val(),
+        //         dataType: 'json',
+        //         contentType: 'application/json; charset=utf-8',
+        //         data: JSON.stringify(count)
+        //     }).done(function () {
+        //         alert('ok');
+        //         window.location.href = window.location.href;
+        //     }).fail(function (e) {
+        //         alert('fail ' + JSON.stringify(e));
+        //     });
+        //
+        // });
 
-        $("#btn-order-from-cart").on('click', function(e){ // detail 페이지에서 가져와야지
+        /*장바구니에서 주문하기 버튼을 누르면*/
+        $(document).on('click', '#btn-order-from-cart', function (e) {
+            // $("#btn-order-from-cart").on('click', function (e) { // detail 페이지에서 가져와야지
             /**
              * shopListId랑 count만 가져오기 (위에 ".btn-order-immediately-from-cart" 메소드 참고!)
              */
@@ -240,20 +266,21 @@ var userAction = {
                 type: 'POST',
                 url: '/api/orders/AllfromShopList/',
                 dataType: 'json',
-                contentType:'application/json; charset=utf-8',
+                contentType: 'application/json; charset=utf-8',
                 /*data: JSON.stringify(data)*/
                 data: JSON.stringify(ShopToOrder_IdAndCount)
-            }).done(function(){
+            }).done(function () {
                 // alert('ok');
                 window.location.href = '/payment';
-            }).fail(function(e){
-                alert('fail '+JSON.stringify(e));
+            }).fail(function (e) {
+                alert('fail ' + JSON.stringify(e));
             });
 
         });
 
         // 결재 페이지: 주문
-        $(".btn-order-all").on('click', function (e) {
+        $(document).on('click', '.btn-order-all', function (e) {
+            // $(".btn-order-all").on('click', function (e) {
             let shopListIdList = []; // = $("#input-shop-list-id").val(); // get list ? no
             let couponIdList = $("#input-coupon-id").val();
             let shopListIdElem = document.getElementsByClassName('input-shop-list-id');
@@ -280,7 +307,8 @@ var userAction = {
             // window.location.href="/orders";
         });
 
-        $('div.product-list-card-body').on('click', function (e) { // TODO: id, name 은 어떻게 전달하지 ?
+        $(document).on('click', 'div.product-list-card-body', function (e) {
+        // $('div.product-list-card-body').on('click', function (e) { // TODO: id, name 은 어떻게 전달하지 ?
             // console.log('이전 페이지는 '+window.location.href.);
             // let beforeProductId = $('#input-product-id').val();
             // console.log('이전 페이지 id는 '+beforeProductId);
@@ -303,7 +331,8 @@ var userAction = {
             _this.clickItem(productId); // TODO 주석 해제
         });
 
-        $('#btn-search').on('click', function (e) {
+        $(document).on('click', '#btn-search', function (e) {
+        // $('#btn-search').on('click', function (e) {
 
             // var productId = this.children[0].value; // TODO 확인!
             var keyword = $('#input-search-keyword').val();
@@ -322,7 +351,8 @@ var userAction = {
             // });
         });
 
-        $('div.product-list-card-body').on('mouseenter', function (e) {
+        $(document).on('mouseenter', 'div.product-list-card-body', function (e) {
+            // $('div.product-list-card-body').on('mouseenter', function (e) {
 
 
             let productId = this.children[0].value; // TODO 확인!

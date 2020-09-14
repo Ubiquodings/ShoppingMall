@@ -2,20 +2,13 @@ package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
-import com.ubic.shop.domain.Coupon;
 import com.ubic.shop.domain.Product;
-import com.ubic.shop.domain.User;
-import com.ubic.shop.dto.CouponRequestDto;
-import com.ubic.shop.dto.ProductResponseDto;
-import com.ubic.shop.dto.SessionUser;
-import com.ubic.shop.dto.SimpleMessageDto;
+import com.ubic.shop.dto.*;
 import com.ubic.shop.elasticsearch.service.ElasticSearchService;
 import com.ubic.shop.elasticsearch.service.EsSocketService;
-import com.ubic.shop.repository.CouponRepository;
 import com.ubic.shop.repository.ProductRepository;
-import com.ubic.shop.repository.UserRepository;
+import com.ubic.shop.service.CouponService;
 import com.ubic.shop.service.RecommendService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,17 +19,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -54,6 +40,7 @@ public class SocketController {
     private final UbicConfig ubicConfig;
 
     private final SimpMessagingTemplate socketTemplate;
+    private final CouponService couponService;
 
 
     /**
@@ -96,6 +83,7 @@ public class SocketController {
         // page 받고 repo 의 count 로 나머지 연산해야 한다 : page % pageCount
         // product repository 에서 카운트만 가져오는 쿼리 수행
         long categoryID = recommendService.getHighestCategoryId(userId);
+
         log.info("categoryID: " + categoryID);
 
 //        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
@@ -104,6 +92,10 @@ public class SocketController {
 
         PageRequest pageRequest = PageRequest.of(1, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
         Page<Product> productPageFindByCategoryId = productRepository.findByCategoryId(categoryID, pageRequest);
+//        productPageFindByCategoryId.stream()
+//                .forEach((p) -> {
+//                    p.getCategory();
+//                });
         if (productPageFindByCategoryId.hasContent()) {
             log.info("has content");
         } else {
@@ -130,8 +122,6 @@ public class SocketController {
 //        return "updateProductDetailRecommendedList";
     }
 
-    private final UserRepository userRepository;
-    private final CouponRepository couponRepository;
 
     @MessageMapping("/coupons/{userID}") /*해당 페이지 접속 사용자 수*/
 //    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
@@ -141,25 +131,27 @@ public class SocketController {
         Long productId = requestDto.getProductId();
         Product product = productRepository.findById(productId).get();
 
-        // user 정보 가져오기
-        User user = userRepository.findById(userID).get();
-
         // 해당 유저에게 쿠폰 발급하기
-        Coupon coupon = Coupon.builder()
+        // 발급 전 쿠폰 있는지 확인하기
+        int discountRate = 10;
+        String couponName = product.getName() + " 망설이지마세요! "+discountRate+"% 쿠폰!!";
 
-                .name(product.getName() + " 망설이지마세요!")
 
-                .user(user)
-                .product(product)
-                .build();
-        couponRepository.save(coupon);
+        couponService.createProductCoupon(product, userID, discountRate, couponName);
+
+
+        //
 
         // 소켓 응답하면 화면에서 쿠폰 버튼만 바꿔주기기
-        SimpleMessageDto responseDto = new SimpleMessageDto("ok");
-        socketTemplate.convertAndSend("/topic/coupons/" + user.getId(), objectMapper.writeValueAsString(responseDto));
+//        SimpleMessageDto responseDto = new SimpleMessageDto("ok");
+        PublishedCouponInfoResponseDto couponInfo = PublishedCouponInfoResponseDto.builder()
+                .couponName(couponName)
+                .build();
+        socketTemplate.convertAndSend("/topic/coupons/" + userID, objectMapper.writeValueAsString(couponInfo));
 
         // 여기까지 하고 브라우저 테스트!
     }
+
 
 
 }

@@ -1,6 +1,5 @@
 {{>layout/header}}
 <style>
-
     .img-responsive {
         width: 100%;
     }
@@ -31,6 +30,14 @@
                     <!--            <button type="button" class="btn btn-primary btn-lg" id="btn-cart-order">주문</button>-->
                     <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
                     <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
+
+                    <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+                    <div class="mini-text-font" id="userOrderNumber">
+                        <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
+                              title="Disabled tooltip">payment</span>
+                        <span class="align-text-bottom">6명</span>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -65,8 +72,16 @@
         <div class="card-body">
             <div class="px-4 py-3">
                 <input type="checkbox" class="form-check-input" id="" checked>
-                <h5 class="card-title">{{id}}</h5> <!--id 확인테스트-->
+                <input type="hidden" value="{{id}}"><!--id 확인테스트-->
                 <h5 class="card-title">{{name}}</h5>
+
+                <!--이 쿠폰 사용한 사용자 수-->
+                <div class="mini-text-font" id="userShopListNumber">
+                    <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
+                          title="이 쿠폰 사용한 사용자 수">check_circle_outline</span>
+                    <span class="align-text-bottom">4명</span>
+                </div>
+
             </div>
         </div>
     </div>

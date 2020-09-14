@@ -5,6 +5,7 @@ import com.ubic.shop.repository.OrderRepository;
 import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final UserRepository userRepository;
@@ -74,6 +76,8 @@ public class OrderService {
                 count);
         //주문 생성
         Order order = Order.createOrder(user, /*delivery, */orderProduct);
+        order.initTitleAndTotalPrice();
+
         //주문 저장
         orderRepository.save(order);
 
@@ -85,17 +89,21 @@ public class OrderService {
     @Transactional
     public void cancelOrder(Long orderId) {
         //주문 엔티티 조회
-        Order order = orderRepository.findOne(orderId);
-        //주문 취소 -- order 만 삭제하고 order product 는 삭제 안하는데 ? -- 그래서 status 로 필터링 로직 추가했다
-        order.cancel();
+        if(orderRepository.findById(orderId).isPresent()){
+            Order order = orderRepository.findById(orderId).get();
+            //주문 취소 -- order 만 삭제하고 order product 는 삭제 안하는데 ? -- 그래서 status 로 필터링 로직 추가했다
+            order.cancel();
+
+        }
     }
 
     public List<Order> findAllOrders(Long userId) {
-        return orderRepository.findAll(userId);
+        return orderRepository.findByUserId(userId);
     }
 
     public List<Order> findAllOrdered(Long userId) {
-        return orderRepository.findAllOrdered(userId);
+//        OrderStatus order = OrderStatus.ORDER;
+        return orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.ORDER);
     }
 
     @Transactional

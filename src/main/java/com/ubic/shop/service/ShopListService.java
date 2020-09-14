@@ -30,7 +30,7 @@ public class ShopListService {
 
     /** 장바구니 */
     @Transactional
-    public Long shopList(Long userId, Long productId, int count) {
+    public Long shopList(Long userId, Long productId, long count) {
         //엔티티 조회
         User user = userRepository.findById(userId).get();
         Product product = productService.findById(productId);
@@ -58,7 +58,11 @@ public class ShopListService {
     @Transactional
     public void cancelShopList(Long shopListId) {
         //취소
-        shopListRepository.deleteById(shopListId);
+        if(shopListRepository.findById(shopListId).isPresent()){
+            shopListRepository.deleteById(shopListId);
+        }
+        em.flush();
+        em.clear();
     }
 
     /*장바구니 수정*/

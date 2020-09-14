@@ -31,9 +31,9 @@ public class CategorySevice {
 
     private boolean validateDuplicateCategory(Category category) {
 //        List<Category> findCategoryList
-        Optional<Category> optionalCategory = categoryRepository.findByKurlyId(category.getKurlyId());
-        if(optionalCategory.isPresent()){ // 존재한다
-            log.info("\n존재하는 카테고리 {}", optionalCategory.get().getName());
+        Category byKurlyId = categoryRepository.findByKurlyId(category.getKurlyId());
+        if(byKurlyId != null){ // 존재한다
+            log.info("\n존재하는 카테고리 {}", byKurlyId.getName());
             return false;//throw new IllegalStateException("이미 존재하는 카테고리입니다.");
         }
         return true;
@@ -43,6 +43,7 @@ public class CategorySevice {
     }
 
     public Category getCategoryById(Long categoryId){
+        // category id != kurly id
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
         if(optionalCategory.isPresent()){ // 존재한다
             return optionalCategory.get();
@@ -51,9 +52,9 @@ public class CategorySevice {
     }
 
     public Category getCategoryByKurlyId(Long categoryId) {
-        Optional<Category> optionalCategory = categoryRepository.findByKurlyId(categoryId);
-        if(optionalCategory.isPresent()){ // 존재한다
-            return optionalCategory.get();
+        Category byKurlyId = categoryRepository.findByKurlyId(categoryId);
+        if(byKurlyId != null){ // 존재한다
+            return byKurlyId;
         }
         return null;
 

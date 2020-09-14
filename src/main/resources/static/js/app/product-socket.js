@@ -24,12 +24,16 @@ var productSocket = {
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
 
             /*[구독] 해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+            /* send: /app/users/{productId} , subscribe: /topic/users/{productId}
+            * */
             stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
                 _this.updateUserNumber(JSON.parse(result.body).number);
             }, {"productId": productId});
 
-            /*[구독] 해당 유저에게만 추천 목록 갱신*/
+            /*[구독] 해당 유저에게만 추천 목록 갱신: 카테고리 기반*/
+            /* send: /app/products/{userId}/page/{currentPage} , subscribe: /topic/products/{userId}
+            * */
             stompClient.subscribe('/topic/products/'+userId, function (result) {
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
@@ -39,13 +43,16 @@ var productSocket = {
             }, {});
 
             /*[구독] 망설이지마세요 쿠폰*/
+            /* send: /app/coupons/{userId} , subscribe: /topic/coupons/{userId}
+            * */
             stompClient.subscribe('/topic/coupons/'+userId, function (result) {
                 result = JSON.parse(result.body ); /*JSON.stringify(*/
-                console.log('/topic/coupons/{userId} 결과 :  \n'+ result);
+                console.log('/topic/coupons/{userId} 결과 :  \n'+ result.couponName); // coupone name ok
 
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
                 // $("#btn-my-coupons").css("color","red");
+                alert("쿠폰이 도착했습니다!\n"+result.couponName);
                 document.querySelector('#btn-my-coupons').innerHTML += ` <span class="badge badge-light">1</span>`;
                 // console.log($("#btn-my-coupons").innerHTML);
 
@@ -74,9 +81,10 @@ var productSocket = {
 
     },
     updateUserNumber: function (number) {
-        let userNumberDiv = document.querySelector('p#userNumber');
-        userNumberDiv.innerHTML = "이 상품을 ";
-        userNumberDiv.innerHTML += `${number} 명과 함께보고 있습니다!`;
+        let userNumberDiv = document.querySelector('div#userNumber');
+        userNumberDiv.innerHTML = "";
+        userNumberDiv.innerHTML += `<span class="material-icons orange600">visibility</span><span class="align-text-bottom"> ${number}명</span>`;
+        // userNumberDiv.innerHTML += `<!--<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z"></path></svg>-->`;
     },
     setSchedulingTasks: function(stompClient, userId, currentPage){
         // 추천 목록 주기적 요청

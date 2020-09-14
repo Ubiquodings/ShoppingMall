@@ -71,7 +71,7 @@ public class ExcelController {
             productName = row.getCell(3).getStringCellValue();
             productDesc = row.getCell(5) == null ? "" : row.getCell(5).getStringCellValue();
             ProductSaveRequestDto requestDto = ProductSaveRequestDto.builder()
-                    .categoryId((long) row.getCell(1).getNumericCellValue())
+                    .kurlyId((long) row.getCell(1).getNumericCellValue())
                     .name(productName)
                     .price((int) row.getCell(4).getNumericCellValue())
                     .stockQuantity(50)
@@ -79,14 +79,8 @@ public class ExcelController {
                     .imgUrl(row.getCell(6).getStringCellValue())
                     .build();
 
-            try{
-                ProductSaveRequestDto result = restTemplate.postForObject(
-                        ubicConfig.baseUrl + "/api/products/new",
-                        requestDto, ProductSaveRequestDto.class);
-
-            }catch (Exception e){
-                return;
-            }
+            // requestToSaveProduct
+            requestToSaveProduct(requestDto);
 //            if (result != null)
 //                logger.info("\n" + result.toString());
 
@@ -95,7 +89,20 @@ public class ExcelController {
         }
     }//end handler
 
-    @GetMapping("/api/search/test")
+    @Async
+    public void requestToSaveProduct(ProductSaveRequestDto requestDto) {
+        try{
+            ProductSaveRequestDto result = restTemplate.postForObject(
+                    ubicConfig.baseUrl + "/api/products/new",
+                    requestDto, ProductSaveRequestDto.class);
+
+        }catch (Exception e){
+            return;
+        }
+        return;
+    }
+
+    @GetMapping("/api/search/test") // 취소
     public Object searchTest(@RequestParam(value = "text") String text) {
 //        ubicSecretConfig.etriApiKey;
         log.info("\ntext: " + text);
@@ -114,23 +121,6 @@ public class ExcelController {
         return result;
     }
 
-//    @Getter
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    static class SearchResponseDto {
-//        List<SearchContent> result;
-//    }
-
-//    @Getter
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    static class SearchContentDto {
-//        Double id;
-//        String lemma;
-//        String type;
-//        Double position;
-//        Double weight; // 가중치가 좀 신경쓰이는데 일단 다 해보자!
-//    }
 
     @Getter
     @AllArgsConstructor
@@ -148,16 +138,6 @@ public class ExcelController {
         String text;
     }
 
-
-//    @Async
-//    void stemmingProductName() { // 상품 이름&설명 일반화할 수 있지 않을까!
-//
-//    }
-
-//    @Async
-//    private stemmingProductDecs(){
-//
-//    }
 
 
     @PostMapping("/excel/read/categories")

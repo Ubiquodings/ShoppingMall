@@ -136,26 +136,19 @@ public class ProductController {
         // 카프카에 전송하고 > 컨슈머 처리
         kafkaService.sendToTopic(new SearchActionRequestDto(userId.toString(), searchText));
 
+        // 태그 이름 직접 검색하는 로직 추가
+        List<Tag> tagListbyNameWithOriginalParam = tagRepository.findByName(searchText);
+        List<Product> productListFromOriginalParam = getProductListFromTagList(tagListbyNameWithOriginalParam);
+
         // 검색어 형태소 분석
         List<String> result = tagService.stemmingProductInfo(searchText);
         if(result == null){
+            model.addAttribute("products", productListFromOriginalParam); // 40개씩 페이징
             return "product-list";
         }
         // 한번에 찾아오는 기능 시도
 
-//        log.info("\nsearch result size: "+result.size()); // 2 ok
-
-        /**
-         * Tag 에서 찾아오는데,
-         * 키를 ProductTag 가 갖고 있으니까
-         * Tag > ProductTag > Product 순으로 접근해야겠다
-         * 지금 Product 에서 ProductTag 갖고 있는데 -- 없애고
-         * ok Tag 에서 ProductTag 갖고
-         * Tag 로 찾기 > ProductTag 거쳐서 > Product 가져오기 -- stream 으로 하든 쿼리로 가져오든
-         * */
-
-        // result stream 돌면서 List<Tag> 에 관련
-//        List<String> byName = new ArrayList<>();
+        // String tagName > Tag
         List<Tag> byName = result.stream()
                 .filter(x -> x!=null)
                 .map(tagName -> {
@@ -171,32 +164,37 @@ public class ProductController {
                 .filter(x -> x!=null)
                 .collect(Collectors.toList());
 
-        log.info("\nsearch TagbyName size: "+byName.size()); // 2 ok
+        // byName + tagListbyNameWithOriginalParam
+        byName = Stream.concat(byName.stream(), tagListbyNameWithOriginalParam.stream())
+                .distinct() // 중복제거
+                .collect(Collectors.toList());
 
-        //
+        log.info("\nsearch TagbyName size: "+byName.size()); // 2 ok
+        List<Product> searchResultProductList = getProductListFromTagList(byName);
+
+        model.addAttribute("products", searchResultProductList); // 40개씩 페이징
+
+        return "product-list";
+    }
+
+    public List<Product> getProductListFromTagList(List<Tag> tagList) {
+        // Tag List > ProductTag List
         List<ProductTag> productTagList = new ArrayList<>();
-        for (int i=0; i<byName.size(); i++) {
-            if(byName.get(i)==null)
+        for(Tag tag : tagList){
+            if(tag==null)
                 log.info("\ntag list null"); // null
-            else
-            if (byName.get(i).getProductTagList().size() != 0) // null 일 수가 없어
-                productTagList = Stream.concat(productTagList.stream(), byName.get(i).getProductTagList().stream())
+            else if (tag.getProductTagList().size() != 0) // null 일 수가 없어
+                productTagList = Stream.concat(productTagList.stream(), tag.getProductTagList().stream())
                         .distinct()
                         .collect(Collectors.toList());
         }
 
-        List<Product> searchResultProductList = productTagList.stream()
+        //ProductTag List > Product List
+        return productTagList.stream()
                 .map(ProductTag::getProduct)
                 .distinct()
                 .limit(ubicConfig.productListPageSize/*40*/)
                 .collect(Collectors.toList());
-
-
-        // 결과 보여줘야지.. @Controller
-//        PageRequest pageRequest = PageRequest.of(0, ubicConfig.productListPageSize, Sort.by(Sort.Direction.DESC, "name"));
-        model.addAttribute("products", searchResultProductList); // 40개씩 페이징
-
-        return "product-list";
     }
 
     private User getTempUser(HttpServletRequest request) {

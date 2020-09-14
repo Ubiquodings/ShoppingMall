@@ -9,8 +9,7 @@ product-list
 &lt;!&ndash;리스트&ndash;&gt;
 -->
 
-product-list
-
+<!--대시보드랑 겹치는 내용-->
 <script>
     $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
@@ -23,17 +22,18 @@ product-list
     .modal-dialog {
         width: 400px;
     }
+
     .modal-header {
         background-color: #4c65b7;
-        padding:16px 16px;
-        color:#FFF;
+        padding: 16px 16px;
+        color: #FFF;
         /*border-bottom:2px dashed #337AB7;*/
     }
 
     .modal-footer {
         background-color: #748fb7;
-        padding:16px 16px;
-        color:#FFF;
+        padding: 16px 16px;
+        color: #FFF;
         /*border-bottom:2px dashed #337AB7;*/
     }
 
@@ -43,41 +43,38 @@ product-list
 </style>
 
 
-
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
 <link rel="stylesheet" type="text/css" href="/css/product-list.css">
 
 
 <div class="container">
-    <ul class="pagination justify-content-center">
-        <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
-        <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
-        <li class="disabled">
-            <a href="#">
-                <span>«</span>
-            </a>
-        </li>
-        <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
-        <!-- active의 의미는 현재 페이지의 의미이다. -->
-        <!-- <li class="active"> active 보류 -->
-        <li><a href="http://localhost:8080/products?page=1">1</a></li>
-        <li><a href="http://localhost:8080/products?page=2">2</a></li>
-        <li><a href="http://localhost:8080/products?page=3">3</a></li>
-        <li><a href="http://localhost:8080/products?page=4">4</a></li>
-        <li><a href="http://localhost:8080/products?page=5">5</a></li>
-        <li>
-            <a href="#">
-                <span>»</span>
-            </a>
-        </li>
-    </ul>
-
-
+    <!--    <ul class="pagination justify-content-center">-->
+    <!--        &lt;!&ndash; li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.&ndash;&gt;-->
+    <!--        &lt;!&ndash; disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. &ndash;&gt;-->
+    <!--        <li class="disabled">-->
+    <!--            <a href="#">-->
+    <!--                <span>«</span>-->
+    <!--            </a>-->
+    <!--        </li>-->
+    <!--        &lt;!&ndash; li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. &ndash;&gt;-->
+    <!--        &lt;!&ndash; active의 의미는 현재 페이지의 의미이다. &ndash;&gt;-->
+    <!--        &lt;!&ndash; <li class="active"> active 보류 &ndash;&gt;-->
+    <!--        <li><a href="http://localhost:8080/products?page=1">1</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=2">2</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=3">3</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=4">4</a></li>-->
+    <!--        <li><a href="http://localhost:8080/products?page=5">5</a></li>-->
+    <!--        <li>-->
+    <!--            <a href="#">-->
+    <!--                <span>»</span>-->
+    <!--            </a>-->
+    <!--        </li>-->
+    <!--    </ul>-->
 
 
     <div class="row">
         {{#products}}
-            <div class="col-md-3 " >
+            <div class="col-md-3 ">
                 <!--<input type="hidden" value="{{id}}"/>-->
                 <div class="ibox">
                     <div class="ibox-content product-box">
@@ -94,96 +91,99 @@ product-list
                                 <!-- <span class="product-discount">save 10%</span>-->
                                 <a href="#" class="product-name">{{name}}</a>
                                 <small class="product-price">{{price}}</small>
-                                <div class="small m-t-xs description" >
+                                <div class="small m-t-xs description">
                                     <!--영양 가득한 흑미 즉석밥! 설명 연결~-->
                                     {{description}}
                                 </div>
-                                <!--
-                                                            <div class="m-t text-left">
-                                                                <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success" id="btn-shoplist">장바구니</button>
-                                                                &lt;!&ndash;<a href="#" class="" >장바구니 </a>&ndash;&gt;
-                                                            </div>
-                                -->
+
                                 <div>
-                                    <!--임시 상품 태그 출력 ProductTagList List<ProductTag>-->
-                                    {{#ProductTagList}}<!--style="border:1px solid plum"-->
-                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>
+                                    <!--태그 출력 ProductTagList List<ProductTag>-->
+                                    {{#ProductTagList}}
+                                        <span class="badge badge-warning"
+                                              style="background-color:pink">{{tag.name}}</span>
+                                        <!--                                        <span padding="1px" style="background-color:pink">{{tag.name}}</span>-->
                                     {{/ProductTagList}}
+                                </div>
+                                <div> <!--카테고리 이름-->
+                                    <span class="badge badge-secondary"
+                                          style="background-color:darkorange">{{category.name}}</span>
+                                    <span class="badge badge-secondary"
+                                          style="background-color:darkorange">{{category.id}}</span>
+
                                 </div>
                             </div>
                         </div>
 
-                        <div class="m-t text-left">
+                        <div class="m-t row">
+                            <div class="col-4">
 
-                            <!--<button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist">-->
-                            <button type="button" style="margin-top: 10px" class="btn btn-xs btn-outline btn-success btn-shoplist" id="btn-shoplist"
-                                    data-toggle="modal" data-target="#exampleModal">
+                                <button type="button" style="margin-left:10px"
+                                        class="btn btn-sm btn-outline btn-success btn-shoplist" id="btn-shoplist"
+                                        data-toggle="modal" data-target="#exampleModal">
 
-                                <input type="hidden" value="{{id}}" id="product-detail-id"/>
-                                <!--<input type="hidden" value= "1"/>-->
-                                <input type="hidden" id="count" value="1"/>
-                                장바구니
-                            </button>
-                            <!--<a href="#" class="" >장바구니 </a>-->
+                                    <input type="hidden" value="{{id}}" id="product-detail-id"/>
+
+                                    <input type="hidden" id="count" value="1"/>
+                                    <!--                                    장바구니--><span class="material-icons white00">shopping_cart</span>
+                                </button>
+                            </div>
+
+                            <!--아이콘2-->
+                            <!--이 상품을 함께 보고있는 사용자 수-->
+                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}"
+                                 id="productUserNumber-{{id}}" style="padding:0; margin: 0">
+                                <span class="material-icons light-green d-inline-block" tabindex="0" data-toggle="tooltip"
+                                      title="이 상품을 함께 보고있는 사용자 수">visibility</span> <span
+                                    class="align-text-bottom">11명</span>
+                            </div>
+
+                            <!--이 상품을 구매한 사용자 수-->
+                            <div class="col-4 list-mini-text-font productUserNumber-{{id}}"
+                                 id="productUserNumber-{{id}}" style="padding:0; margin: 0">
+                                <span class="material-icons light-green d-inline-block" tabindex="0" data-toggle="tooltip"
+                                      title="이 상품을 구매한 사용자 수">payment</span> <span class="align-text-bottom">0명</span>
+                            </div>
+
                         </div>
-
                     </div>
                 </div>
 
             </div>
         {{/products}}
+    </div>
 
-        <!-- Button trigger modal -->
-        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-        </button>-->
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><p class="modal-font">장바구니 이동</p></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="modal-font">
-                        장바구니에 상품이 담겼습니다. <br />
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><p class="modal-font">장바구니 이동</p></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-font">
+                        장바구니에 상품이 담겼습니다. <br/>
                         장바구니로 이동하시겠습니까?
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <p class="modal-font">
-                            <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="location.href='/carts'">장바구니로 이동</button>
-                            <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
-                        </p>
-                    </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <p class="modal-font">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"
+                                onclick="location.href='/carts'">장바구니로 이동
+                        </button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
+                    </p>
                 </div>
             </div>
         </div>
-
-        <!-- Modal HTML -->
-        <!--https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=elegant-success-modal-->
-        <!--<div id="myModal" class="modal fade">
-            <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                    <div class="modal-header justify-content-center">
-                        <div class="icon-box">
-                            <i class="material-icons">&#xE876;</i>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <h4>Great!</h4>
-                        <p>Your account has been created successfully.</p>
-                        <button class="btn btn-success" data-dismiss="modal"><span>Start Exploring</span> <i class="material-icons">&#xE5C8;</i></button>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
+
+
+
+    <!--페이지네이션-->
     <!--
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
@@ -199,6 +199,37 @@ product-list
             </ul>
         </nav>
         -->
+
+    <!--유연언니 페이지네이션 복붙해왔다-->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
+            <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
+            <li class="disabled page-item">
+                <a class="page-link" href="#">
+                    <span>«</span>
+                </a>
+            </li>
+            <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
+            <!-- active의 의미는 현재 페이지의 의미이다. -->
+            <!-- <li class="active"> active 보류 -->
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=2">2</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=3">3</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=">...</a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
+                                     +{{page-total-count}}>
+                {{page-total-count}} </a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span>»</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
 
 {{>layout/footer}}

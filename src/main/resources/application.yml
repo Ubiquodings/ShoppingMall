@@ -31,6 +31,7 @@ ubic:
     productListPageSize: 28
     productDetailPageSize: 8
     djangoServerUrl: http://ubic-env-08221710.ap-northeast-2.elasticbeanstalk.com
+    dashBoardProductListPageSize: 4
 
 # spring.profiles.include=oauth
 #spring.session.store-type: jdbc
@@ -50,7 +51,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #create # , create-drop update #
+      ddl-auto: update # create # , create-drop update
     properties:
       hibernate:
         #     show_sql: true

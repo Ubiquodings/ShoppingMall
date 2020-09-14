@@ -57,7 +57,7 @@ public class PaymentController {
         // 상품 아이디 기반으로 쿠폰 가져오기
 //        , clientId
         final Long userId = clientId;
-        List<Coupon> couponByProductAndUser = couponRepository.findByIds(idList, clientId);
+        List<Coupon> couponByProductAndUser = couponRepository.findByProductListAndUser(idList, clientId);
 //        List<Coupon> myCouponList = couponByProductId.stream()
 //                .map(c -> {
 //                    if (c.getUser().getId() == userId) {

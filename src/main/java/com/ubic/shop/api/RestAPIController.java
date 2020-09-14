@@ -1,6 +1,7 @@
 package com.ubic.shop.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.config.UbicSecretConfig;
@@ -10,16 +11,19 @@ import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.*;
 import com.ubic.shop.service.*;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -27,7 +31,7 @@ import java.util.List;
 @Slf4j
 public class RestAPIController {
 
-    Logger logger = LoggerFactory.getLogger(RestAPIController.class);
+//    Logger logger = LoggerFactory.getLogger(RestAPIController.class);
 
     private final ProductService productService;
     private final ShopListService shopListService;
@@ -40,13 +44,18 @@ public class RestAPIController {
     private final CategorySevice categoryService;
     private final KafkaSevice kafkaService;
     private final UserRepository userRepository;
-    private final UbicSecretConfig ubicConfig;
+    private final UbicSecretConfig ubicSecretConfig;
+    private final UbicConfig ubicConfig;
     private final CouponRepository couponRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final ObjectMapper objectMapper;
+
 
     @PostMapping("/api/products/new")
     public ProductResponseDto save(@RequestBody ProductSaveRequestDto requestDto) {
 //        logger.info("\n"+requestDto.toString()+"\n"); // ok
-        Category category = categoryService.getCategoryByKurlyId(requestDto.getCategoryId());
+        Category category = categoryService.getCategoryByKurlyId(requestDto.getKurlyId());
         if (category == null)
             return null;
 //        Product product = requestDto.toEntity(category);
@@ -62,113 +71,87 @@ public class RestAPIController {
 
     // CartOrderRequestDto : Long productId
     @PostMapping("/api/carts/new/{id}") // TODO  restful 하진 않다
-    /*public String cart(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
-                       HttpServletRequest request) throws JsonProcessingException {*/
-    public String cart(@PathVariable(name = "id") Long productId, @RequestBody int count,
+    public String cart(@PathVariable(name = "id") Long productId, @RequestBody long count,
                        @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
-        log.info("\n" + productId + "\n" + count);
+        log.info("\n여기는 서버 컨트롤러 cart()\nproductId: " + productId + "\ncount: " + count);
 
-        String clientId = null;
-        Long shopListUserId;
-
-        if (user != null) {
-            clientId = user.getId().toString();
-            shopListUserId = user.getId();
-        } else {
-            clientId = request.getSession().getId();
-            User nonMember = getTempUser(request);
-            shopListUserId = nonMember.getId();
-        }
+        Long clientId = -1L;
+        clientId = getUserIdFromSession(user, request);
 
         String action = "cart";
         Product product = productService.findById(productId);
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+
+        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+                .userId(clientId)
+                .actionType(action)
+                .categoryId(product.getCategory().getId()) // 여기서 쿼리를 못날리나 ?
+                .productId(product.getId())
+                .build();
+        kafkaService.sendToTopic(requestDto);
+
+//        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
 
         //Long count = shopListService.findAllShopLists()
         // 장바구니 저장
         //shopListService.shopList(shopListUserId, productId, 1);
-        shopListService.shopList(shopListUserId, productId, count);
+        shopListService.shopList(clientId, productId, count);
 
         return "{}";
     }
+
+    public Long getUserIdFromSession(@LoginUser SessionUser user, HttpServletRequest request) {
+        Long clientId;
+        if (user != null) {
+            clientId = user.getId();
+//            shopListUserId = user.getId();
+        } else {
+//            clientId = request.getSession().getId();
+            User nonMember = getTempUser(request);
+            clientId = nonMember.getId();
+//            shopListUserId = nonMember.getId();
+        }
+        return clientId;
+    }
     // 빈 데이터 리턴도 json 형태로 해야 한다! -- 이유 :: https://vvh-avv.tistory.com/159
 
-
+    // 상품 디테일에서 바로 주문 기능
     @PostMapping("/api/orders/fromDetail/{id}") // 상품 상세 페이지에서 바로 하나 주문하는 기능
     public String orderOneFromDetail(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
                                      @RequestBody int count,
                                      HttpServletRequest request) throws JsonProcessingException {
-        String clientId = null;
-        Long shopListUserId;
-        if (user != null) {
-            clientId = user.getId().toString();
-            shopListUserId = user.getId();
-        } else {
-            clientId = request.getSession().getId();
-            User nonMember = getTempUser(request);
-            shopListUserId = nonMember.getId();
-        }
+        Long clientId = -1L;
+        clientId = getUserIdFromSession(user, request);
 
         String action = "order";
         Product product = productService.findById(productId);
 
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
+        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+                .userId(clientId)
+                .actionType(action)
+                .categoryId(product.getCategory().getId())
+                .productId(product.getId())
+                .build();
+        kafkaService.sendToTopic(requestDto);
+
+//        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
 
         // 주문 저장
-        orderService.orderOneFromDetail(shopListUserId, product.getId(), count);
+        orderService.orderOneFromDetail(clientId, product.getId(), count);
 
         return "{}";
 
     }
 
-    @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능
-    public String orderFromShopList(@PathVariable(name = "id") Long shopListId, @LoginUser SessionUser user,
-                                    @RequestBody int count,
-                                    HttpServletRequest request) throws JsonProcessingException {
 
-        String clientId = null;
-        Long shopListUserId;
-        if (user != null) {
-            clientId = user.getId().toString();
-            shopListUserId = user.getId();
-        } else {
-            clientId = request.getSession().getId();
-            User nonMember = getTempUser(request);
-            shopListUserId = nonMember.getId();
-        }
-
-        String action = "order";
-        ShopList shopList = shopListRepository.findById(shopListId).get();
-        Product product = shopList.getProduct();
-
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
-
-        // 주문 저장
-        orderService.orderOneFromShopList(shopListUserId, product.getId(), count, shopListId);
-
-        return "{}";
-    }
-
+    /*장바구니에서 주문하기 버튼을 누르면 실행된다*/
     @PostMapping("/api/orders/AllfromShopList") // 장바구니에서 여러개 주문하는 기능
-    /*public String orderAllFromShopList(@RequestBody(value="shopListId_List[]") List<Long> shopListId,
-                                    @RequestBody(value="shopListCount_List[]") List<Integer> shopListCount,
-                                    @LoginUser SessionUser user,
-                                    HttpServletRequest request) throws JsonProcessingException {*/
     public String orderAllFromShopList(@RequestBody List<String> FromShopList,
                                        @LoginUser SessionUser user,
                                        HttpServletRequest request) throws JsonProcessingException {
 
-        String clientId = null;
-        Long paymentUserId;
-        if (user != null) {
-            clientId = user.getId().toString();
-            paymentUserId = user.getId();
-        } else {
-            clientId = request.getSession().getId();
-            User nonMember = getTempUser(request);
-            paymentUserId = nonMember.getId();
-        }
+        Long clientId = -1L;
+        clientId = getUserIdFromSession(user, request);
 
         //String action = "order"; // 이건 어떤 역할을 하는거지?
 
@@ -196,38 +179,30 @@ public class RestAPIController {
 
             // 주문 저장
             /*orderService.orderAllFromShopList(shopListUserId, product.getId(), shopListCount_I, shopListId_L);*/
-            paymentService.payment(paymentUserId, product.getId(), shopListCount_I);
+            paymentService.payment(clientId, product.getId(), shopListCount_I);
 
         }//end for
         return "{}";
     }
 
-    @PostMapping("/api/orderAll") // TODO  restful 하진 않다
+    /*결재페이지에서 주문 api*/
+    @PostMapping("/api/orderAll")
     public String orderAll(@RequestBody OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
-        String clientId = null;
-        Long shopListUserId;
+        Long clientId = -1L;
+        clientId = getUserIdFromSession(user, request);
         User userEntity;
-        if (user != null) {
-            clientId = user.getId().toString();
-            shopListUserId = user.getId();
-            userEntity = userRepository.findById(shopListUserId).get();
-        } else {
-            clientId = request.getSession().getId();
-            User nonMember = getTempUser(request);
-            shopListUserId = nonMember.getId();
-            userEntity = nonMember;
-        }
+        userEntity = userRepository.findById(clientId).get();
 
 
         // 모든 payment 객체 삭제하기 : 해당 회원의
-        List<Payment> paymentAllByUserId = paymentRepository.findAllByUserId(shopListUserId);
+        List<Payment> paymentAllByUserId = paymentRepository.findAllByUserId(clientId);
         paymentAllByUserId
                 .forEach(payment -> paymentRepository.deleteById(payment.getId()));
 
         //장바구니 모든 객체 삭제하기 && Order 객체 생성
-        List<ShopList> shopListAllByUserId = shopListRepository.findAllByUserId(shopListUserId);
+        List<ShopList> shopListAllByUserId = shopListRepository.findAllByUserId(clientId);
         List<OrderProduct> orderProductList = new ArrayList<>();
         shopListAllByUserId
                 .forEach(shopList -> {
@@ -238,12 +213,16 @@ public class RestAPIController {
 
                 });
         Order order = Order.createOrder(userEntity, orderProductList.toArray(new OrderProduct[0]));
+        order.initTitleAndTotalPrice();
         orderService.save(order);
 
         // 체크된 쿠폰 삭제하기
-        List<Coupon> couponByUserIdandIds = couponRepository.findByUserIdandIds(requestDto.getCouponIdList(), shopListUserId);
+        List<Coupon> couponByUserIdandIds = couponRepository.findByUserIdandIds(requestDto.getCouponIdList(), clientId);
         couponByUserIdandIds
-                .forEach(coupon -> couponRepository.deleteById(coupon.getId()));
+                .forEach(coupon -> {
+                    coupon.changeStatusUsed();
+                    /*couponRepository.deleteById(coupon.getId());*/
+                });
 
         return "{}";
     }
@@ -262,6 +241,7 @@ public class RestAPIController {
                     .build();
             userRepository.save(nonMember);
         } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
+            log.info("\nsession is not new");
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;
@@ -274,19 +254,20 @@ public class RestAPIController {
 
         log.info("\n\n click api");
 
-        String clientId = null;
-        if (user != null) {
-            clientId = user.getId().toString();
-        } else {
-            clientId = request.getSession().getId();
-            log.info("\n\n click api session id" + clientId);
-        }
+        Long clientId = -1L;
+        clientId = getUserIdFromSession(user, request);
 
         String action = "click";
-        logger.info("\n/click " + productId);
+        log.info("\n/click " + productId);
         Product product = productService.findById(productId);
 
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+                .userId(clientId)
+                .actionType(action)
+                .categoryId(product.getCategory().getId())
+                .productId(product.getId())
+                .build();
+        kafkaService.sendToTopic(requestDto);
 
         return "{}";
     }
@@ -297,19 +278,23 @@ public class RestAPIController {
 
         log.info("\n\n hover api");
 
-        String clientId = null;
-        if (user != null) {
-            clientId = user.getId().toString();
-        } else {
-            clientId = request.getSession().getId();
-            log.info("\n\n click api session id" + clientId);
-        }
+        Long clientId = -1L;
+        clientId = getUserIdFromSession(user, request);
 
         String action = "hover";
-        logger.info("\n/hover " + productId);
+        log.info("\n/hover " + productId);
         Product product = productService.findById(productId);
 
-        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
+        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+                .userId(clientId)
+                .actionType(action)
+                .categoryId(product.getCategory().getId())
+                .productId(product.getId())
+                .build();
+        log.info("\nhover kafka send" + requestDto.toString());
+        kafkaService.sendToTopic(requestDto);
+
+//        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product/*.getCategory()*/.getId()));
 
         return "{}";
     }
@@ -319,11 +304,6 @@ public class RestAPIController {
     @DeleteMapping("/api/orders/{id}")
     public String cancelOrder(@PathVariable Long id, @LoginUser SessionUser user) {
         orderService.cancelOrder(id);
-//        if(user != null){
-//            model.addAttribute("userName", user.getName());
-//        }
-        // 취소 어떻게 하랬더라 ?
-        // order id 로 아이템 가져와서 remove ?
         return "{}";
     }
 
@@ -342,30 +322,113 @@ public class RestAPIController {
         return "{}";
     }
 
+    // dashboard 에서 추천목록 가져오는 api 4가지
+    @GetMapping("/api/recommendations/tmp")
+    public List<RecommendationProductListResponseDto> getUserCfRecommendationList(
+            @RequestParam(name = "page", defaultValue = "0") String page) throws JsonProcessingException {
+        // 카테고리 id 전부 가져와서
+        List<Long> allCategoryIdList = categoryRepository.getAllCategoryId();
+        log.info("\ngetUserCfRecommendationList category id list 출력: "+allCategoryIdList.toString());
+//        List<Long> randomCategoryId4 = new ArrayList<>();
 
-//    @GetMapping("/api/search")
-//    public String search(@RequestParam("keyword") String keyword,
-//                         @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+        // 랜덤 id 추출 : 상품이 하나도 없는 카테고리가 있어서 안되겠다 !
+//        Random rand = new Random(); //Long randomCategoryId;
+        Long randomCategoryId = 3L;//allCategoryIdList.get(rand.nextInt(allCategoryIdList.size()));
+        log.info("\ngetUserCfRecommendationList random category id  출력: "+ randomCategoryId);
+
+        // 각 category id 에 대해 4개씩 product List 를 가져온다
+        // model 에 담아 화면에 전달한다
+        PageRequest pageRequest = PageRequest.of(Integer.parseInt(page), ubicConfig.dashBoardProductListPageSize,
+                Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<Product> productListByCategoryId = productRepository.findByCategoryId(randomCategoryId, pageRequest);
+        log.info("\ngetUserCfRecommendationList 찾아온 product list size 출력: "+productListByCategoryId.getTotalElements());
+
+        List<RecommendationProductListResponseDto> collect = productListByCategoryId.stream()
+                .map((product) -> {
+                    // Product > ProductTag > Tag 접근하는 로직
+                    List<String> tagNameList = new ArrayList<>();
+                    List<ProductTag> productTagList = product.getProductTagList();
+                    for (ProductTag productTag : productTagList) {
+                        tagNameList.add(productTag.getTag().getName());
+                    }
+
+                    return RecommendationProductListResponseDto.builder()
+                            .productId(product.getId())
+                            .productImgUrl(product.getImgUrl())
+                            .productName(product.getName())
+                            .productPrice(product.getPrice())
+                            .productDescription(product.getDescription())
+
+                            .tagNameList(tagNameList)
+                            .categoryName(product.getCategory().getName())
+                            .categoryId(product.getCategory().getId())
+                            .build();
+
+                }).collect(Collectors.toList());
+        String result = objectMapper.writeValueAsString(collect);
+        log.info("\n추천목록 하나 리턴: "+result);
+        return collect;
+
+    }
+
+    @AllArgsConstructor
+    @Getter /*@Setter*/ @Builder @ToString
+    static class RecommendationProductListResponseDto {
+        Long productId;
+        String productImgUrl;
+        String productName;
+        int productPrice;
+        String productDescription;
+
+        List<String> tagNameList;
+
+        String categoryName;
+        Long categoryId;
+    }
+
+//    public List<Tag> TagNameListForRecommendation(List<ProductTag> productTagList){
 //
-//        log.info("\nkeyword: "+keyword+"\napi key: "+ubicConfig.etriApiKey); // ok
+//    }
+
+
+//    @AllArgsConstructor
+//    @Getter
+//    static class TagNameListForRecommendation {
+//        List<String> tagNameList;
 //
-//        //회원+비회원
-//        Long userId=-1L;
-//        if(user != null){
-////            model.addAttribute("userName", user.getName());
-//            userId = user.getId();
-//        }else{ // 해시코드 다섯글자만 추출하기
-//            User nonMember = getTempUser(request);
-////            model.addAttribute("clientId", nonMember.getName().substring(0,5));
-//            userId = nonMember.getId();
-//        }
+//    }
+
+
+    /*없어졌다!*/
+//    @PostMapping("/api/orders/fromShopList/{id}") // 장바구니에서 바로 하나 주문하는 기능
+//    public String orderFromShopList(@PathVariable(name = "id") Long shopListId, @LoginUser SessionUser user,
+//                                    @RequestBody int count,
+//                                    HttpServletRequest request) throws JsonProcessingException {
 //
-//        // 카프카에 전송하고 > 컨슈머 처리
+//        Long clientId = -1L;
+//        clientId = getUserIdFromSession(user, request);
 //
+//        String action = "order";
+//        ShopList shopList = shopListRepository.findById(shopListId).get();
+//        Product product = shopList.getProduct();
 //
-//        // 결과 보여줘야지.. @Controller
+//        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+//                .userId(clientId)
+//                .actionType(action)
+//                .categoryId(product.getCategory().getId())
+//                .productId(product.getId())
+//                .build();
+//        kafkaService.sendToTopic(requestDto);
+//
+////        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
+//
+//        // 주문 저장
+//        orderService.orderOneFromShopList(clientId, product.getId(), count, shopListId);
 //
 //        return "{}";
 //    }
+
+
 }
 

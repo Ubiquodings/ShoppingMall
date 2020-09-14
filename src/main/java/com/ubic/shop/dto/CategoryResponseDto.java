@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 public class CategoryResponseDto {
-    private Long id;
+    private Long kurlyId;
     private String name;
 
     public CategoryResponseDto(Category entity) {
-        this.id = entity.getId();
+        this.kurlyId = entity.getKurlyId();
         this.name = entity.getName();
     }
 }

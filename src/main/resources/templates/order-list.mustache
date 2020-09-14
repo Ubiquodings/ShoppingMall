@@ -1,61 +1,83 @@
 {{>layout/header}}
-order-list
+<style>
+    .img-responsive {
+        width: 100%;
+    }
+</style>
+
+
 <div class="main1"> 상품 주문 내역</div> <!--위에 order-list-->
 
-{{#shopLists}} <!--List<Order>-->
+{{#orderList}} <!--List<Order>-->
 
 <input type="hidden" value="{{id}}" id="input-order-id"/> <!-- Order 의 id -->
 
-{{#orderProducts}} <!--loop ? ok--> <!--List<OrderProduct>-->
 <div class="row" id="order-list-row">
     <div class="card" style="width: 100%;">
-        <div class="card-body">
-            <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
-            <h5 class="card-title">{{count}}</h5>
-<!--            <button type="button" class="btn btn-primary btn-lg" id="btn-cart-order">주문</button>-->
-            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
-            <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
+        <div class="card-body" data-toggle="modal" data-target="#exampleModalScrollable">
+            <h5 class="card-title">{{title}}</h5> <!--잘나온다!-->
+            <h5 class="card-title">{{totalPrice}}</h5>
+            <!--            <button type="button" class="btn btn-primary btn-lg" id="btn-cart-order">주문</button>-->
         </div>
 
         <div>
-            <div class="main2">
+            <div class="main2" > <!--x y ?-->
+                <div id="main21" class="row" >
+                    <button type="button" class="btn btn-primary btn-xs btn-order-cancel col-2" style="margin-left: 40px; margin-bottom: 20px;"> <!--y x 였다!!-->
+                        <input type="hidden" value="{{id}}" class="input-order-id"/>환불 요청
+                    </button>
 
-<!--
-                <div id="main21">
-                    <div id="main211"> 날짜: {{createdDate}}</div>
-                    <div id="main211"> 주문 번호(나중에 uuid 고려) </div>
-                    <div id="main211"> 총 주문 금액: {{orderPrice}}</div> &lt;!&ndash;임시로 상품 1개 가격&ndash;&gt;
-                </div>
+                    <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+                    <div class="col mini-text-font" id="userOrderNumber" style="margin-top: 10px; margin-left: 0">
+                        <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
+                              title="이 상품을 구매한 사람 수">payment</span>
+                        <span class="align-text-bottom">6명</span>
+                    </div>
 
-                <div id="main21">
-                    <div id="main212" style="text-align: center">이미지 </div>
-                </div>
 
-                <div id="main21">
-                    <div id="main212"> 상품 이름: {{product.name}} </div> &lt;!&ndash;상품 이름&ndash;&gt;
-                    <div id="main212"> 상품 가격: {{orderPrice}} </div>
-                </div>
-
-                <div id="main21">
-                    <div id="main212"> 배송 정보(배송 관련 스토리 아직 생각 안해봤음! 나중에 논의) </div> &lt;!&ndash;배송중/배송완료&ndash;&gt;
-                </div>
--->
-
-                <div id="main21">
-                    <button type="button" class="btn btn-primary btn-lg" id="btn-order-cancel">환불 요청(주문취소)</button>
-
-<!--                    <button> 환불 요청(주문취소) </button>-->
-                    <button> 교환 요청 </button>
-                    <button> 리뷰 쓰기 </button>
+                    <!--                    <button> 환불 요청(주문취소) </button>-->
+<!--                    <button> 교환 요청</button>-->
+<!--                    <button> 리뷰 쓰기</button>-->
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
-{{/orderProducts}}
-{{/shopLists}}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">주문 상세 정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{#orderProducts}} <!--UI 수정, ajax 로 수정-->
+                    <div class="row">
+<!--                    {{id}}-->
+                        <div class="col-3">
+                            <img class="img-responsive" src="{{product.imgUrl}}"/>
+                        </div>
+                        <div class="col-9">
+                            <p>{{product.name}}</p>
+                            <p>{{count}} 개 {{product.price}} 원</p>
+                        </div>
+                    </div>
+                {{/orderProducts}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary btn-order-cancel"><input type="hidden" value="{{id}}" class="input-order-id"/>주문 취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{/orderList}}
 
 {{>layout/footer}}
 

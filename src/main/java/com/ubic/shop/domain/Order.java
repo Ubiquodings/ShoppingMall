@@ -23,10 +23,13 @@ public class Order extends BaseTimeEntity {
     private User user; //주문 회원
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status; //주문상태 [ORDER, CANCEL]
+    private OrderStatus status = OrderStatus.ORDER; //주문상태 [ORDER, CANCEL]
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
+
+    private String title="";
+    private long totalPrice=0;
 
     //==연관관계 메서드==//
     public void addOrderProduct(OrderProduct orderProduct) {
@@ -66,6 +69,11 @@ public class Order extends BaseTimeEntity {
             totalPrice += orderProduct.getTotalPrice();
         }
         return totalPrice;
+    }
+
+    public void initTitleAndTotalPrice() {
+        this.title = orderProducts.get(0).getProduct().getName()+" 그 외 "+(orderProducts.size()-1)+"종류";
+        this.totalPrice = getTotalPrice();
     }
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
