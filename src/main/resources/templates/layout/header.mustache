@@ -5,16 +5,17 @@
     <title>Ubic Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+    <!--    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap-theme.min.css">-->
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
-<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+    <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+    <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
@@ -46,27 +47,33 @@
             display: inline-block;
         }
 
-        .material-icons.orange600 { color: #FB8C00; }
+        .material-icons.orange600 {
+            color: #FB8C00;
+        }
 
-        .material-icons.light-green { color: #9AFE2E; }
+        .material-icons.light-green {
+            color: #9AFE2E;
+        }
 
-        .material-icons.white00{
+        .material-icons.white00 {
             color: white;
         }
 
-        .material-icons.pink00 { color: tomato; }
+        .material-icons.pink00 {
+            color: tomato;
+        }
 
         .mini-text-font {
             font-size: 70%;
         }
 
-        .list-mini-text-font{
+        .list-mini-text-font {
             font-size: 50%;
             text-align: start;
         }
 
-        .detail-info-number{
-            padding:0px 0px;
+        .detail-info-number {
+            padding: 0px 0px;
         }
 
     </style>
@@ -76,12 +83,18 @@
 <body class="container h-100"><!-- py-5 my-3-->
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <!-- websocket 의존성 추가 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 
 <div class="row">
     <h1 class="col-md-6">hello Ubic</h1>
@@ -103,15 +116,18 @@
 </div>
 
 
-<!--전체 접속자 수-->
+<!--쇼핑몰 전체 접속자 수-->
 <div class="card"> <!---->
-    <div class="card-body detail-info-number" >
+    <div class="card-body detail-info-number">
         <div class="row">
             <div class="col-11"></div> <!-- -lg 붙여야 하나 ? 괜츈-->
 
             <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
-            <div class="col-1 mini-text-font" id="allUserNumber">
-                <span class="material-icons orange600">accessibility_new</span> <span class="align-text-bottom">22명</span>
+
+            <div class="col-1 mini-text-font " id="allUserNumber">
+                <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
+                      title="쇼핑몰 전체 접속자 수">accessibility_new</span>
+                <span class="align-text-bottom">22명</span>
             </div>
         </div>
     </div>
@@ -137,12 +153,12 @@
         <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
     {{/userName}}
 
-<!--    <a class="navbar-brand" href="/">home</a>-->
+    <!--    <a class="navbar-brand" href="/">home</a>-->
     <a href="/mypage" class="navbar-brand">MyPage</a>
     <a href="/carts" class="navbar-brand">장바구니</a>
     <a href="/orders" class="navbar-brand">주문내역</a>
     <button id="btn-my-coupons" type="button" class="btn btn-info" onClick="location.href='/my-coupons'">내 쿠폰</button>
-<!--    <a href="/my-coupons" class="btn btn-info active btn-sm" id="btn-my-coupons" role="button">내 쿠폰</a>-->
+    <!--    <a href="/my-coupons" class="btn btn-info active btn-sm" id="btn-my-coupons" role="button">내 쿠폰</a>-->
     <!--<a class="btn btn-lg btn-info" href="/my-coupons">내 쿠폰</a>-->
 
     <!--비회원 UUID-->

@@ -102,7 +102,7 @@ public class ExcelController {
         return;
     }
 
-    @GetMapping("/api/search/test")
+    @GetMapping("/api/search/test") // 취소
     public Object searchTest(@RequestParam(value = "text") String text) {
 //        ubicSecretConfig.etriApiKey;
         log.info("\ntext: " + text);
