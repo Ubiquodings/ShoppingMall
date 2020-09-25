@@ -1,52 +1,74 @@
-{{>layout/header}}
-여기는 결재 페이지<br/>
-
-{{#allPayments}} <!--List<Order>-->
-
-<input type="hidden" value="{{id}}" id="input-order-id"/> <!-- Order 의 id -->
-
-<div class="row" id="order-list-row">
-    <div class="card" style="width: 100%;">
-        <div class="card-body">
-            <h5 class="card-title">{{product.name}}</h5> <!--잘나온다!-->
-            <h5 class="card-title">상품 원가 : {{product.price}}</h5>
-            <h5 class="card-title">개수 : {{count}}</h5>
-            <!--            <button type="button" class="btn btn-primary btn-lg" id="btn-cart-order">주문</button>-->
-            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
-            <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
-        </div>
-
-        <div>
-            <div class="main2">
-                <div id="main21">
-                    <button type="button" class="btn btn-primary btn-lg" id="btn-order-cancel">환불 요청(주문취소)</button>
-
-                    <!--                    <button> 환불 요청(주문취소) </button>-->
-                    <button> 교환 요청 </button>
-                    <button> 리뷰 쓰기 </button>
-                </div>
-            </div>
-        </div>
-
-
+<div class="layout-page-header">
+    <h2 class="layout-page-title">주문서</h2>
+    <div class="pg_sub_desc">
+        <p>주문하실 상품명 및 수량을 정확하게 확인해 주세요.</p>
     </div>
 </div>
-{{/allPayments}}
 
-- 가져온 상품 관련 쿠폰을 가져옵니다
-{{#couponList}} <!--List<Coupon>-->
-<div class="row">
-    <div class="card" style="width: 100%;">
-        <input type="hidden" value="{{id}}" class="input-coupon-id"/>
-        <div class="card-body">
-            <h5 class="card-title">{{id}}</h5> <!--id 확인테스트-->
-            <h5 class="card-title">{{name}}</h5>
+<h2 class="tit_section fst">상품 정보</h2>
+
+<style type="text/css">
+    #orderGoodsList{display:none}
+    /* 상품정보 */
+    .order_goodslist .tbl_type1 th{border-top:1px solid #333}
+    .order_goodslist .tbl_type1 tr:first-child td{border-top:1px solid #ddd}
+    .order_goodslist .show_tbl{display:block;position:relative;height:94px}
+    .order_goodslist .show_tbl .inner_show{position:absolute;left:0;top:0;width:100%;padding:20px 0 20px;border-top:1px solid #333;border-bottom:1px solid #ddd;font-size:14px;line-height:20px;text-align:center;letter-spacing:-0.3px}
+    .order_goodslist .show_tbl .name{padding-bottom:14px}
+    .order_goodslist .show_tbl .btn_show{font-size:14px;line-height:20px;font-family:'Noto Sans';font-weight:700;color:#512772}
+    .order_goodslist .show_tbl .btn_show .txt{padding-right:12px}
+    .order_goodslist .show_tbl .btn_show .ico{width:14px;vertical-align:middle}
+</style>
+
+<div class="page_aticle order_goodslist">
+    <div class="show_tbl" style="display: none;">
+        <div class="inner_show">
+            <div class="name">[남향푸드또띠아] 간편 간식 브리또 8종 상품을 주문합니다.</div>
+            <a class="btn_show" href="#none"><span class="txt">상세보기</span><img class="ico" src="https://res.kurly.com/pc/ico/1803/ico_arrow_open_28x16.png" alt="열기"></a>
         </div>
     </div>
+    <div id="orderGoodsList" style="display: block;">
+        <table class="tbl tbl_type1">
+            <caption style="display:none">상품 정보 상세보기</caption>
+            <colgroup>
+                <col style="width:120px">
+                <col style="width:auto">
+                <col style="width:186px">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col"><span class="screen_out">상품이미지</span></th>
+                <th scope="col" class="th_info">상품 정보</th>
+                <th scope="col">상품금액</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <input type="hidden" name="adultpro[]" value="0">
+                <td class="thumb">
+                    <img src="//img-cf.kurly.com/shop/data/goods/1582679290125s0.jpg" width="150" class="goods-cart-product-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_300.gif'">
+                </td>
+                <td class="info">
+                    <div class="name">
+                        [남향푸드또띠아] 간편 간식 브리또 8종
+                    </div>
+                    <dl>
+                        <dt> [남향푸드또띠아] 핫 치킨 브리또
+                        </dt>
+                        <dd>
+                            / 3개
+                            / 개당 2,800원
+                        </dd>
+                    </dl>
+                </td>
+                <td class="price">
+                    8,400원
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" value="1" id="itemCount">
+    <input type="hidden" value="[남향푸드또띠아] 간편 간식 브리또 8종" id="itemFstCount">
 </div>
-{{/couponList}}
 
-
-- 최종 주문 버튼을 누르면, 장바구니의 모든 아이템이 삭제되고 주문처리됩니다<br/>
-<button type="button" class="btn btn-primary btn-lg btn-order-all">주문</button>
-{{>layout/footer}}
