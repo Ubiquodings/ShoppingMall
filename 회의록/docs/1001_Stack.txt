@@ -16,7 +16,7 @@
 
 
 - 소켓:사용자 수 관련
-  - 모델링
+ok  - 모델링
   - 사용자 수 변경 후 소켓 브로드캐스팅 코드
   - 화면 로딩 후 소켓 구독 연결
     * 이게 되면 상품 및 추천 목록도 구현 가능해진다
@@ -30,26 +30,6 @@
 동작 후 일괄 갱신
 - 상품 구매
 - 쿠폰 사용
-
-* 도메인 객체 만든거
-* repo 인터페이스 만들어야 한다!
-
-1- 각 상품 함께 열람하고 있는 사용자 수
-클래스이름: ProductViewUserNumberDto
-기존 UpdateUserNumberDto
-long productId, long userNumber
-
-2- [공통] 쇼핑몰에 접속한 전체 사용자 수
-클래스이름: AllViewUserNumberDto
-long userNumber
-
-3- 각 상품 구매한 사용자 수
-클래스이름: ProductOrderUserNumberDto
-long productId, long userNumber
-
-4- 각 쿠폰 사용한 사용자 수 : 각 쿠폰당 고유 type 부여하기
-클래스이름: CouponUseUserNumberDto
-String couponType, long userNumber
 
 
 - 쿠폰 type 관련 모델링 수정중
@@ -131,6 +111,35 @@ buildKafkaRequest(userId, product, action);
 - cart-cancel
 - cart-modify-plus
 - cart-modify-minus
+
+
+> 사용자 수 종류 : 모델링 할건데, 저장 
+
+* 도메인 객체 만든거
+* repo 인터페이스 만들어야 한다!
+ProductViewUserNumberRepository
+AllViewUserNumberRepository
+ProductOrderUserNumberRepository
+CouponUseUserNumberRepository
+
+1- 각 상품 함께 열람하고 있는 사용자 수
+클래스이름: ProductViewUserNumberDto
+기존 UpdateUserNumberDto
+long productId, long userNumber
+
+2- [공통] 쇼핑몰에 접속한 전체 사용자 수
+클래스이름: AllViewUserNumberDto
+long userNumber
+
+3- 각 상품 구매한 사용자 수
+클래스이름: ProductOrderUserNumberDto
+long productId, long userNumber
+
+4- 각 쿠폰 사용한 사용자 수 : 각 쿠폰당 고유 type 부여하기
+클래스이름: CouponUseUserNumberDto
+String couponType, long userNumber
+
+
 
 
 

@@ -144,6 +144,8 @@ public class ProductController {
         List<String> result = tagService.stemmingProductInfo(searchText);
         if(result == null){
             model.addAttribute("products", productListFromOriginalParam); // 40개씩 페이징
+            model.addAttribute("page-total-count",productListFromOriginalParam.size()%ubicConfig.productListPageSize );
+
             return "product-list";
         }
         // 한번에 찾아오는 기능 시도
@@ -173,6 +175,10 @@ public class ProductController {
         List<Product> searchResultProductList = getProductListFromTagList(byName);
 
         model.addAttribute("products", searchResultProductList); // 40개씩 페이징
+        //끝페이지 가져오기
+//        Page<Product> pages=productRepository.findProductsCountBy(pageRequest);
+//        int page_total_count=pages.getTotalPages();
+        model.addAttribute("page-total-count",searchResultProductList.size()%ubicConfig.productListPageSize );
 
         return "product-list";
     }

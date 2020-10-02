@@ -18,10 +18,15 @@ public class ProductCoupon extends Coupon {
     @JoinColumn(name = "product_id")
     private Product product;
 
+//    @Enumerated(EnumType.STRING)
+//    private CouponType couponType = CouponType.product_base;
+
+
     @Builder
     public ProductCoupon(String name, User user, Product product, int discountRate) {
-        super(name, user, discountRate);
+        super(name, user, discountRate, CouponType.product_base);
         this.product = product;
+//        this.couponType = Cou
     }
 
 }

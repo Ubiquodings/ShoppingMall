@@ -1,7 +1,7 @@
 package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
-import com.ubic.shop.domain.Coupon;
+import com.ubic.shop.domain.coupon.Coupon;
 import com.ubic.shop.domain.Payment;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;

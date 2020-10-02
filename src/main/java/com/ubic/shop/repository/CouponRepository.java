@@ -1,9 +1,7 @@
 package com.ubic.shop.repository;
 
-import com.ubic.shop.domain.CategoryCouponType;
-import com.ubic.shop.domain.Coupon;
-import com.ubic.shop.domain.Product;
-import org.springframework.data.domain.Page;
+import com.ubic.shop.domain.coupon.CategoryCouponType;
+import com.ubic.shop.domain.coupon.Coupon;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +23,6 @@ public interface CouponRepository extends CrudRepository<Coupon, Long> {
     List<Coupon> findByProductAndUser(@Param("productId") long productId, @Param("userId") long userId);
 
 //  @Query(value="select o from Order o where o.user.id = :userId and o.status = :status")
-    @Query("select m from Coupon m where m.category.id = :categoryId and m.user.id = :userId and m.type = :couponType order by m.createdDate desc")
-    List<Coupon> findByCategoryAndUserAndCouponType(@Param("categoryId") long categoryId, @Param("userId") long userId, @Param("couponType") CategoryCouponType type);
+    @Query("select m from Coupon m where m.category.id = :categoryId and m.user.id = :userId and m.categoryCouponType = :categoryCouponType order by m.createdDate desc")
+    List<Coupon> findByCategoryAndUserAndCategoryCouponType(@Param("categoryId") long categoryId, @Param("userId") long userId, @Param("categoryCouponType") CategoryCouponType categoryCouponType);
 }

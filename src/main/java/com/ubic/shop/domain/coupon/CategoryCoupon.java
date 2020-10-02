@@ -18,14 +18,17 @@ public class CategoryCoupon extends Coupon {
     private Category category;
 
     @Enumerated(EnumType.STRING)
-    private CategoryCouponType type;
+    private CategoryCouponType categoryCouponType;
+
+//    @Enumerated(EnumType.STRING)
+//    private CouponType couponType = CouponType.category_base;
 
 
     @Builder
-    public CategoryCoupon(String name, User user, Category category, int discountRate, CategoryCouponType type) {
-        super(name, user, discountRate);
+    public CategoryCoupon(String name, User user, Category category, int discountRate, CategoryCouponType categoryCouponType) {
+        super(name, user, discountRate, CouponType.category_base);
         this.category = category;
-        this.type = type;
+        this.categoryCouponType = categoryCouponType;
     }
 
 }

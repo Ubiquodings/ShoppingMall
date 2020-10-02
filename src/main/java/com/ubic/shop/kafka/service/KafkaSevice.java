@@ -2,6 +2,7 @@ package com.ubic.shop.kafka.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ubic.shop.domain.Product;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.dto.SearchActionRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,22 @@ public class KafkaSevice {
     String topic = "ubic-shop-test";
     String topicSearch = "ubic-shop-search";
     private final ObjectMapper objectMapper;
+
+    public void buildKafkaRequest(Long clientId, Product product, String action) {
+        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+                .userId(clientId)
+                .actionType(action)
+                .categoryId(product.getCategory().getId())
+                .productId(product.getId())
+                .build();
+        try {
+            sendToTopic(requestDto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
 
     public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
 

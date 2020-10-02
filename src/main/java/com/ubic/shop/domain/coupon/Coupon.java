@@ -30,10 +30,14 @@ public abstract class Coupon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private CouponStatus status = CouponStatus.Created; //상태 [Used, Created, Deleted]
 
-    protected Coupon(String name, User user, int discountRate) {
+    @Enumerated(EnumType.STRING)
+    private CouponType couponType;
+
+    protected Coupon(String name, User user, int discountRate, CouponType couponType) {
         this.name = name;
         this.user = user;
         this.discountRate = discountRate;
+        this.couponType = couponType;
     }
 
 
