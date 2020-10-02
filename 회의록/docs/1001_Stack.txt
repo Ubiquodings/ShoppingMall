@@ -14,15 +14,54 @@
 
 [개발 관련 Todo]
 
-- 카프카 수집 로직 마무리하기
-- 추가로 소켓도 카프카와 연동하기
-
 
 - 소켓:사용자 수 관련
   - 모델링
   - 사용자 수 변경 후 소켓 브로드캐스팅 코드
   - 화면 로딩 후 소켓 구독 연결
     * 이게 되면 상품 및 추천 목록도 구현 가능해진다
+
+> 사용자 수 종류 : 모델링 할건데, 저장 
+
+채팅방 연결하는 것처럼. 후 일괄 갱신
+- 상품 상세 페이지 : ProductView
+- 모든 페이지 : AllView
+
+동작 후 일괄 갱신
+- 상품 구매
+- 쿠폰 사용
+
+* 도메인 객체 만든거
+* repo 인터페이스 만들어야 한다!
+
+1- 각 상품 함께 열람하고 있는 사용자 수
+클래스이름: ProductViewUserNumberDto
+기존 UpdateUserNumberDto
+long productId, long userNumber
+
+2- [공통] 쇼핑몰에 접속한 전체 사용자 수
+클래스이름: AllViewUserNumberDto
+long userNumber
+
+3- 각 상품 구매한 사용자 수
+클래스이름: ProductOrderUserNumberDto
+long productId, long userNumber
+
+4- 각 쿠폰 사용한 사용자 수 : 각 쿠폰당 고유 type 부여하기
+클래스이름: CouponUseUserNumberDto
+String couponType, long userNumber
+
+
+- 쿠폰 type 관련 모델링 수정중
+쿠폰 종류:type가 3가지 있는거고
+- product base
+- category base
+  * 특별히 coupon type+_+category coupon type 으로 
+  * type 구분
+- all around
+각 종류당 product id, category id 가 있을거고
+
+
 
 
 - 추천 목록 갱신
@@ -53,13 +92,45 @@
 
 
 
+> 카프카 수집 로직 마무리하기
+String action = "order-create";
+buildKafkaRequest(userId, product, action);
+
+# 쿠폰 관련 카프카 로직 새로 생성해야할듯!
+# 근데 쿠폰 관련 정보를 추천에 어떻게 이용할지 먼저 생각하고 
+# 카프카 통해서 수집할지 결정해야 할거같아
+# 수집할거면 어떻게 수집할건지 dto 모델링해야할듯
+- coupon-create
+- coupon-use
+
+
+- 추가로 소켓도 카프카와 연동하기
+  - kafka request dto 모델링해야한다
+  - 일단 한꺼번에 카프카로 연동하자
+  - 사용자수, 추천목록 (쿠폰은 db 로 연동하자
+
+
+
+
+
 ================================
 ================================
 ====== Done Stack ================
 ================================
 
 
+> 카프카 수집 로직 마무리하기
+String action = "order-create";
+buildKafkaRequest(userId, product, action);
 
+- click
+- hover
+- cart-create
+- order-create
+- order-cancel
+- cart-cancel
+- cart-modify-plus
+- cart-modify-minus
 
 
 
