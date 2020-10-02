@@ -1,6 +1,8 @@
-package com.ubic.shop.domain;
+package com.ubic.shop.domain.coupon;
 
 
+import com.ubic.shop.domain.BaseTimeEntity;
+import com.ubic.shop.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
