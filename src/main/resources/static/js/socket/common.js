@@ -1,4 +1,4 @@
-var buyTogether = {
+var common = {
     init: function () {
         let _this = this;
 
@@ -22,9 +22,8 @@ var buyTogether = {
 
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
 
-            /*[구독 1] 해당 상품과 이런 상품도 함께 구매했어요*/
-            /* send: /app/products/buywith/{productId}/page/{currentPage}
-            , subscribe: /topic/products/buywith/{productId}
+            /*[구독 1] 접속한 전체 사용자 수*/
+            /* send: /app/users/root , subscribe: /topic/users/root
             * */
             stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
@@ -32,11 +31,11 @@ var buyTogether = {
             }, {"productId": productId});
 
 
-            /*[요청 1] 해당 상품과 이런 상품도 함께 구매했어요*/
+            /*[요청 1] 접속한 전체 사용자 수*/
             stompClient.send('/app/users/' + productId,
                 {"productId": productId}, {});
 
         });
     }
 };
-buyTogether.init();
+common.init();
