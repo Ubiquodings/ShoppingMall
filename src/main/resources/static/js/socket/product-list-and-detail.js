@@ -22,6 +22,7 @@ var productListAndDetail = {
 
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
 
+            // TODO productId : html 에 세팅하고 list 가져오기
             /*[구독 1] 함께 보고있는 사용자 수*/
             /* send: /app/users/{productId} , subscribe: /topic/users/{productId}
             * */
