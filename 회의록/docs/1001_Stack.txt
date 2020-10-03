@@ -1,15 +1,3 @@
-[개발 외 Todo]
-- 보고서 보완
-  - 수정 사항 적을 공간 확보
-  - 작품 소개 보완
-  - 그 외 카프카 등 강조할 부분 영어로 표현
-  - 작품 특장점 보완
-  - 문제점 및 해결방안 검토
-  * 등 유연언니 .md 파일 참고
-
-- 조금 나중의 일이지만) 한이음 2차 영상 제작
-
-
 
 
 [개발 관련 Todo]
@@ -17,11 +5,13 @@
 
 - 소켓:사용자 수 관련
 ok  - 모델링
-  - 사용자 수 변경 후 소켓 브로드캐스팅 코드
+ok  - 사용자 수 변경 후 소켓 브로드캐스팅 코드
   - 화면 로딩 후 소켓 구독 연결
     * 이게 되면 상품 및 추천 목록도 구현 가능해진다
 
-> 사용자 수 종류 : 모델링 할건데, 저장 
+
+
+> 사용자 수 종류 : 소켓 동작
 
 채팅방 연결하는 것처럼. 후 일괄 갱신
 - 상품 상세 페이지 : ProductView
@@ -30,6 +20,7 @@ ok  - 모델링
 동작 후 일괄 갱신
 - 상품 구매
 - 쿠폰 사용
+
 
 
 - 쿠폰 type 관련 모델링 수정중
@@ -42,6 +33,8 @@ ok  - 모델링
 각 종류당 product id, category id 가 있을거고
 
 
+- 쿠폰 관련해서 소켓 이용할거면
+SocketCouponController 생성하기
 
 
 - 추천 목록 갱신
@@ -98,6 +91,17 @@ buildKafkaRequest(userId, product, action);
 ====== Done Stack ================
 ================================
 
+[개발 외 Todo]
+- 보고서 보완
+  - 수정 사항 적을 공간 확보
+  - 작품 소개 보완
+  - 그 외 카프카 등 강조할 부분 영어로 표현
+  - 작품 특장점 보완
+  - 문제점 및 해결방안 검토
+  * 등 유연언니 .md 파일 참고
+
+- 조금 나중의 일이지만) 한이음 2차 영상 제작
+
 
 > 카프카 수집 로직 마무리하기
 String action = "order-create";
@@ -139,6 +143,26 @@ long productId, long userNumber
 클래스이름: CouponUseUserNumberDto
 String couponType, long userNumber
 
+
+dashboard.js
+dash-and-product-detail.js
+product-list-and-detail.js
+order-number.js
+buy-together.js
+coupon-use.js
+
+
+접속한 전체 사용자 수
+/app/users/root
+/topic/users/root
+
+해당상품 구매한 사람수
+/app/users/ordered/{productId}
+/topic/users/ordered/{productId}
+
+해당 쿠폰 사용한 사람 수
+/app/users/coupons/{couponType}
+/topic/users/coupons/{couponType}
 
 
 

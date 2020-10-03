@@ -48,6 +48,14 @@ public class UserNumberService {
         // TODO 소켓-브로드캐스팅 결과 전달
     }
 
+    public long getProductViewUserNumber(long productId) {
+        List<ProductViewUserNumber> byProductId = productViewUserNumberRepository.findByProductId(productId);
+        if (byProductId.size() != 0) { // 결과가 있다면
+            return byProductId.get(0).getUserNumber();
+        }
+        return -1L;
+    }
+
     @Transactional
     public void plusAllViewUserNumber(long number) { // +1, -1
         Iterable<AllViewUserNumber> allViewUserNumberIterable = allViewUserNumberRepository.findAll();
@@ -69,6 +77,18 @@ public class UserNumberService {
 
     }
 
+    public long getAllViewUserNumber() {
+        Iterable<AllViewUserNumber> allViewUserNumberIterable = allViewUserNumberRepository.findAll();
+        List<AllViewUserNumber> allViewUserNumberList = StreamSupport.stream(allViewUserNumberIterable.spliterator(), false)
+                .collect(Collectors.toList());
+
+        if(allViewUserNumberList.size() != 0){ // 결과가 있다면 숫자 바꾸기
+            return allViewUserNumberList.get(0).getUserNumber(); // 객체 가져오기 & 연산
+        }
+        return -1L;
+    }
+
+
     @Transactional
     public void plusProductOrderUserNumber(long productId, long number) { // +1, -1
         List<ProductOrderUserNumber> byProductId = productOrderUserNumberRepository.findByProductId(productId);
@@ -87,6 +107,14 @@ public class UserNumberService {
 
         // TODO 소켓-브로드캐스팅 결과 전달
 
+    }
+
+    public long getProductOrderUserNumber(long productId) {
+        List<ProductOrderUserNumber> byProductId = productOrderUserNumberRepository.findByProductId(productId);
+        if (byProductId.size() != 0) { // 결과가 있다면
+            return byProductId.get(0).getUserNumber();
+        }
+        return -1L;
     }
 
     @Transactional
@@ -108,5 +136,14 @@ public class UserNumberService {
         // TODO 소켓-브로드캐스팅 결과 전달
 
     }
+
+    public long getCouponUseUserNumber(String couponType) {
+        List<CouponUseUserNumber> byProductId = couponUseUserNumberRepository.findByCouponType(couponType);
+        if (byProductId.size() != 0) { // 결과가 있다면
+            return byProductId.get(0).getUserNumber();
+        }
+        return -1L;
+    }
+
 
 }

@@ -1,4 +1,4 @@
-var productSocket = {
+var productDetail = {
     init: function () {
         let _this = this;
 
@@ -160,4 +160,4 @@ stockQuantity: 50}
     }
 };
 
-productSocket.init();
+productDetail.init();
