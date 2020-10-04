@@ -1,33 +1,235 @@
 {{>layout/header}}
-여기는 결제 페이지<br/>
+<!--<div class=" border px-5 my-3">-->
 
-- 장바구니에 있는 모든 상품을 가져옵니다
-{{#allShopList}}
+<style>
+    h3 {
+        text-align: center;
+        padding: 1.7rem;
+    }
+
+    h4 {
+
+        padding: 1.7rem;
+    }
+
+    table {
+        padding: 1.9rem;
+    }
+
+    h6 {
+        padding: 1.1rem;
+    }
+
+    .ordersheet {
+        border: 1pt groove #4641D9;
+        padding: 1.2rem;
+        background: aliceblue;
+
+    }
+
+    .order-btn {
+        padding: 1.5rem;
+
+    }
+    .my-border {
+        outline: 1px solid #5D5D5D;
+    }
+
+    .bill{
+        background: #f1f1f1;
+
+    }
+</style>
+
+
+<div class="container-fluid">
     <div class="row">
-        <div class="card" style="width: 100%;">
-            <div class="card-body">
-                <input type="hidden" value="{{id}}" class="input-shop-list-id"/>
-                <h5 class="card-title">{{product.name}}</h5>
-                <h5 class="card-title">{{count}}</h5>
+        <div class="col-md-12">
+
+            <div class="ordersheet">
+                <h3>
+                    주문서
+                </h3>
+
+                <div class="bg-light my-border">
+                    <h4>
+                        상품 정보
+
+                    </h4>
+
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                상품 정보
+                            </th>
+                            <th>
+                                수량
+                            </th>
+                            <th>
+                                상품 금액
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#allShopList}}
+
+                            <tr>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    <h5 class="card-title">{{product.name}}</h5>
+                                </td>
+                                <td>
+                                    <h5 class="card-title">{{count}}</h5>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        {{/allShopList}}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-light my-border">
+                    <h4>
+                        주문자 정보
+                    </h4>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                (여유 컬럼)
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                (사용자 아이디 가져오기)
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="bg-light my-border">
+                    <h4>
+                        쿠폰/적립금
+
+                    </h4>
+
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                쿠폰 이름
+                            </th>
+                            <th>
+                                쿠폰 적용 여부
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#couponList}} <!--List<Coupon>-->
+
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                <h5 class="card-title">{{id}}</h5>
+                            </td>
+                            <td>
+                                <h5 class="card-title">{{name}}</h5>
+
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        {{/couponList}}
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3 col-md-6 rounded justify-content-center border-primary my-border bill">
+                    <h6>
+                        주문 금액:
+                        <div></div>
+                    </h6>
+                    <h6>
+                        쿠폰 할인 금액:
+                        <div>
+
+                        </div>
+                    </h6>
+                    <h6>
+                        총 결제 금액:
+                        <div>
+                        </div>
+                    </h6>
+                    <div class="col text-center order-btn">
+
+                        <button type="button" class="btn btn-primary">
+                            결제하기
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    {{#allShopList}}
+        <div class="row">
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <input type="hidden" value="{{id}}" class="input-shop-list-id"/>
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <h5 class="card-title">{{count}}</h5>
+                </div>
             </div>
         </div>
-    </div>
-{{/allShopList}}
+    {{/allShopList}}
 
-- 가져온 상품 관련 쿠폰을 가져옵니다
-{{#couponList}} <!--List<Coupon>-->
-<div class="row">
-    <div class="card" style="width: 100%;">
-        <input type="hidden" value="{{id}}" class="input-coupon-id"/>
-        <div class="card-body">
-            <h5 class="card-title">{{id}}</h5> <!--id 확인테스트-->
-            <h5 class="card-title">{{name}}</h5>
+    {{#couponList}}
+        <div class="row">
+            <div class="card" style="width: 100%;">
+                <input type="hidden" value="{{id}}" class="input-coupon-id"/>
+                <div class="card-body">
+                    <h5 class="card-title">{{id}}</h5>
+                    <h5 class="card-title">{{name}}</h5>
+                </div>
+            </div>
         </div>
-    </div>
+    {{/couponList}}
+
+
 </div>
-{{/couponList}}
 
 
-- 최종 주문 버튼을 누르면, 장바구니의 모든 아이템이 삭제되고 주문처리됩니다<br/>
-<button type="button" class="btn btn-primary btn-lg btn-order-all">주문</button>
+
+
 {{>layout/footer}}
