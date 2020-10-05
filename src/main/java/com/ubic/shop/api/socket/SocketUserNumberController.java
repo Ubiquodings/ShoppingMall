@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.dto.UpdateCouponUserNumberDto;
 import com.ubic.shop.dto.UpdateUserNumberDto;
+import com.ubic.shop.service.UserNumberBroadcastService;
 import com.ubic.shop.service.UserNumberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 public class SocketUserNumberController {
     //    private final
     private final UserNumberService userNumberService;
+    private final UserNumberBroadcastService userNumberBroadcastService;
     private final SimpMessagingTemplate socketTemplate;
     private final ObjectMapper objectMapper;
 
@@ -28,10 +30,10 @@ public class SocketUserNumberController {
 
         // data 가져오기
         UpdateUserNumberDto dto = userNumberService.getProductViewUserNumber(productID);
-        if (dto == null){ // 없어도 된다! 예외 처리 안에서 했음
-            log.info("\nreturn null");
-            dto = new UpdateUserNumberDto(productID, 0L);
-        }
+//        if (dto == null){ // 없어도 된다! 예외 처리 안에서 했음
+//            log.info("\nreturn null");
+//            dto = new UpdateUserNumberDto(productID, 0L);
+//        }
 
         String result = objectMapper.writeValueAsString(dto);
         log.info("\nupdateUserNumber : " + result);
@@ -59,12 +61,14 @@ public class SocketUserNumberController {
                                              String body) throws JsonProcessingException {
 
         // data 가져오기
-        UpdateUserNumberDto dto = userNumberService.getProductOrderUserNumber(productId);
-        if (dto == null)
-            return;
+        UpdateUserNumberDto dto = userNumberBroadcastService.getProductOrderUserNumber(productId);
+        if (dto == null){
+            log.info("\nreturn null");
+            dto = new UpdateUserNumberDto(productId, 0L); // 없으면 0 반환해야 한다!
+        }
 
         String result = objectMapper.writeValueAsString(dto);
-        log.info("\nupdateUserNumber : " + result);
+        log.info("\nupdateOrderUserNumber : " + result);
 
         /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/ordered/" + productId, result);
@@ -75,7 +79,7 @@ public class SocketUserNumberController {
                                           String body) throws JsonProcessingException {
 
         // data 가져오기
-        UpdateCouponUserNumberDto dto = userNumberService.getCouponUseUserNumber(couponType);
+        UpdateCouponUserNumberDto dto = userNumberBroadcastService.getCouponUseUserNumber(couponType);
         if (dto == null)
             return;
 

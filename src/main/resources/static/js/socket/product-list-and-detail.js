@@ -22,7 +22,7 @@ var productListAndDetail = {
 
         stompClient.connect(/*header*/{}, function (frame) {
 
-            // TODO productId : html 에 세팅하고 list 가져오기
+            // productId : html 에 세팅하고 list 가져오기
             var productIdList = [];
             Array.from(document.getElementsByClassName('product-detail-id')) // list and detail
                 .forEach((productIdElem) => {
@@ -45,13 +45,12 @@ var productListAndDetail = {
                         {"productId": productId}, {});
 
                 });
-            console.log(productIdList);
+            console.log('productViewUserNumber: '+productIdList);
 
 
         });
     },
     updateUserNumber: function (productId, number) {
-        console.log('\nupdateUserNumber start');
         // list 가져와서
         Array.from(document.getElementsByClassName('productUserNumber-' + productId))
             .forEach((userNumberDiv) => {
@@ -59,7 +58,9 @@ var productListAndDetail = {
                 // if(userNumberDiv.parentElement.children[0].value === productId){ // 해당 상품 열람 사용자 수 갱신
                 console.log('\nupdateUserNumber : '+userNumberDiv.parentElement.children[0].value);
                 userNumberDiv.innerHTML = "";
-                userNumberDiv.innerHTML += `<span class="material-icons orange600">visibility</span><span class="align-text-bottom"> ${number}명</span>`;
+                userNumberDiv.innerHTML += `<span class="material-icons light-green d-inline-block" tabindex="0"
+                                      data-toggle="tooltip"
+                                      title="이 상품을 함께 보고있는 사용자 수">visibility</span><span class="align-text-bottom"> ${number}명</span>`;
                 // }
             });
     },

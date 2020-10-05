@@ -55,6 +55,7 @@ public class RestAPIController {
     private final ProductRepository productRepository;
     private final ObjectMapper objectMapper;
     private final UserNumberService userNumberService;
+    private final UserNumberBroadcastService userNumberBroadcastService;
 
 
     @PostMapping("/api/products/new")
@@ -133,7 +134,7 @@ public class RestAPIController {
     @PostMapping("/api/orders/fromDetail/{id}") // 상품 상세 페이지에서 바로 하나 주문하는 기능
     public String orderOneFromDetail(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
                                      @RequestBody int count,
-                                     HttpServletRequest request) {
+                                     HttpServletRequest request) throws JsonProcessingException {
         Long clientId = -1L;
         clientId = getUserIdFromSession(user, request);
 
@@ -141,6 +142,9 @@ public class RestAPIController {
         Product product = productService.findById(productId);
 
         kafkaService.buildKafkaRequest(clientId, product, action);
+
+        // 상품 구매한 사용자 수 갱신
+        userNumberBroadcastService.plusProductOrderUserNumber(product.getId(), 1L);
 
 //        kafkaService.sendToTopic(new ClickActionRequestDto(clientId, action, product.getId()));
 
@@ -222,7 +226,11 @@ public class RestAPIController {
                     kafkaService.buildKafkaRequest(userId, product, action);
 
                     // 상품 구매한 사용자 수 갱신
-                    userNumberService.plusProductOrderUserNumber(product.getId(), 1L);
+                    try {
+                        userNumberBroadcastService.plusProductOrderUserNumber(product.getId(), 1L);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
 
                     // order 객체 생성
                     OrderProduct orderProduct = OrderProduct.createOrderProduct(product, product.getPrice(), shopList.getCount());
@@ -242,7 +250,7 @@ public class RestAPIController {
 
                     // 쿠폰 사용한 사용자 수 갱신
                     String couponType = coupon.getCouponType();
-                    userNumberService.plusCouponUseUserNumber(couponType, 1L);
+                    userNumberBroadcastService.plusCouponUseUserNumber(couponType, 1L);
 
                     coupon.changeStatusUsed();
                     /*couponRepository.deleteById(coupon.getId());*/
