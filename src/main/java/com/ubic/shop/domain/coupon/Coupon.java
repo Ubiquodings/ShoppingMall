@@ -57,6 +57,10 @@ public abstract class Coupon extends BaseTimeEntity {
         this.status = CouponStatus.Used;
     }
 
+    public String getCouponType() {
+        return couponType.toString();
+    }
+
 
 //    public void changeStatus(CouponStatus used) {
 //        this.status =

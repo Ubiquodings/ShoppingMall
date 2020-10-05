@@ -23,17 +23,32 @@ var productDetail = {
 
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
 
+
+            /*[구독 1] 함께 보고있는 사용자 수*/ // 구독은 list & detail 소켓에서 수행한다 !
+            /* send: /app/users/{productId} , subscribe: /topic/users/{productId}
+            * */
+            // stompClient.subscribe('/topic/users/' + productId, function (result) {
+            //     console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
+            //     _this.updateUserNumber(JSON.parse(result.body).number);
+            // }, {"productId": productId});
+
+
+            // /*[요청 1] 함께 보고있는 사용자 수*/ // 갱신 요청은 상세 페이지에 접속했을 때만 수행한다
+            // stompClient.send('/app/users/' + productId,
+            //     {"productId": productId}, {});
+
+
             /*[구독 3] 망설이지마세요 쿠폰*/
             /* send: /app/coupons/{userId} , subscribe: /topic/coupons/{userId}
             * */
-            stompClient.subscribe('/topic/coupons/'+userId, function (result) {
-                result = JSON.parse(result.body ); /*JSON.stringify(*/
-                console.log('/topic/coupons/{userId} 결과 :  \n'+ result.couponName); // coupone name ok
+            stompClient.subscribe('/topic/coupons/' + userId, function (result) {
+                result = JSON.parse(result.body); /*JSON.stringify(*/
+                console.log('/topic/coupons/{userId} 결과 :  \n' + result.couponName); // coupone name ok
 
                 // 결과로 화면 조작
                 // _this.updateRecommendedList(resultList);
                 // $("#btn-my-coupons").css("color","red");
-                alert("쿠폰이 도착했습니다!\n"+result.couponName);
+                alert("쿠폰이 도착했습니다!\n" + result.couponName);
                 document.querySelector('#btn-my-coupons').innerHTML += ` <span class="badge badge-light">1</span>`;
                 // console.log($("#btn-my-coupons").innerHTML);
 
@@ -54,8 +69,8 @@ var productDetail = {
 
 
     },
-    requestDoNotHesitateCoupon: function(stompClient, userId, productId){
-        setTimeout(function(){
+    requestDoNotHesitateCoupon: function (stompClient, userId, productId) {
+        setTimeout(function () {
             console.log('망설이지마세요 쿠폰 요청');
             stompClient.send('/app/coupons/' + userId,
                 {}, JSON.stringify({ // body 에 string 처리 꼭 해줘야하는구나!

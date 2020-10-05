@@ -44,22 +44,23 @@ product-detail
 <div class="card"> <!---->
     <div class="card-body detail-info-number" >
         <div class="row">
+            <input type="hidden" value="{{id}}"/>
             <div class="col-9"></div> <!-- -lg 붙여야 하나 ?-->
             <!-- https://material.io/resources/icons/?search=eye&icon=visibility&style=outline -->
             <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
-            <div class="col-1  mini-text-font" id="userNumber">
+            <div class="col-1  mini-text-font userNumber productUserNumber-{{id}}" id="userNumber">
                 <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
                       title="이 상품을 함께보고 있는 사람 수">visibility</span> <span class="align-text-bottom">0명</span>
             </div>
             <!--이 상품을 장바구니에 담은 사람 수--> <!--가방 or 카트-->
             <div class="col-1 mini-text-font" id="userShopListNumber">
                 <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
-                      title="이 상품을 장바구니에 담은 사람 수">shopping_cart</span> <span class="align-text-bottom">4명</span>
+                      title="이 상품을 장바구니에 담은 사람 수">shopping_cart</span> <span class="align-text-bottom">0명</span>
             </div>
             <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
             <div class="col-1 mini-text-font" id="userOrderNumber">
                 <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
-                      title="이 상품을 구매한 사람 수">payment</span> <span class="align-text-bottom">6명</span>
+                      title="이 상품을 구매한 사람 수">payment</span> <span class="align-text-bottom">0명</span>
             </div>
         </div>
 <!--        <p class="row" id="userNumber">이 상품을 함께보고 있는 사람 수</p>-->
@@ -71,7 +72,7 @@ product-detail
 <!--상품 상세 정보 출력-->
 {{#product}}
     <!--{{name}}-->
-    <input type="hidden" value="{{id}}" id="input-product-id"/>
+    <input type="hidden" value="{{id}}" id="input-product-id" class="product-detail-id"/>
 
 
     <div class="card-product card">
@@ -251,7 +252,7 @@ product-detail
 <div class="row recommended-product-list">
     {{#recommendedList}}
         <div class="col-md-3 product-list-card-body">
-            <input type="hidden" value="{{id}}"/>
+            <input type="hidden" value="{{id}}" class="product-detail-id"/>
             <div class="ibox">
                 <div class="ibox-content product-box">
                     <div class="product-imitation">
@@ -278,8 +279,12 @@ product-detail
     {{/recommendedList}}
 </div>
 
+<!--<script src="/js/socket/common.js"></script>-->
 <!--상품 디테일 소켓 추가-->
 <script src="/js/socket/product-detail.js"></script>
 <!--상품 카운트 로직 추가-->
 <!--<script src="/js/app/product-detail-cal.js"></script>-->
+<script src="/js/socket/dash-and-product-detail.js"></script>
+<script src="/js/socket/product-list-and-detail.js"></script>
+<script src="/js/socket/order-number.js"></script>
 {{>layout/footer}}

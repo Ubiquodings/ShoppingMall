@@ -15,6 +15,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter(AccessLevel.PROTECTED)
+@ToString
 public class ProductViewUserNumber {
     long productId; long userNumber;
 

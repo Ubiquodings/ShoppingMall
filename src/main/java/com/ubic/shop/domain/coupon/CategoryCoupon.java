@@ -31,4 +31,9 @@ public class CategoryCoupon extends Coupon {
         this.categoryCouponType = categoryCouponType;
     }
 
+    @Override
+    public String getCouponType() {
+        return super.getCouponType().toString()+this.categoryCouponType.toString();
+    }
+
 }

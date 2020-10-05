@@ -105,7 +105,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
             List<Long> listId;
             Long productId = -1L;
-            assert header != null;
+//            assert header != null;
             if(header.containsKey(keyName)){
                 try {
                     listId = objectMapper.readValue(header.get(keyName).toString(), new TypeReference<List<Long>>(){});

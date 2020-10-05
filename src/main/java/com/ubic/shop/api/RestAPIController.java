@@ -6,7 +6,11 @@ import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
 import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.domain.*;
+import com.ubic.shop.domain.coupon.AllAroundCoupon;
+import com.ubic.shop.domain.coupon.CategoryCoupon;
 import com.ubic.shop.domain.coupon.Coupon;
+import com.ubic.shop.domain.coupon.ProductCoupon;
+import com.ubic.shop.domain.user_number.ProductOrderUserNumber;
 import com.ubic.shop.dto.*;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
@@ -50,6 +54,7 @@ public class RestAPIController {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final ObjectMapper objectMapper;
+    private final UserNumberService userNumberService;
 
 
     @PostMapping("/api/products/new")
@@ -216,6 +221,9 @@ public class RestAPIController {
                     String action = "order-create";
                     kafkaService.buildKafkaRequest(userId, product, action);
 
+                    // 상품 구매한 사용자 수 갱신
+                    userNumberService.plusProductOrderUserNumber(product.getId(), 1L);
+
                     // order 객체 생성
                     OrderProduct orderProduct = OrderProduct.createOrderProduct(product, product.getPrice(), shopList.getCount());
                     orderProductList.add(orderProduct);
@@ -231,6 +239,11 @@ public class RestAPIController {
         couponByUserIdandIds
                 .forEach(coupon -> {
                     // TODO Kafka coupon-use
+
+                    // 쿠폰 사용한 사용자 수 갱신
+                    String couponType = coupon.getCouponType();
+                    userNumberService.plusCouponUseUserNumber(couponType, 1L);
+
                     coupon.changeStatusUsed();
                     /*couponRepository.deleteById(coupon.getId());*/
                 });
