@@ -217,7 +217,7 @@ var dashboard = {
                         </div>
 
                         <!--구매한 사용자 수-->
-                        <div class="col-4 list-mini-text-font productUserNumber-${id}"
+                        <div class="col-4 list-mini-text-font productOrderUserNumber-${id}"
                              id="productUserNumber-${id}" style="padding:0; margin: 0">
                             <span class="material-icons light-green d-inline-block" tabindex="0" data-toggle="tooltip"
                                       title="이 상품을 구매한 사용자 수">payment</span> <span class="align-text-bottom">0명</span>

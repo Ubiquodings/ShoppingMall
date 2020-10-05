@@ -89,7 +89,7 @@ public class UserNumberService {
             AllViewUserNumber allViewUserNumber = allViewUserNumberList.get(0); // 객체 가져오기 & 연산
             allViewUserNumber.changeUserNumber(allViewUserNumber.getUserNumber() + number);
 
-        } else { // 결과가 없다면: 객체 생성해서 저장
+        } else { // 결과가 없다면: 객체 생성해서 저장 : 근데 이게 맞는게 다른 사람에게도 같은 결과 전달해야 해서!
             AllViewUserNumber allViewUserNumber = AllViewUserNumber.builder()
                     .userNumber(number)
                     .build();

@@ -10,15 +10,11 @@ coupons
                     <span class="badge badge-secondary"
                           style="background-color:darkorange">{{createdDate}}</span>
 
-                    {{#dtype}} <!-- product, category, all 구분하는 badge! -->
-                        <span class="badge badge-secondary"
-                              style="background-color:darkorange">{{dtype}}</span>
-                    {{/dtype}}
+                    <!-- product, category, all 구분하는 badge! -->
+                    <span class="badge badge-secondary"
+                          style="background-color:darkorange">{{couponType}}</span>
 
-                    {{#category}}
-                        <span class="badge badge-secondary"
-                              style="background-color:darkorange">{{type}}</span>
-                    {{/category}}
+
                 </div>
             </div>
             <div class="row">
@@ -34,6 +30,7 @@ coupons
                     <span class="align-text-bottom">4명</span>
                 </div>
 
+                <input type="hidden" value="{{}}" class="product-detail-id"/>
                 <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
                 <div class="col-1 mini-text-font" id="userOrderNumber">
                     <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"

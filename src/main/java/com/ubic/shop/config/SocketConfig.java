@@ -79,7 +79,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
                 // 디테일 페이지 접속 인원수를 +1한다.
 //                esSocketService.plusUserCount(productId, 1L);
-//                userNumberService.plusProductViewUserNumber(productId, 1L);
+                userNumberService.plusProductViewUserNumber(productId, 1L);
 
             } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 

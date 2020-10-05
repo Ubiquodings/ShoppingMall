@@ -27,13 +27,6 @@
                         <input type="hidden" value="{{id}}" class="input-order-id"/>환불 요청
                     </button>
 
-                    <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
-                    <div class="col mini-text-font" id="userOrderNumber" style="margin-top: 10px; margin-left: 0">
-                        <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
-                              title="이 상품을 구매한 사람 수">payment</span>
-                        <span class="align-text-bottom">6명</span>
-                    </div>
-
 
                     <!--                    <button> 환불 요청(주문취소) </button>-->
 <!--                    <button> 교환 요청</button>-->
@@ -66,6 +59,15 @@
                             <p>{{product.name}}</p>
                             <p>{{count}} 개 {{product.price}} 원</p>
                         </div>
+
+                        <input type="hidden" value="{{product.id}}" class="product-detail-id"/>
+                        <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+                        <div class="col mini-text-font productOrderUserNumber-{{product.id}}" id="userOrderNumber" style="margin-top: 10px; margin-left: 0">
+                        <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
+                              title="이 상품을 구매한 사람 수">payment</span>
+                            <span class="align-text-bottom">0명</span>
+                        </div>
+
                     </div>
                 {{/orderProducts}}
             </div>

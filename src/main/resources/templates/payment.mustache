@@ -31,11 +31,12 @@
                     <input type="hidden" value="{{product.id}}" id="input-cart-order"/>
                     <!--                    <a href="/orders/new/{{product.id}}" class="btn btn-info active" role="button">주문</a>-->
 
+                    <input type="hidden" value="{{product.id}}" class="product-detail-id"/>
                     <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
-                    <div class="mini-text-font" id="userOrderNumber">
+                    <div class="mini-text-font productOrderUserNumber-{{product.id}}" id="userOrderNumber">
                         <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
                               title="이 상품을 구매한 사람 수">payment</span>
-                        <span class="align-text-bottom">6명</span>
+                        <span class="align-text-bottom">0명</span>
                     </div>
 
                 </div>
@@ -79,7 +80,7 @@
                 <div class="mini-text-font" id="userShopListNumber">
                     <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
                           title="이 쿠폰 사용한 사용자 수">check_circle_outline</span>
-                    <span class="align-text-bottom">4명</span>
+                    <span class="align-text-bottom">0명</span>
                 </div>
 
             </div>
