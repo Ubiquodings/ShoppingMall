@@ -58,7 +58,7 @@ public class UserNumberBroadcastService {
         return null;
     }
 
-    public void broadcastProductOrderUserNumber(long productId) throws JsonProcessingException {
+    private void broadcastProductOrderUserNumber(long productId) throws JsonProcessingException {
         // data 가져오기
         UpdateUserNumberDto dto = getProductOrderUserNumber(productId);
         if (dto == null){
@@ -75,7 +75,7 @@ public class UserNumberBroadcastService {
 
 
     @Transactional
-    public void plusCouponUseUserNumber(String couponType, long number) { // +1, -1
+    public void plusCouponUseUserNumber(String couponType, long number) throws JsonProcessingException { // +1, -1
         List<CouponUseUserNumber> byProductId = couponUseUserNumberRepository.findByCouponType(couponType);
 
         if (byProductId.size() != 0) { // 결과가 있다면 숫자 바꾸기
@@ -83,6 +83,7 @@ public class UserNumberBroadcastService {
             couponUseUserNumber.changeUserNumber(couponUseUserNumber.getUserNumber() + number);
 
         } else { // 결과가 없다면: 객체 생성해서 저장
+            log.info("\ncoupon type 못찾았음. 새로 생성합니다");
             CouponUseUserNumber couponUseUserNumber = CouponUseUserNumber.builder()
                     .couponType(couponType)
                     .userNumber(number)
@@ -90,17 +91,34 @@ public class UserNumberBroadcastService {
             couponUseUserNumberRepository.save(couponUseUserNumber);
         }
 
-        // TODO 소켓-브로드캐스팅 결과 전달
-
+        // 소켓-브로드캐스팅 결과 전달
+        broadcastCouponUseUserNumber(couponType);
     }
 
     public UpdateCouponUserNumberDto getCouponUseUserNumber(String couponType) {
         List<CouponUseUserNumber> byProductId = couponUseUserNumberRepository.findByCouponType(couponType);
         if (byProductId.size() != 0) { // 결과가 있다면
             CouponUseUserNumber couponUseUserNumber = byProductId.get(0);
+            log.info("\ngetCouponUseUserNumber : "+couponUseUserNumber.toString());
             return new UpdateCouponUserNumberDto(couponUseUserNumber.getCouponType(), couponUseUserNumber.getUserNumber());
         }
         return null;
+    }
+
+    private void broadcastCouponUseUserNumber(String couponType) throws JsonProcessingException {
+        // data 가져오기
+        UpdateCouponUserNumberDto dto = getCouponUseUserNumber(couponType);
+        if (dto == null){
+            log.info("\nreturn null");
+            dto = new UpdateCouponUserNumberDto(couponType, 0L); // 없으면 0 반환해야 한다!
+        }
+
+        String result = objectMapper.writeValueAsString(dto);
+        log.info("\nupdateCouponUserNumber : " + result);
+
+        /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+        socketTemplate.convertAndSend("/topic/users/coupons/" + couponType, result);
+
     }
 
 }

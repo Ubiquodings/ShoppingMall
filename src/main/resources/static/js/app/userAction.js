@@ -11,7 +11,7 @@ var userAction = {
                 .forEach((checkbox) => {
                     // get checked checkbox
                     if (checkbox.checked) {
-                        let id = checkbox.parentElement.children[1].innerHTML; // id ok
+                        let id = checkbox.parentElement.children[1].value; // id ok
                         // console.log(id);
                         checkboxesChecked.push(id);
                     }
@@ -280,33 +280,33 @@ var userAction = {
         });
 
         // 결재 페이지: 주문
-        $(document).on('click', '.btn-order-all', function (e) {
-            // $(".btn-order-all").on('click', function (e) {
-            let shopListIdList = []; // = $("#input-shop-list-id").val(); // get list ? no
-            let couponIdList = $("#input-coupon-id").val();
-            let shopListIdElem = document.getElementsByClassName('input-shop-list-id');
-            Array.from(shopListIdElem).forEach((elem) => {
-                console.log('장바구니id ' + elem.value);
-                shopListIdList.push(elem.value);
-            });
-            console.log('shopListIdList: ' + shopListIdList + "\ncouponIdList: " + couponIdList);
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: '/api/orderAll',
-            //     dataType: 'json',
-            //     contentType:'application/json; charset=utf-8',
-            //     data: JSON.stringify({
-            //         couponIdList:[],
-            //         shopListIdList:[]
-            //     })
-            // }).done(function(){
-            //     alert('ok');
-            // }).fail(function(e){
-            //     alert('fail '+JSON.stringify(e));
-            // });
-            // window.location.href="/orders";
-        });
+        // $(document).on('click', '.btn-order-all', function (e) {
+        //     // $(".btn-order-all").on('click', function (e) {
+        //     let shopListIdList = []; // = $("#input-shop-list-id").val(); // get list ? no
+        //     let couponIdList = $("#input-coupon-id").val();
+        //     let shopListIdElem = document.getElementsByClassName('input-shop-list-id');
+        //     Array.from(shopListIdElem).forEach((elem) => {
+        //         console.log('장바구니id ' + elem.value);
+        //         shopListIdList.push(elem.value);
+        //     });
+        //     console.log('shopListIdList: ' + shopListIdList + "\ncouponIdList: " + couponIdList);
+        //
+        //     // $.ajax({
+        //     //     type: 'POST',
+        //     //     url: '/api/orderAll',
+        //     //     dataType: 'json',
+        //     //     contentType:'application/json; charset=utf-8',
+        //     //     data: JSON.stringify({
+        //     //         couponIdList:[],
+        //     //         shopListIdList:[]
+        //     //     })
+        //     // }).done(function(){
+        //     //     alert('ok');
+        //     // }).fail(function(e){
+        //     //     alert('fail '+JSON.stringify(e));
+        //     // });
+        //     // window.location.href="/orders";
+        // });
 
         $(document).on('click', 'div.product-list-card-body', function (e) {
             // $('div.product-list-card-body').on('click', function (e) { // TODO: id, name 은 어떻게 전달하지 ?

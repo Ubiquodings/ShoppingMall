@@ -202,6 +202,7 @@ public class RestAPIController {
     @PostMapping("/api/orderAll")
     public String orderAll(@RequestBody OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
+        log.info("\n결제페이지 쿠폰: "+requestDto.toString());
 
         Long clientId = -1L;
         clientId = getUserIdFromSession(user, request);
@@ -251,14 +252,21 @@ public class RestAPIController {
 
                     // 쿠폰 사용한 사용자 수 갱신
                     String couponType = coupon.getCouponType();
-                    userNumberBroadcastService.plusCouponUseUserNumber(couponType, 1L);
+                    try {
+                        log.info("\ncoupon use type : "+couponType);
+                        userNumberBroadcastService.plusCouponUseUserNumber(couponType, 1L);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
 
                     coupon.changeStatusUsed();
-                    /*couponRepository.deleteById(coupon.getId());*/
+                    couponService.saveChangedCoupon(coupon); // 바뀌는지 : 기존 db 에는 status 가 하나도 바뀌지 않았다!
                 });
 
         return "{}";
     }
+
+    private final CouponService couponService;
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();

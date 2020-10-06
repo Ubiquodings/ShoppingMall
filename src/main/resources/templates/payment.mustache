@@ -77,12 +77,14 @@
                 <h5 class="card-title">{{name}}</h5>
 
                 <!--이 쿠폰 사용한 사용자 수-->
-                <div class="mini-text-font" id="userShopListNumber">
+                <div>
+                    <input type="hidden" value="{{couponType}}" class="coupon-type"/>
+                    <div class="mini-text-font couponUseUserNumber-{{couponType}}" id="userShopListNumber">
                     <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
                           title="이 쿠폰 사용한 사용자 수">check_circle_outline</span>
-                    <span class="align-text-bottom">0명</span>
+                        <span class="align-text-bottom">0명</span>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>

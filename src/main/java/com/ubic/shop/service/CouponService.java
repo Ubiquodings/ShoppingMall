@@ -148,6 +148,12 @@ public class CouponService {
         return coupon.getId();
     }
 
+    @Transactional
+    public void saveChangedCoupon(Coupon coupon) {
+        log.info("coupon status changed: "+coupon.toString());
+        couponRepository.save(coupon);
+    }
+
 
 //    @Transactional
 //    public void cancelOrder(Long orderId) {

@@ -80,13 +80,15 @@ public class SocketUserNumberController {
 
         // data 가져오기
         UpdateCouponUserNumberDto dto = userNumberBroadcastService.getCouponUseUserNumber(couponType);
-        if (dto == null)
-            return;
+        if (dto == null){
+            log.info("\nreturn null");
+            dto = new UpdateCouponUserNumberDto(couponType, 0L); // 없으면 0 반환해야 한다!
+        }
 
         String result = objectMapper.writeValueAsString(dto);
-        log.info("\nupdateUserNumber : " + result);
+        log.info("\nupdateCouponUserNumber : " + result);
 
-        /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+        /*해당 쿠폰 사용 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/coupons/" + couponType, result);
     }
 
