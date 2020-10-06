@@ -1,5 +1,8 @@
-package com.ubic.shop.domain;
+package com.ubic.shop.domain.coupon;
 
+import com.ubic.shop.domain.Product;
+import com.ubic.shop.domain.User;
+import com.ubic.shop.domain.coupon.Coupon;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,10 +18,15 @@ public class ProductCoupon extends Coupon {
     @JoinColumn(name = "product_id")
     private Product product;
 
+//    @Enumerated(EnumType.STRING)
+//    private CouponType couponType = CouponType.product_base;
+
+
     @Builder
     public ProductCoupon(String name, User user, Product product, int discountRate) {
-        super(name, user, discountRate);
+        super(name, user, discountRate, CouponType.product_base);
         this.product = product;
+//        this.couponType = Cou
     }
 
 }

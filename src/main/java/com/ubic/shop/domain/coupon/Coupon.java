@@ -1,6 +1,8 @@
-package com.ubic.shop.domain;
+package com.ubic.shop.domain.coupon;
 
 
+import com.ubic.shop.domain.BaseTimeEntity;
+import com.ubic.shop.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,10 +30,14 @@ public abstract class Coupon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private CouponStatus status = CouponStatus.Created; //상태 [Used, Created, Deleted]
 
-    protected Coupon(String name, User user, int discountRate) {
+    @Enumerated(EnumType.STRING)
+    private CouponType couponType;
+
+    protected Coupon(String name, User user, int discountRate, CouponType couponType) {
         this.name = name;
         this.user = user;
         this.discountRate = discountRate;
+        this.couponType = couponType;
     }
 
 
@@ -49,6 +55,10 @@ public abstract class Coupon extends BaseTimeEntity {
 
     public void changeStatusUsed() {
         this.status = CouponStatus.Used;
+    }
+
+    public String getCouponType() {
+        return couponType.toString();
     }
 
 

@@ -13,31 +13,27 @@
 <input type="hidden" value="{{id}}" id="input-order-id"/> <!-- Order 의 id -->
 
 <div class="row" id="order-list-row">
-    <div class="card" style="width: 100%;">
-        <div class="card-body" data-toggle="modal" data-target="#exampleModalScrollable">
+    <div class="card order-list-body" style="width: 100%;">
+        <input type="hidden" value="{{id}}"/>
+
+        <div class="card-body"> <!--data-toggle="modal" data-target="#exampleModalScrollable"-->
             <h5 class="card-title">{{title}}</h5> <!--잘나온다!-->
             <h5 class="card-title">{{totalPrice}}</h5>
             <!--            <button type="button" class="btn btn-primary btn-lg" id="btn-cart-order">주문</button>-->
         </div>
 
         <div>
-            <div class="main2" > <!--x y ?-->
-                <div id="main21" class="row" >
-                    <button type="button" class="btn btn-primary btn-xs btn-order-cancel col-2" style="margin-left: 40px; margin-bottom: 20px;"> <!--y x 였다!!-->
+            <div class="main2"> <!--x y ?-->
+                <div id="main21" class="row">
+                    <button type="button" class="btn btn-primary btn-xs btn-order-cancel col-2"
+                            style="margin-left: 40px; margin-bottom: 20px;"> <!--y x 였다!!-->
                         <input type="hidden" value="{{id}}" class="input-order-id"/>환불 요청
                     </button>
 
-                    <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
-                    <div class="col mini-text-font" id="userOrderNumber" style="margin-top: 10px; margin-left: 0">
-                        <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
-                              title="이 상품을 구매한 사람 수">payment</span>
-                        <span class="align-text-bottom">6명</span>
-                    </div>
-
 
                     <!--                    <button> 환불 요청(주문취소) </button>-->
-<!--                    <button> 교환 요청</button>-->
-<!--                    <button> 리뷰 쓰기</button>-->
+                    <!--                    <button> 교환 요청</button>-->
+                    <!--                    <button> 리뷰 쓰기</button>-->
                 </div>
             </div>
         </div>
@@ -55,23 +51,15 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                {{#orderProducts}} <!--UI 수정, ajax 로 수정-->
-                    <div class="row">
-<!--                    {{id}}-->
-                        <div class="col-3">
-                            <img class="img-responsive" src="{{product.imgUrl}}"/>
-                        </div>
-                        <div class="col-9">
-                            <p>{{product.name}}</p>
-                            <p>{{count}} 개 {{product.price}} 원</p>
-                        </div>
-                    </div>
-                {{/orderProducts}}
+            <div class="modal-body" id="order-product-list">
+                <!--UI 수정, ajax 로 수정-->
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary btn-order-cancel"><input type="hidden" value="{{id}}" class="input-order-id"/>주문 취소</button>
+                <button type="button" class="btn btn-primary btn-order-cancel"><input type="hidden" value="{{id}}"
+                                                                                      class="input-order-id"/>주문 취소
+                </button>
             </div>
         </div>
     </div>
@@ -79,6 +67,10 @@
 
 {{/orderList}}
 
+<script src="/js/app/order-list.js"></script>
+<!--<script src="/js/socket/common.js"></script>-->
+<script src="/js/socket/order-number.js"></script>
+<script src="/js/socket/buy-together.js"></script>
 {{>layout/footer}}
 
 

@@ -3,6 +3,7 @@ package com.ubic.shop.web;
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
+import com.ubic.shop.domain.coupon.CouponStatus;
 import com.ubic.shop.dto.SessionUser;
 import com.ubic.shop.repository.CouponRepository;
 import com.ubic.shop.repository.UserRepository;
@@ -49,8 +50,8 @@ public class UserController {
             userId = nonMember.getId();
         }
 
-//        TODO 전달해야 한다!
-        model.addAttribute("couponList", couponRepository.findByUserId(userId));
+//        TODO 전달해야 한다! : 사용한건 안 가져오는가 ?
+        model.addAttribute("couponList", couponRepository.findByUserIdAndStatus(userId, CouponStatus.Created));
 
         return "mycoupons";
     }

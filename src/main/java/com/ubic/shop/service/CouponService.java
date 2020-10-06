@@ -1,6 +1,10 @@
 package com.ubic.shop.service;
 
 import com.ubic.shop.domain.*;
+import com.ubic.shop.domain.coupon.CategoryCoupon;
+import com.ubic.shop.domain.coupon.CategoryCouponType;
+import com.ubic.shop.domain.coupon.Coupon;
+import com.ubic.shop.domain.coupon.ProductCoupon;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.repository.CategoryRepository;
 import com.ubic.shop.repository.CouponRepository;
@@ -8,7 +12,6 @@ import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +89,7 @@ public class CouponService {
 
     @Transactional
     public long createCategoryCoupon(long categoryId, long userId, int discountRate, /*String couponName,*/
-                                     CategoryCouponType type) {
+                                     CategoryCouponType categoryCouponType) {
 
         Category category = categoryRepository.findById(categoryId).get();
         String couponName = "장바구니에 담아두신 " + category.getName() + " 쿠폰드려요! + 20% 쿠폰!!";
@@ -94,7 +97,7 @@ public class CouponService {
         // 쿠폰 이미 있는지 확인
         log.info("\n쿠폰 발급 심사 userId : "+userId);
         List<Coupon> byCategoryAndUserAndCouponType = couponRepository
-                .findByCategoryAndUserAndCouponType(categoryId, userId, type);
+                .findByCategoryAndUserAndCategoryCouponType(categoryId, userId, categoryCouponType);
 
         log.info("\nbyCategoryAndUserAndCouponType : "+byCategoryAndUserAndCouponType.size());
         if (byCategoryAndUserAndCouponType.size() != 0) { // 이미 있다면
@@ -110,7 +113,7 @@ public class CouponService {
                 .user(user)
                 .discountRate(discountRate)
                 .category(category)
-                .type(type)
+                .categoryCouponType(categoryCouponType)
                 .build();
         log.info("\n쿠폰 발급 userId : "+user.getId());
 
@@ -143,6 +146,12 @@ public class CouponService {
 
         coupon = couponRepository.save(coupon);
         return coupon.getId();
+    }
+
+    @Transactional
+    public void saveChangedCoupon(Coupon coupon) {
+        log.info("coupon status changed: "+coupon.toString());
+        couponRepository.save(coupon);
     }
 
 

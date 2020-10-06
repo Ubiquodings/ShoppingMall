@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubic.shop.elasticsearch.service.ElasticSearchService;
 import com.ubic.shop.elasticsearch.service.EsSocketService;
+import com.ubic.shop.service.UserNumberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +30,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final EsSocketService esSocketService;
+//    private final EsSocketService esSocketService;
     private final ObjectMapper objectMapper;
+    private final UserNumberService userNumberService;
 
 
     @Override
@@ -49,15 +51,16 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new MyChannelInterceptor(esSocketService, objectMapper/*,socketTemplate*/));
+        registration.interceptors(new MyChannelInterceptor(objectMapper,userNumberService));
     }
 
 
     @RequiredArgsConstructor
     static class MyChannelInterceptor implements ChannelInterceptor {
 
-        private final EsSocketService esSocketService;
+//        private final EsSocketService esSocketService;
         private final ObjectMapper objectMapper;
+        private final UserNumberService userNumberService;
 
         @Override
         public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -75,7 +78,8 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
                 log.info("\nsocket subscribed : productId - " + productId);
 
                 // 디테일 페이지 접속 인원수를 +1한다.
-                esSocketService.plusUserCount(productId, 1L);
+//                esSocketService.plusUserCount(productId, 1L);
+                userNumberService.plusProductViewUserNumber(productId, 1L);
 
             } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 
@@ -86,7 +90,8 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
                 log.info("\nsocket terminated : productId - " + productId);
 
                 // 디테일 페이지 접속 인원수를 -1한다.
-                esSocketService.plusUserCount(productId, -1L);
+//                esSocketService.plusUserCount(productId, -1L);
+                userNumberService.plusProductViewUserNumber(productId, -1L);
             }
             return message;
         }
@@ -100,7 +105,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
             List<Long> listId;
             Long productId = -1L;
-            assert header != null;
+//            assert header != null;
             if(header.containsKey(keyName)){
                 try {
                     listId = objectMapper.readValue(header.get(keyName).toString(), new TypeReference<List<Long>>(){});

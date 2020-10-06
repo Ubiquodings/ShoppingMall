@@ -1,4 +1,4 @@
-package com.ubic.shop.api;
+package com.ubic.shop.api.socket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-public class SocketController {
+public class SocketController { // 기존 소켓 테스트 코드
 
     private final RecommendService recommendService;
     private final ElasticSearchService elasticSearchService;
@@ -50,27 +50,27 @@ public class SocketController {
      * this.template.convertAndSend("/topic/greetings", text);
      */
 
-    @MessageMapping("/users/{productID}") /*해당 페이지 접속 사용자 수*/
-//    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
-    public void updateUserNumber(@DestinationVariable long productID,
-            /*@DestinationVariable long productPK,*/
-                                 String body) throws JsonProcessingException {
+//    @MessageMapping("/users/{productID}") /*해당 페이지 접속 사용자 수*/
+////    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+//    public void updateUserNumber(@DestinationVariable long productID,
+//            /*@DestinationVariable long productPK,*/
+//                                 String body) throws JsonProcessingException {
+//
+//        // ES 에서 가져오기
+//        long number = esSocketService.getProductDetailUserNumber(productID);
+//
+//        String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
+//        log.info("\nupdateUserNumber : " + result);
+//
+//        /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+//        socketTemplate.convertAndSend("/topic/users/" + productID, result);
+//    }
 
-        // ES 에서 가져오기
-        long number = esSocketService.getProductDetailUserNumber(productID);
-
-        String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
-        log.info("\nupdateUserNumber : " + result);
-
-        /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
-        socketTemplate.convertAndSend("/topic/users/" + productID, result);
-    }
-
-    @AllArgsConstructor
-    @Getter
-    static class UpdateUserNumberDto {
-        long number;
-    }
+//    @AllArgsConstructor
+//    @Getter
+//    static class UpdateUserNumberDto {
+//        long number;
+//    }
 
     /*왜인지 url 파람은 받지 못한다!*/
     @MessageMapping("/products/{userId}/page/{page}") /*해당 페이지 다음 추천 목록*/   // 전송
@@ -123,8 +123,8 @@ public class SocketController {
     }
 
 
-    @MessageMapping("/coupons/{userID}") /*해당 페이지 접속 사용자 수*/
-//    @SendTo("/topic/users/{productPK}") /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
+    @MessageMapping("/coupons/{userID}") /*망설이지마세요 쿠폰*/
+//    @SendTo("/topic/users/{productPK}")
     public void requestDoNotHesitateCoupon(CouponRequestDto requestDto, @DestinationVariable long userID
     ) throws JsonProcessingException {
         log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ?? 쿠폰 이름에 사용하려고!

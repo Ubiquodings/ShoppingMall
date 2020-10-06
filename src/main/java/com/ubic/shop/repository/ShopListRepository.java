@@ -1,15 +1,8 @@
 package com.ubic.shop.repository;
 
-import com.ubic.shop.domain.Coupon;
-import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.ShopList;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface ShopListRepository extends CrudRepository<ShopList, Long> {

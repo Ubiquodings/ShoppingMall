@@ -4,6 +4,7 @@ import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.domain.ShopListProduct;
 import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.User;
+import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,6 +26,7 @@ public class ShopListService {
     private final UserRepository userRepository;
     private final ShopListRepository shopListRepository;
     private final ProductService productService;
+    private final KafkaSevice kafkaService;
 
     @PersistenceContext
     EntityManager em;
@@ -56,10 +59,16 @@ public class ShopListService {
 
     /** 장바구니 취소 */
     @Transactional
-    public void cancelShopList(Long shopListId) {
+    public void cancelShopList(Long shopListId, Long clientId) {
         //취소
-        if(shopListRepository.findById(shopListId).isPresent()){
-            shopListRepository.deleteById(shopListId);
+        Optional<ShopList> shopListbyId = shopListRepository.findById(shopListId);
+        if(shopListbyId.isPresent()){
+            String action = "cart-cancel";
+            ShopList shopList = shopListbyId.get();
+            kafkaService.buildKafkaRequest(clientId, shopList.getProduct(), action);
+
+            // 객체 지우기
+            shopListRepository.delete(shopList);
         }
         em.flush();
         em.clear();
@@ -67,11 +76,20 @@ public class ShopListService {
 
     /*장바구니 수정*/
     @Transactional
-    public void modifyShopList(Long shopListId, Long count){
+    public void modifyShopList(Long shopListId, Long count, Long userId){
 //        log.info("\n장바구니 수정 Service: "+shopListId);
         if(shopListRepository.findById(shopListId).isPresent()){
             ShopList shopList = shopListRepository.findById(shopListId).get();
             log.info("\n장바구니 수정 Service: "+shopList.getId());
+            long existCount = shopList.getCount();
+            String action = null;
+            if(existCount > count){ // cart-modify-plus
+                action ="cart-modify-plus";
+                kafkaService.buildKafkaRequest(userId, shopList.getProduct(), action);
+            }else{ // cart-modify-minus
+                action ="cart-modify-minus";
+                kafkaService.buildKafkaRequest(userId, shopList.getProduct(), action);
+            }
             shopList.changeCount(count); // 더티체킹 해주겠지 ?
         }else{
             return;
