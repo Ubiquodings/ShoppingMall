@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -361,13 +362,13 @@ public class RestAPIController {
             @RequestParam(name = "page", defaultValue = "0") String page) throws JsonProcessingException {
         // 카테고리 id 전부 가져와서
         List<Long> allCategoryIdList = categoryRepository.getAllCategoryId();
-        log.info("\ngetUserCfRecommendationList category id list 출력: "+allCategoryIdList.toString());
+        log.info("\ngetUserCfRecommendationList category id list 출력: " + allCategoryIdList.toString());
 //        List<Long> randomCategoryId4 = new ArrayList<>();
 
         // 랜덤 id 추출 : 상품이 하나도 없는 카테고리가 있어서 안되겠다 !
 //        Random rand = new Random(); //Long randomCategoryId;
         Long randomCategoryId = 3L;//allCategoryIdList.get(rand.nextInt(allCategoryIdList.size()));
-        log.info("\ngetUserCfRecommendationList random category id  출력: "+ randomCategoryId);
+        log.info("\ngetUserCfRecommendationList random category id  출력: " + randomCategoryId);
 
         // 각 category id 에 대해 4개씩 product List 를 가져온다
         // model 에 담아 화면에 전달한다
@@ -375,7 +376,7 @@ public class RestAPIController {
                 Sort.by(Sort.Direction.DESC, "id"));
 
         Page<Product> productListByCategoryId = productRepository.findByCategoryId(randomCategoryId, pageRequest);
-        log.info("\ngetUserCfRecommendationList 찾아온 product list size 출력: "+productListByCategoryId.getTotalElements());
+        log.info("\ngetUserCfRecommendationList 찾아온 product list size 출력: " + productListByCategoryId.getTotalElements());
 
         List<RecommendationProductListResponseDto> collect = productListByCategoryId.stream()
                 .map((product) -> {
@@ -399,14 +400,17 @@ public class RestAPIController {
                             .build();
 
                 }).collect(Collectors.toList());
+
         String result = objectMapper.writeValueAsString(collect);
-        log.info("\n추천목록 하나 리턴: "+result);
+        log.info("\n추천목록 하나 리턴: " + result);
         return collect;
 
     }
 
     @AllArgsConstructor
-    @Getter /*@Setter*/ @Builder @ToString
+    @Getter /*@Setter*/
+    @Builder
+    @ToString
     static class RecommendationProductListResponseDto {
         Long productId;
         String productImgUrl;
@@ -419,6 +423,32 @@ public class RestAPIController {
         String categoryName;
         Long categoryId;
     }
+
+    @GetMapping("/api/order-products/{id}")
+    public List<OrderProductResponseDto> getOrderProducts(@PathVariable(name = "id") Long orderId, @LoginUser SessionUser user,
+                                   HttpServletRequest request) throws JsonProcessingException {
+
+        log.info("\n\n get order product list api");
+
+        Optional<Order> byId = orderRepository.findById(orderId);
+        if (!byId.isPresent()) {
+            return new ArrayList<>();
+        }
+
+        Order order = byId.get();
+        List<OrderProduct> orderProducts = order.getOrderProducts();
+        List<OrderProductResponseDto> resultProductList = new ArrayList<>();
+        orderProducts.forEach(orderProduct -> {
+            resultProductList.add(new OrderProductResponseDto(orderProduct.getProduct(), orderProduct.getCount()));
+        });
+
+        String result = objectMapper.writeValueAsString(resultProductList); // 로그 작성 용
+        log.info("\n추천목록 하나 리턴: " + result);
+
+        return resultProductList;
+
+    }
+
 
 //    public List<Tag> TagNameListForRecommendation(List<ProductTag> productTagList){
 //

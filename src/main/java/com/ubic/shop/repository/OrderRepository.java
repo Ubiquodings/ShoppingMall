@@ -19,6 +19,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     List<Order> findByUserId(Long userId);
 
+//    List<Order> findById(Long userId);
+
     @Query(value="select o from Order o where o.user.id = :userId and o.status = :status")
     List<Order> findByUserIdAndOrderStatus(@Param("userId") Long userId, @Param("status") OrderStatus status);
 

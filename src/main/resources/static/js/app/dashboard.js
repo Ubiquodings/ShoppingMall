@@ -31,7 +31,7 @@ var dashboard = {
             let userCfRecommendationUI = document.querySelector('#'+divId);
             userCfRecommendationUI.innerHTML = "";
 
-            Array.from(productList).forEach((row) => { // js 객체일듯
+            Array.from(productList).forEach((row) => {
                 // let product = JSON.parse(JSON.stringify(row.productId));
                 console.log('product: '+JSON.stringify(row.productId));
 
