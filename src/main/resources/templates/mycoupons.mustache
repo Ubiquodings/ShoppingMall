@@ -23,21 +23,21 @@ coupons
             <div class="col-10"></div> <!-- -lg 붙여야 하나 ?-->
 
             <!--이 쿠폰 사용한 사용자 수-->
-            <div>
+            <div class="col-1">
                 <input type="hidden" value="{{couponType}}" class="coupon-type"/>
-                <div class="col-1 mini-text-font couponUseUserNumber-{{couponType}}" id="userShopListNumber">
+                <div class="mini-text-font couponUseUserNumber-{{couponType}}" id="userShopListNumber">
                     <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
                           title="이 쿠폰 사용한 사용자 수">check_circle_outline</span>
                     <span class="align-text-bottom">0명</span>
                 </div>
             </div>
 
-            <div>
+            <div class="col-1">
                 {{#product}}
                     <div>
                         <input type="hidden" value="{{product.id}}" class="product-detail-id"/>
                         <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
-                        <div class="col-1 mini-text-font productOrderUserNumber-{{product.id}}"
+                        <div class="mini-text-font productOrderUserNumber-{{product.id}}"
                              id="userOrderNumber">
                             <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
                                   title="이 상품을 구매한 사람 수">payment</span>

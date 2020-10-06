@@ -43,23 +43,12 @@
   요건 사용자 어떻게 관리/집계 ?
 
 
-- 쿠폰 type 관련 모델링 수정중
-쿠폰 종류:type가 3가지 있는거고
-- product base
-- category base
-  * 특별히 coupon type+_+category coupon type 으로 
-  * type 구분
-- all around
-각 종류당 product id, category id 가 있을거고
-
-
-
 - 쿠폰 관련해서 소켓 이용할거면
 SocketCouponController 생성하기
 
 
 - 추천 목록 갱신
-  - 추천 로직 기존 것 그대로 가져올 코드 확보
+ok  - 추천 로직 기존 것 그대로 가져올 코드 확보
   - 우리 쇼핑몰에서 어떻게 이용할지 
   - 장고에 코드 옮기기
 
@@ -247,3 +236,12 @@ ok주문목록
 
 * 쿠폰사용
 
+
+- 쿠폰 type 관련 모델링 수정중
+쿠폰 종류:type가 3가지 있는거고
+- product base
+- category base
+  * 특별히 coupon type+_+category coupon type 으로 
+  * type 구분
+- all around
+각 종류당 product id, category id 가 있을거고
