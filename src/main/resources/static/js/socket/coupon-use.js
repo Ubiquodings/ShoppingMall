@@ -14,11 +14,11 @@ var couponUse = {
         let stompClient = Stomp.over(socket);
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
-
-            // stompClient.disconnect(function () {
-            // }, {"productId": productId});
-        };
+        // window.onbeforeunload = function (eventObject) {
+        //
+        //     // stompClient.disconnect(function () {
+        //     // }, {"productId": productId});
+        // };
 
         stompClient.connect(/*header*/{}, function (frame) {
 

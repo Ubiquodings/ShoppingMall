@@ -3,6 +3,8 @@
 // ...? 출력할 때는 stringify 해야 휴먼리더블로 출력된다
 
 var dashboard = {
+    // TODO ajax 가 socket 보다 먼저 실행되서 원하는대로 동작하지만,
+    // TODO ajax 후 socket 연결이 되도록 뭔가 추가 세팅이 필요할거같아
     init: function () {
         let _this = this;
         $(document).ready(function () { // 문서가 준비되면
@@ -33,7 +35,7 @@ var dashboard = {
 
             Array.from(productList).forEach((row) => {
                 // let product = JSON.parse(JSON.stringify(row.productId));
-                console.log('product: '+JSON.stringify(row.productId));
+                console.log('가져온 product: '+JSON.stringify(row.productId));
 
                 userCfRecommendationUI.innerHTML += _this.buildProductItemHTML(
                     row.productId, row.productImgUrl, row.productName,

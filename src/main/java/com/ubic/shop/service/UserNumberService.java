@@ -97,7 +97,8 @@ public class UserNumberService {
         }
 
         // 소켓-브로드캐스팅 결과 전달 : 필요가 없는게 send 요청으로 화면 갱신될거야
-
+        // 아니야 브로드캐스팅 필요한게, 감소했을때 결과 전달해야해 !!
+        // 근데 어쩔수가없어.. 의존성 순환문제 때문에!
     }
 
     public long getAllViewUserNumber() {

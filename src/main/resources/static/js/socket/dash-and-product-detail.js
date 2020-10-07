@@ -15,13 +15,13 @@ var dashAndProductDetail = {
         let currentPage = 0;
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
+        // window.onbeforeunload = function (eventObject) {
+        //
+        //     stompClient.disconnect(function () {
+        //     }, {});
+        // };
 
-            stompClient.disconnect(function () {
-            }, {"productId": productId});
-        };
-
-        stompClient.connect(/*header*/{"productId": productId}, function (frame) {
+        stompClient.connect(/*header*/{}, function (frame) {
 
             /*[구독 1] xx님을 위한 할인 상품*/
             /* send: /app/products/discount/{userId}/page/{currentPage}
@@ -30,7 +30,7 @@ var dashAndProductDetail = {
             stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
                 _this.updateUserNumber(JSON.parse(result.body).number);
-            }, {"productId": productId});
+            }, {});
 
             /*[구독 2] 상품 카테고리 기반 목록*/
             /* send: /app/products/{userId}/page/{currentPage}
@@ -47,7 +47,7 @@ var dashAndProductDetail = {
 
             /*[요청 1] xx님을 위한 할인 상품*/
             stompClient.send('/app/users/' + productId,
-                {"productId": productId}, {});
+                {}, {});
 
             /*[요청 2] 상품 카테고리 기반 목록*/
             /*스케줄링 작업 설정: 추천목록 갱신*/

@@ -72,12 +72,16 @@ public class ProductController {
 //        model.addAttribute("products", productService.findAllProducts(/*PageRequest.of(0,20)*/));
         model.addAttribute("products", productService.findPagingProducts(pageRequest)); // 40개씩 페이징
 
+        long userId = -1L;
         if (user != null) {
             model.addAttribute("userName", user.getName());
+            userId = user.getId();
         } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
+            userId = nonMember.getId();
         }
+        model.addAttribute("userId", userId);
 
         //끝페이지 가져오기
         Page<Product> pages=productRepository.findProductsCountBy(pageRequest);

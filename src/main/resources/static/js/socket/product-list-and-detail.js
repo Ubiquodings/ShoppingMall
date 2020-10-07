@@ -13,17 +13,13 @@ var productListAndDetail = {
         let socket = new SockJS('/websocket');
         let stompClient = Stomp.over(socket);
 
-        // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
 
-            // stompClient.disconnect(function () {
-            // }, {"productId": productId});
-        };
 
         stompClient.connect(/*header*/{}, function (frame) {
 
             // productId : html 에 세팅하고 list 가져오기
             var productIdList = [];
+
             Array.from(document.getElementsByClassName('product-detail-id')) // list and detail
                 .forEach((productIdElem) => {
                     // productId 루프돌며 구독
@@ -37,18 +33,34 @@ var productListAndDetail = {
                         let parseResult = JSON.parse(result.body);
                         console.log('/topic/users/{productId} 결과 :  \n' + parseResult.number); // ok
                         _this.updateUserNumber(parseResult.productId, parseResult.number);
-                    }, {});
+                    }, {"productId":productId});
 
 
                     // /*[요청 1] 함께 보고있는 사용자 수*/ // list & detail 공통에서는 갱신 요청을 하지 않는다 ! 그냥 하자 !!
                     stompClient.send('/app/users/' + productId,
-                        {"productId": productId}, {});
+                        {}, {});
 
                 });
             console.log('productViewUserNumber: '+productIdList);
 
 
         });
+
+        // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
+        // window.onbeforeunload = function (eventObject) {
+        //     let productIdList = [];
+        //     Array.from(document.getElementsByClassName('product-detail-id')) // list and detail
+        //         .forEach((productIdElem) => {
+        //             // productId 루프돌며 구독
+        //             let productId = productIdElem.value;
+        //             productIdList.push(productId);
+        //         });
+        //
+        //     console.log("상품열람 사용자수 감소요청합니다: "+productIdList);
+        //     // stompClient.disconnect(function () {
+        //     // }, {"productIdList": productIdList});
+        // };
+
     },
     updateUserNumber: function (productId, number) {
         // list 가져와서

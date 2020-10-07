@@ -43,14 +43,14 @@ public class SocketUserNumberController {
     }
 
     @MessageMapping("/users/root") /*쇼핑몰에 접속한 전체 사용자 수*/
-    public void updateAllViewUserNumber(@DestinationVariable long productID,
-                                        String body) throws JsonProcessingException {
+    public void updateAllViewUserNumber(String body) throws JsonProcessingException {
+        log.info("\n쇼핑몰 전체 접속자수");
 
         // data 가져오기
         long number = userNumberService.getAllViewUserNumber();
 
         String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
-        log.info("\nupdateUserNumber : " + result);
+        log.info("\nupdateRootUserNumber : " + result);
 
         /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/root", result);

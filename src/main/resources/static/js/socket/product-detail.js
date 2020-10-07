@@ -7,7 +7,7 @@ var productDetail = {
         // typeof productId
 
         let userId = $('#input-user-id').val(); /*header 페이지에 있다*/
-        console.log('현재 페이지 유저ID :  ' + $('#input-user-id').val()); // ok
+        // console.log('현재 페이지 유저ID :  ' + $('#input-user-id').val()); // ok
 
         /*소켓 연결*/
         $(document).ready(function () { // 문서가 준비되면
@@ -21,7 +21,7 @@ var productDetail = {
         let stompClient = Stomp.over(socket);
         let currentPage = 0;
 
-        stompClient.connect(/*header*/{"productId": productId}, function (frame) {
+        stompClient.connect(/*header*/{}, function (frame) {
 
 
             /*[구독 1] 함께 보고있는 사용자 수*/ // 구독은 list & detail 소켓에서 수행한다 !
@@ -61,11 +61,11 @@ var productDetail = {
         });
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
-
-            stompClient.disconnect(function () {
-            }, {"productId": productId});
-        };
+        // window.onbeforeunload = function (eventObject) {
+        //
+        //     stompClient.disconnect(function () {
+        //     }, {});
+        // };
 
 
     },

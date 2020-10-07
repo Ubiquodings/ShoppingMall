@@ -14,18 +14,18 @@ var dashBoard = {
         let stompClient = Stomp.over(socket);
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
-
-            stompClient.disconnect(function () {
-            }, {"productId": productId});
-        };
+        // window.onbeforeunload = function (eventObject) {
+        //
+        //     stompClient.disconnect(function () {
+        //     }, {"productId": productId});
+        // };
 
         stompClient.connect(/*header*/{"productId": productId}, function (frame) {
 
             /*[구독 1] 내가 본 상품의 연관 상품*/
             /* send: /app/products/related/{userId}/page/{currentPage}
             , subscribe: /topic/products/related/{userId} */
-            stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
+            stompClient.subscribe('/topic/products/related/' + userId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
                 _this.updateUserNumber(JSON.parse(result.body).number);
             }, {"productId": productId});

@@ -52,6 +52,7 @@ public class OrderController {
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getId();
         }
+        model.addAttribute("userId", clientId);
 
         List<Order> allOrdered = orderService.findAllOrdered(clientId);
         log.info("\nordered size: "+allOrdered.size());
