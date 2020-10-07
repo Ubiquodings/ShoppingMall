@@ -54,4 +54,7 @@ dependencies {
 
 	//mariadb
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
+
+	//scheduler
+	testImplementation 'org.awaitility:awaitility:3.1.2'
 }

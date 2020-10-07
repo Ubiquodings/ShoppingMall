@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableElasticsearchRepositories(basePackages = "com.ubic.shop.elasticsearch")
 @EnableJpaAuditing
 @SpringBootApplication
+@EnableScheduling
 public class ShopApplication {
 
 	public static void main(String[] args) {

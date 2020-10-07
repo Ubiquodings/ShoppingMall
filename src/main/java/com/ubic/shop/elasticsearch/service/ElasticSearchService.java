@@ -44,55 +44,6 @@ public class ElasticSearchService {
     private final UbicConfig ubicConfig;
 
     public void updateCategoryScore(ClickActionRequestDto received) {
-        // 점수 장하는 로직 [시작]
-//        String actionType = received.getActionType();
-//
-//        long score = 0;
-//        switch (actionType){
-//            case "click":
-//                score = 1;
-//                break;
-//            case "cart":
-//                score = 3;
-//                break;
-//            case "order":
-//                score = 5;
-//                break;
-//        }
-//
-//        // 기존 es 객체 가져와야 한다
-//        String id = received.getUserId().toString();
-//        CategoryScore actionScore = getESUserActionById(id);
-//
-//        Product product = productService.findById(received.getProductId());
-//        Long categoryId = product.getCategory().getId();
-//
-//        HashMap<Long, Long> map;
-//        if(actionScore == null) { // 결과가 없으면 객체 새로 생성해서 작업 진행
-//            actionScore = new CategoryScore();
-//            map = actionScore.getUserCategoryScore();
-//            map.put(categoryId, score); // 새 값 추가
-//        }else{ // 결과가 있는 상태라면
-//            map = actionScore.getUserCategoryScore(); // 가져오기
-//            // 키 값이 있는지도 확인했어야 했다!
-//            if(map.containsKey(categoryId)){ // 키 있다면
-//                map.put(categoryId, map.get(categoryId)+score); // 기존값에 추가
-//            }else{ // 키 없다면
-//                map.put(categoryId, score); // 새 값 추가
-//            }
-//        }
-//
-//        // 인덱스는 직접 생성했다
-//
-//        // 문서 추가
-////        putESUserAction(id, actionScore); // 카테고리 점수
-//        IndexQuery indexQuery = new IndexQueryBuilder()
-//                .withId(id) // _id
-//                .withObject(actionScore) // list string
-//                .build();
-//        log.info("\n cateogry score : " + esTemplate.index(indexQuery) + "\n");
-
-        // 점수저장하는 로직 [끝]
 
         // 사용자 행동 수집 -- ES 저장
         log.info("\n사용자행동 저장: 카테고리 "+received.getCategoryId());
