@@ -1,6 +1,7 @@
 var orderList = {
     init: function () {
         let _this = this;
+        // 여기에 소켓이 있는 이유는 구매한 사용자수 가져오기 위해서 !!
         let socket = new SockJS('/websocket');
         let stompClient = Stomp.over(socket);
         stompClient.connect(/*header*/{}, function (frame) {
@@ -78,14 +79,15 @@ var orderList = {
         let _this = this;
         return `
             <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <img class="img-responsive" src="${imgUrl}"/>
                 </div>
-                <div class="col-9">
+                <div class="col-8">
                     <p>${productName}</p>
                     <p>${count} 개 ${price} 원</p>
                     
                     <input type="hidden" value="${productId}" class="product-detail-id"/>
+                    
                     <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
                     <div class="col mini-text-font productOrderUserNumber-${productId}" id="userOrderNumber" style="margin-top: 10px; margin-left: 0">
                     <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"

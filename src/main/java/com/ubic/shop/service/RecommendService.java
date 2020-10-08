@@ -46,9 +46,10 @@ public class RecommendService {
     public List<Product> getCategoryBaseRecommendList(String page, Long categoryId) {
 
         // 페이징 --
-        PageRequest pageRequest = PageRequest.of(/*0*/Integer.parseInt(page), ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
+        PageRequest pageRequest = PageRequest.of(Integer.parseInt(page), ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
 
         List<Product> productList = productRepository.findByCategoryId(categoryId, pageRequest).getContent();
+        log.info("\nupdateProductDetailRecommendedList - page: "+page+" list size: "+productList.size());
 
         // 가져온 카테고리가 없다면 {하드코딩} 카테고리의 상품 4개 출력하기 - category id: 907001
         return productList;

@@ -20,8 +20,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     List<Product> findByName(String name);
 
-    @Query(value = "select * from Product limit 40", nativeQuery = true)
-    List<Product> findDefaultProducts();
+    @Query(value = "select * from Product limit :limit", nativeQuery = true)
+    List<Product> findProductsByLimit(@Param("limit") Long limit);
 
     // 카운트 쿼리 분리
     @Query(value = "select p from Product p",

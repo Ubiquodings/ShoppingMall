@@ -46,8 +46,8 @@ public class SocketRecommendListController {
         * */
     @MessageMapping("/products/{userId}/page/{page}") /*해당 페이지 다음 추천 목록*/   // 전송
     public void updateCategoryBaseRecommendedList(@DestinationVariable String userId,
-                                                   @DestinationVariable String page,
-                                                   String body) throws JsonProcessingException {
+                                                  @DestinationVariable String page,
+                                                  String body) throws JsonProcessingException {
         log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
 
         // 빈도수 높은 카테고리 id 가져오기 -- django 연동
@@ -63,7 +63,7 @@ public class SocketRecommendListController {
         // (카테고리 기반 찾아온 상품 수) % (페이징하는 상품 수) : 클라에서 보내는 page 가 무한 +1 증가해서!
         long restOfThePage = Long.parseLong(page) % pageCount; // restOfThePage
 //        log.info("pageToLong: " + pageToLong);
-//        log.info("updateProductDetailRecommendedList page: " + restOfThePage + ", count: " + pageCount);
+        log.info("updateProductDetailRecommendedList page: " + restOfThePage + ", count: " + pageCount);
 
         List<Product> result = recommendService.getCategoryBaseRecommendList(Long.toString(restOfThePage), categoryID);
 
@@ -85,8 +85,8 @@ public class SocketRecommendListController {
             * */
     @MessageMapping("/products/discount/{userId}/page/{page}")
     public void updateDiscountProductRecommendedList(@DestinationVariable String userId,
-                                                  @DestinationVariable String page,
-                                                  String body) throws JsonProcessingException {
+                                                     @DestinationVariable String page,
+                                                     String body) throws JsonProcessingException {
         log.info("updateDiscountProductRecommendedList page: " + page + ", userId: " + userId);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
@@ -95,11 +95,11 @@ public class SocketRecommendListController {
         // 그런데 쿠폰 기반은 .. 자바에서 구현해도 되는 부분 ! : 일단 동작 먼저 확인하자!
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
-        if(result == null){
+        if (result == null) {
             log.info("\ngetTestRecommendList null");
             return;
         }
-        log.info("\nproduct list size: "+result.size());
+        log.info("\nproduct list size: " + result.size());
 
         // Dto 로 변환
         List<ProductResponseDto> collect = result.stream()
@@ -117,8 +117,8 @@ public class SocketRecommendListController {
             , subscribe: /topic/products/related/{userId} */
     @MessageMapping("/products/related/{userId}/page/{page}")
     public void updateRelatedProductRecommendedList(@DestinationVariable String userId,
-                                                     @DestinationVariable String page,
-                                                     String body) throws JsonProcessingException {
+                                                    @DestinationVariable String page,
+                                                    String body) throws JsonProcessingException {
         log.info("updateRelatedProductRecommendedList page: " + page + ", userId: " + userId);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
@@ -127,7 +127,7 @@ public class SocketRecommendListController {
         // 그런데 쿠폰 기반은 .. 자바에서 구현해도 되는 부분 ! : 일단 동작 먼저 확인하자!
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
-        if(result == null){
+        if (result == null) {
             log.info("\ngetTestRecommendList null");
             return;
         }
@@ -148,8 +148,8 @@ public class SocketRecommendListController {
             , subscribe: /topic/products/usercf/{userId} */
     @MessageMapping("/products/usercf/{userId}/page/{page}")
     public void updateCouponBaseRecommendedList(@DestinationVariable String userId,
-                                                     @DestinationVariable String page,
-                                                     String body) throws JsonProcessingException {
+                                                @DestinationVariable String page,
+                                                String body) throws JsonProcessingException {
         log.info("updateCouponBaseRecommendedList page: " + page + ", userId: " + userId);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
@@ -158,7 +158,7 @@ public class SocketRecommendListController {
         // 그런데 쿠폰 기반은 .. 자바에서 구현해도 되는 부분 ! : 일단 동작 먼저 확인하자!
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
-        if(result == null){
+        if (result == null) {
             log.info("\ngetTestRecommendList null");
             return;
         }
@@ -181,8 +181,8 @@ public class SocketRecommendListController {
             , subscribe: /topic/products/freq */
     @MessageMapping("/products/freq/page/{page}")
     public void updateFreqProductRecommendedList(/*@DestinationVariable String userId,*/
-                                                @DestinationVariable String page,
-                                                String body) throws JsonProcessingException {
+            @DestinationVariable String page,
+            String body) throws JsonProcessingException {
         log.info("updateFreqProductRecommendedList page: " + page);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
@@ -191,7 +191,7 @@ public class SocketRecommendListController {
         // 그런데 쿠폰 기반은 .. 자바에서 구현해도 되는 부분 ! : 일단 동작 먼저 확인하자!
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
-        if(result == null){
+        if (result == null) {
             log.info("\ngetTestRecommendList null");
             return;
         }
@@ -205,6 +205,39 @@ public class SocketRecommendListController {
         log.info("\nupdateFreqProductRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/freq", resultString);
+    }
+
+
+    /*[구독 1] 해당 상품과 이런 상품도 함께 구매했어요*/
+            /* send: /app/products/buywith/{productId}/page/{currentPage} // 소켓 서버에서 userId 를 사용하진 않지만 , 서버>클라 데이터 전송하기 위해!
+            , subscribe: /topic/products/buywith/{productId}
+            * */
+    @MessageMapping("/products/buywith/{productId}/page/{page}")
+    public void updateDetailBuyTogetherRecommendedList(@DestinationVariable String productId,
+                                                       @DestinationVariable String page,
+                                                       String body) throws JsonProcessingException {
+        log.info("updateDetailBuyTogetherRecommendedList page: " + page);
+
+        // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
+        // recommendService 의 동일한 함수 이용하겠지!
+
+        // 그런데 쿠폰 기반은 .. 자바에서 구현해도 되는 부분 ! : 일단 동작 먼저 확인하자!
+        long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
+        List<Product> result = recommendService.getTestRecommendList(restOfThePage);
+        if (result == null) {
+            log.info("\ngetTestRecommendList null");
+            return;
+        }
+
+        // Dto 로 변환
+        List<ProductResponseDto> collect = result.stream()
+                .map(p -> new ProductResponseDto(p))
+                .collect(Collectors.toList());
+
+        String resultString = objectMapper.writeValueAsString(collect);
+        log.info("\nupdateDetailBuyTogetherRecommendedList : query-result :" + resultString);
+
+        socketTemplate.convertAndSend("/topic/products/buywith/"+productId, resultString);
     }
 
 }
