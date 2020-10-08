@@ -6,7 +6,7 @@ ok* 주기적 작업 요청 : 공식 예제 찾기
 ok  * 응답 mock 값 간단하게 준비하기 : 장고에서 하드코딩 리턴
   * 주기적으로 응답 mock 값 소켓클라에 전달해서 동작 확인하기
 
-- 여기서 잠시 막혔는데 소켓 url 파악 필요 : 사용자 시나리오 생각중..
+ok- 여기서 잠시 막혔는데 소켓 url 파악 필요 : 사용자 시나리오 생각중..
 
 
 <시나리오>
@@ -21,22 +21,38 @@ ok  * 응답 mock 값 간단하게 준비하기 : 장고에서 하드코딩 리�
 * xx님을 위한 할인 상품
 * 상품 카테고리 기반 목록
 - 개인화 말고 다른 추천은 결과까지 작성할 수 있겠다!
+* 요즘 잘나가는 상품
+* 해당 상품과 이런 상품도 함께 구매했어요
 
 
 - 공통적으로 userId 보내면 
-- itemId list 를 장고에서 받아올거야 : 일관성 위해서 kurlyId 로 작업하기
+- itemId list 를 장고에서 받아올거야 : 추천코드 적용 후에는 일관성 위해서 kurlyId 로 작업하기
 (/분석결과)
 
 - es 에 저장하고
 * es 에 어떻게 저장할까 ?
 - 기존 데이터는 지우지 않았으면 좋겠어
 - timestamp 내림차로 가져와서, 가장 최근거 뽑아쓰자
-그렇다면 모델링은 : index_name: ubic_recom_result
-- timestamp
-- 추천type
-- 결과 List<Long>
+
+내림차 가져오기
+- postman : /ubic_click_action/_search/?size=235&sort=now:desc
+- python : https://victorydntmd.tistory.com/315
+
+
 
 - 소켓 클라에 결과 : 첫 page 전달하고 : 기획상 4개씩이라서 : template
+
+** es 에서 가져오는 방법이 있고,
+** django 에서 .pkl 저장해서 관리하는 방법이 있다 : 이게 더 나은거같기도 ..
+** 그럼 주기적으로 .pkl 연산 요청만 수행하고
+** django 는 서빙하는 역할
+** 소켓도 django 와 간단히 통신하는 용도로 동작!
+
+
+장고에서 api 작성
+ok- .pkl 저장 api
+ok- .pkl 불러와서 결과 서빙하는 api
+
 
 별개로
 - 소켓 클라에서는 상품상세 처럼 주기적으로 결과 요청 : page 이용해서
@@ -70,7 +86,7 @@ ok  * 응답 mock 값 간단하게 준비하기 : 장고에서 하드코딩 리�
 
 
 * 가격 취소선, 할인가격 출력하는 ui 가 필요하네!
-** 보고서도 git 으로 관리하자: doc 폴더에
+ok** 보고서도 git 으로 관리하자: doc 폴더에
 ** 저장소 커밋 기록 보면서 회의록 작성하면 되겠다!
 
 [개발 관련 Todo]
@@ -367,4 +383,21 @@ ok- 소켓 클라에서 구독 콜백으로 화면 데이터 갱신하기
 * ubic_click_action : 이게 새로이 저장되는 index 이고 user_action 은 지난거같아! 백업하고 지우자
 * ubic_search_action
 
+
+그렇다면 모델링은 : 
+index_name : ubic_recom_result
+class_name : RecommendList
+ok- timestamp
+ok- 추천type
+ok- 결과 List<Long>
+ok- 누구에게? userId
+
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,  
+      "number_of_replicas": 0 
+    }
+  }
+}
 

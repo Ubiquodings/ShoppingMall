@@ -29,7 +29,7 @@ logging.level:
 ubic:
   orders:
     productListPageSize: 28
-    productDetailPageSize: 8
+    productDetailPageSize: 4
     djangoServerUrl: http://ubic-env-08221710.ap-northeast-2.elasticbeanstalk.com
     dashBoardProductListPageSize: 4
 
