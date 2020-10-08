@@ -62,7 +62,7 @@ public class OrderController {
                 allOrdered);
 
         model.addAttribute("buyTogetherList", // List<Order>
-                productRepository.findProductsByLimit(3L));
+                productRepository.findProductsByLimit(4L));
 
         return "order-list";
     }

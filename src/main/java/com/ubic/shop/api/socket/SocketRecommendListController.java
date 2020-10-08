@@ -240,4 +240,37 @@ public class SocketRecommendListController {
         socketTemplate.convertAndSend("/topic/products/buywith/"+productId, resultString);
     }
 
+
+    /*[구독 2] 목록에서 함께산 상품목록*/
+                        /* send: /app/products/buywith/order-list/{userId}/page/{currentPage} // 소켓 서버에서 userId 를 사용하진 않지만 , 서버>클라 데이터 전송하기 위해!
+                        , subscribe: /topic/products/buywith/order-list/{userId}
+                        * */
+    @MessageMapping("/products/buywith/order-list/{userId}/page/{page}")
+    public void updateOrderListBuyTogetherRecommendedList(@DestinationVariable String userId,
+                                                       @DestinationVariable String page,
+                                                       String body) throws JsonProcessingException {
+        log.info("updateOrderListBuyTogetherRecommendedList page: " + page+" body: "+body);
+
+        // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
+        // recommendService 의 동일한 함수 이용하겠지!
+
+        // 그런데 쿠폰 기반은 .. 자바에서 구현해도 되는 부분 ! : 일단 동작 먼저 확인하자!
+        long restOfThePage = Long.parseLong(page) % 3L;//ubicConfig.productDetailPageSize;
+        List<Product> result = recommendService.getTestRecommendList(restOfThePage);
+        if (result == null) {
+            log.info("\ngetTestRecommendList null");
+            return;
+        }
+
+        // Dto 로 변환
+        List<ProductResponseDto> collect = result.stream()
+                .map(p -> new ProductResponseDto(p))
+                .collect(Collectors.toList());
+
+        String resultString = objectMapper.writeValueAsString(collect);
+        log.info("\nupdateOrderListBuyTogetherRecommendedList : query-result :" + resultString);
+
+        socketTemplate.convertAndSend("/topic/products/buywith/order-list/"+userId, resultString);
+    }
+
 }
