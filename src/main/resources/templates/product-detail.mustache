@@ -307,6 +307,29 @@ product-detail
 </div>
 
 
+<!--사용자테스트용 클릭 로그 발생-->
+
+<script>
+    $(document).ready(function () { // 문서가 준비되면
+        // console.log(window.location.pathname.split('/').toString()); // ,products,2140
+        let productId = window.location.pathname.split('/')[2];
+        console.log("문서 ready! "+ productId );
+
+        $.ajax({ //  TODO click 메시지 : 카프카 전달 로직
+            type: 'GET',
+            url: '/api/click/' + productId,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function () { // 왜 안되지 ?
+            console.log('click message ok');
+            // _this.clickItem(productId);
+        }).fail(function (e) {
+            console.log('fail ' + JSON.stringify(e));
+        });
+
+    });
+
+</script>
 
 
 <!--<script src="/js/socket/common.js"></script>-->

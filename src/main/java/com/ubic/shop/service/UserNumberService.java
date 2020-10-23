@@ -50,14 +50,14 @@ public class UserNumberService {
             productViewUserNumber.changeUserNumber(productViewUserNumber.getUserNumber() + number);
 
         } else { // 결과가 없다면: 객체 생성해서 저장
-            log.info("\n해당상품 열람 사용자 없었음: " + productId);
+//            log.info("\n해당상품 열람 사용자 없었음: " + productId);
             productViewUserNumber = ProductViewUserNumber.builder()
                     .productId(productId)
                     .userNumber(number)
                     .build();
             productViewUserNumberRepository.save(productViewUserNumber);
         }
-        log.info("\n" + productViewUserNumber.toString());
+//        log.info("\n" + productViewUserNumber.toString());
 
         // 소켓-브로드캐스팅 결과 전달 : 필요가 없는게 send 요청으로 화면 갱신될거야
     }

@@ -29,12 +29,12 @@ public class ScheduledTasks {
 //        log.info("test ScheduledTask !!"); // ok
 //    }
 
-    @Scheduled(fixedDelay = 20000) // 20s
+    @Scheduled(fixedDelay = 4000) // 20s
     public void getDjangoData() {
         /* 임시로 가져올 데이터
         * 11794,6079,9694,20522,5607,8328,10121,45417,11809,46176,17745,18456,18616,45552,2171,5424,2095,2123,2000,6000,1071,987,5968,1045,1784,1016,2045,2140
         * */
-        log.info("\ngetDjangoData: ");
+        log.info("\n4초 간격으로 데이터 분석 요청합니다");
 
         ProductIdListResponseDto result = null;
         try {

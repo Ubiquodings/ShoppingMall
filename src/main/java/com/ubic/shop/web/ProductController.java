@@ -158,12 +158,12 @@ public class ProductController {
         List<Tag> byName = result.stream()
                 .filter(x -> x!=null)
                 .map(tagName -> {
-                    log.info("\n debug tagName: "+tagName);
+//                    log.info("\n debug tagName: "+tagName);
                     if(tagRepository.findByName(tagName).size() == 0) {
-                        log.info("\ntag null");
+//                        log.info("\ntag null");
                         return null;
                     }else {
-                        log.info("\ntagName: "+tagRepository.findByName(tagName).get(0).getName());
+//                        log.info("\ntagName: "+tagRepository.findByName(tagName).get(0).getName());
                         return tagRepository.findByName(tagName).get(0); // 같은 이름 Tag 는 하나!
                     }
                 })
@@ -175,7 +175,7 @@ public class ProductController {
                 .distinct() // 중복제거
                 .collect(Collectors.toList());
 
-        log.info("\nsearch TagbyName size: "+byName.size()); // 2 ok
+//        log.info("\nsearch TagbyName size: "+byName.size()); // 2 ok
         List<Product> searchResultProductList = getProductListFromTagList(byName);
 
         model.addAttribute("products", searchResultProductList); // 40개씩 페이징
@@ -211,7 +211,7 @@ public class ProductController {
         HttpSession session = request.getSession();
         User nonMember = null;
         if (session.isNew()) {
-            log.info("\nsession is new : " + session.getId());
+//            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())

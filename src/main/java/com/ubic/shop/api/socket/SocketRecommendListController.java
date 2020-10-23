@@ -48,11 +48,11 @@ public class SocketRecommendListController {
     public void updateCategoryBaseRecommendedList(@DestinationVariable String userId,
                                                   @DestinationVariable String page,
                                                   String body) throws JsonProcessingException {
-        log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
+//        log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
 
         // 빈도수 높은 카테고리 id 가져오기 -- django 연동
         long categoryID = recommendService.getHighestCategoryId(userId);
-        log.info("categoryID: " + categoryID);
+//        log.info("categoryID: " + categoryID);
 
         // product repository 에서 카운트만 가져오는 쿼리 수행
         long countByCategoryId = productRepository.countByCategoryId(categoryID);
@@ -63,7 +63,7 @@ public class SocketRecommendListController {
         // (카테고리 기반 찾아온 상품 수) % (페이징하는 상품 수) : 클라에서 보내는 page 가 무한 +1 증가해서!
         long restOfThePage = Long.parseLong(page) % pageCount; // restOfThePage
 //        log.info("pageToLong: " + pageToLong);
-        log.info("updateProductDetailRecommendedList page: " + restOfThePage + ", count: " + pageCount);
+//        log.info("updateProductDetailRecommendedList page: " + restOfThePage + ", count: " + pageCount);
 
         List<Product> result = recommendService.getCategoryBaseRecommendList(Long.toString(restOfThePage), categoryID);
 
@@ -73,7 +73,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateProductDetailRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateProductDetailRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/" + userId, resultString);
     }
@@ -87,7 +87,7 @@ public class SocketRecommendListController {
     public void updateDiscountProductRecommendedList(@DestinationVariable String userId,
                                                      @DestinationVariable String page,
                                                      String body) throws JsonProcessingException {
-        log.info("updateDiscountProductRecommendedList page: " + page + ", userId: " + userId);
+//        log.info("updateDiscountProductRecommendedList page: " + page + ", userId: " + userId);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
         // recommendService 의 동일한 함수 이용하겠지!
@@ -96,10 +96,10 @@ public class SocketRecommendListController {
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
         if (result == null) {
-            log.info("\ngetTestRecommendList null");
+//            log.info("\ngetTestRecommendList null");
             return;
         }
-        log.info("\nproduct list size: " + result.size());
+//        log.info("\nproduct list size: " + result.size());
 
         // Dto 로 변환
         List<ProductResponseDto> collect = result.stream()
@@ -107,7 +107,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateDiscountProductRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateDiscountProductRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/discount/" + userId, resultString);
     }
@@ -119,7 +119,7 @@ public class SocketRecommendListController {
     public void updateRelatedProductRecommendedList(@DestinationVariable String userId,
                                                     @DestinationVariable String page,
                                                     String body) throws JsonProcessingException {
-        log.info("updateRelatedProductRecommendedList page: " + page + ", userId: " + userId);
+//        log.info("updateRelatedProductRecommendedList page: " + page + ", userId: " + userId);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
         // recommendService 의 동일한 함수 이용하겠지!
@@ -128,7 +128,7 @@ public class SocketRecommendListController {
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
         if (result == null) {
-            log.info("\ngetTestRecommendList null");
+//            log.info("\ngetTestRecommendList null");
             return;
         }
 
@@ -138,7 +138,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateRelatedProductRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateRelatedProductRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/related/" + userId, resultString);
     }
@@ -150,7 +150,7 @@ public class SocketRecommendListController {
     public void updateCouponBaseRecommendedList(@DestinationVariable String userId,
                                                 @DestinationVariable String page,
                                                 String body) throws JsonProcessingException {
-        log.info("updateCouponBaseRecommendedList page: " + page + ", userId: " + userId);
+//        log.info("updateCouponBaseRecommendedList page: " + page + ", userId: " + userId);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
         // recommendService 의 동일한 함수 이용하겠지!
@@ -159,7 +159,7 @@ public class SocketRecommendListController {
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
         if (result == null) {
-            log.info("\ngetTestRecommendList null");
+//            log.info("\ngetTestRecommendList null");
             return;
         }
 
@@ -169,7 +169,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateCouponBaseRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateCouponBaseRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/usercf/" + userId, resultString);
     }
@@ -183,7 +183,7 @@ public class SocketRecommendListController {
     public void updateFreqProductRecommendedList(/*@DestinationVariable String userId,*/
             @DestinationVariable String page,
             String body) throws JsonProcessingException {
-        log.info("updateFreqProductRecommendedList page: " + page);
+//        log.info("updateFreqProductRecommendedList page: " + page);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
         // recommendService 의 동일한 함수 이용하겠지!
@@ -192,7 +192,7 @@ public class SocketRecommendListController {
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
         if (result == null) {
-            log.info("\ngetTestRecommendList null");
+//            log.info("\ngetTestRecommendList null");
             return;
         }
 
@@ -202,7 +202,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateFreqProductRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateFreqProductRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/freq", resultString);
     }
@@ -216,7 +216,7 @@ public class SocketRecommendListController {
     public void updateDetailBuyTogetherRecommendedList(@DestinationVariable String productId,
                                                        @DestinationVariable String page,
                                                        String body) throws JsonProcessingException {
-        log.info("updateDetailBuyTogetherRecommendedList page: " + page);
+//        log.info("updateDetailBuyTogetherRecommendedList page: " + page);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
         // recommendService 의 동일한 함수 이용하겠지!
@@ -225,7 +225,7 @@ public class SocketRecommendListController {
         long restOfThePage = Long.parseLong(page) % ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
         if (result == null) {
-            log.info("\ngetTestRecommendList null");
+//            log.info("\ngetTestRecommendList null");
             return;
         }
 
@@ -235,7 +235,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateDetailBuyTogetherRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateDetailBuyTogetherRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/buywith/"+productId, resultString);
     }
@@ -249,7 +249,7 @@ public class SocketRecommendListController {
     public void updateOrderListBuyTogetherRecommendedList(@DestinationVariable String userId,
                                                        @DestinationVariable String page,
                                                        String body) throws JsonProcessingException {
-        log.info("updateOrderListBuyTogetherRecommendedList page: " + page+" body: "+body);
+//        log.info("updateOrderListBuyTogetherRecommendedList page: " + page+" body: "+body);
 
         // 현재로써는 장고에서 받아온 product id list 기반으로 product 가져오는 방법으로 구현할듯!
         // recommendService 의 동일한 함수 이용하겠지!
@@ -258,7 +258,7 @@ public class SocketRecommendListController {
         long restOfThePage = Long.parseLong(page) % 3L;//ubicConfig.productDetailPageSize;
         List<Product> result = recommendService.getTestRecommendList(restOfThePage);
         if (result == null) {
-            log.info("\ngetTestRecommendList null");
+//            log.info("\ngetTestRecommendList null");
             return;
         }
 
@@ -268,7 +268,7 @@ public class SocketRecommendListController {
                 .collect(Collectors.toList());
 
         String resultString = objectMapper.writeValueAsString(collect);
-        log.info("\nupdateOrderListBuyTogetherRecommendedList : query-result :" + resultString);
+//        log.info("\nupdateOrderListBuyTogetherRecommendedList : query-result :" + resultString);
 
         socketTemplate.convertAndSend("/topic/products/buywith/order-list/"+userId, resultString);
     }

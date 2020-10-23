@@ -316,17 +316,18 @@ var userAction = {
             // console.log('이전 페이지 id는 '+beforeProductId);
 
             var productId = this.children[0].value; // TODO 확인!
-            $.ajax({
-                type: 'GET',
-                url: '/api/click/' + productId,
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8'
-            }).done(function () { // 왜 안되지 ?
-                console.log('ok');
-                // _this.clickItem(productId);
-            }).fail(function (e) {
-                console.log('fail ' + JSON.stringify(e));
-            });
+
+            // $.ajax({ //  TODO click 메시지 : 카프카 전달 로직
+            //    type: 'GET',
+            //     url: '/api/click/' + productId,
+            //     dataType: 'json',
+            //     contentType: 'application/json; charset=utf-8'
+            // }).done(function () { // 왜 안되지 ?
+            //     console.log('ok');
+            //     // _this.clickItem(productId);
+            // }).fail(function (e) {
+            //     console.log('fail ' + JSON.stringify(e));
+            // });
 
             console.log(productId);
             // _this.click(productId, productName);

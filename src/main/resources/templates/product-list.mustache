@@ -14,6 +14,7 @@ product-list
     $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
     })
+
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
@@ -208,9 +209,9 @@ product-list
         <ul class="pagination justify-content-center">
             <!-- li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.-->
             <!-- disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. -->
-            <li class="disabled page-item">
-                <a class="page-link" href="#">
-                    <span>«</span>
+            <li class="page-item arrow">
+                <a class="page-link arrow" href="javascript:void(0);" onclick="goNextPage('«');">
+                    <span class="">«</span>
                 </a>
             </li>
             <!-- li태그의 클래스에 active를 넣으면 색이 반전되고 클릭도 되지 않는다. -->
@@ -222,18 +223,47 @@ product-list
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=4">4</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=5">5</a></li>
             <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page=">...</a></li>
-            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page="
-                                     +{{page-total-count}}>
-                {{page-total-count}} </a></li>
+            <li class="page-item"><a class="page-link" href="http://localhost:8080/products?page={{page-total-count}}
+                ">{{page-total-count}}</a></li>
             <li class="page-item">
-                <a class="page-link" href="#">
-                    <span>»</span>
+                <a class="page-link arrow" href="javascript:void(0);" onclick="goNextPage('»');">
+                    <span class="">»</span>
                 </a>
             </li>
         </ul>
     </nav>
 
 </div>
+
+<script>
+    // <!--    동적 페이지네이션 확인-->
+    let goNextPage = function (innerHtml) {
+        // $(document).on('click', '.arrow', function (e) {
+
+        console.log(innerHtml);
+        let arrowDirection = innerHtml;
+        let pageNumber = new URLSearchParams(location.search).get('page');
+        console.log(typeof pageNumber);
+        pageNumber = Number(pageNumber);
+
+        let nextPath = '';
+        if (arrowDirection === '«') {
+            // console.log('<<');
+            if (1 !== pageNumber) {
+                nextPath = window.location.origin + window.location.pathname + '?page=' + (pageNumber - 1);
+            }
+        } else if (arrowDirection === '»') {
+            // console.log('>>');
+            if (160 !== pageNumber) {
+                nextPath = window.location.origin + window.location.pathname + '?page=' + (pageNumber + 1);
+            }
+        }
+        if ('' !== nextPath) {
+            window.location.href = nextPath;
+        }
+    };
+
+</script>
 
 <!--<script src="/js/socket/dash-and-product-detail.js"></script>-->
 <script src="/js/socket/product-list-and-detail.js"></script>

@@ -76,7 +76,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
                 long userId = list.get(0);
                 userNumberService.plusAllViewUserNumber(1L);
 
-                log.info("\nsocket connected : userId - " + userId);
+//                log.info("\nsocket connected : userId - " + userId);
 
             } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
 
@@ -86,7 +86,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
                     return message;
                 long productId = list.get(0);
 
-                log.info("\nsocket subscribed : productId - " + productId);
+//                log.info("\nsocket subscribed : productId - " + productId);
 
                 // 상품 열람 접속 인원수를 +1한다.
 //                esSocketService.plusUserCount(productId, 1L);
@@ -99,7 +99,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
                 // 상품열람 접속 인원수를 -1한다.
                 List<Long> productIdList = getHeaderValue(message, "productIdList");
-                log.info("\nsocket disconnected : productIdList - " + productIdList.toString());
+//                log.info("\nsocket disconnected : productIdList - " + productIdList.toString());
                 for (Long productId : productIdList) {
                     userNumberService.plusProductViewUserNumber(productId, -1L);
                 }
@@ -107,7 +107,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
                 if (list.size() == 0)
                     return message;
                 long userId = list.get(0);
-                log.info("\nsocket disconnected : userId - " + userId);
+//                log.info("\nsocket disconnected : userId - " + userId);
                 userNumberService.plusAllViewUserNumber(-1L);
             }
             return message;
@@ -118,7 +118,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
             if (header == null) {
                 return new ArrayList<>();
             }
-            log.info("\nsocket subscribed : header - keyName: " + keyName + ", " + header.toString());
+//            log.info("\nsocket subscribed : header - keyName: " + keyName + ", " + header.toString());
 
             List<Long> listId;
             Long headerValue = -1L;
