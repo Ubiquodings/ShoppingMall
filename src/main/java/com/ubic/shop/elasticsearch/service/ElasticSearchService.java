@@ -46,7 +46,7 @@ public class ElasticSearchService {
     public void updateCategoryScore(ClickActionRequestDto received) {
 
         // 사용자 행동 수집 -- ES 저장
-        log.info("\n사용자행동 저장: 카테고리 "+received.getCategoryId());
+//        log.info("\n사용자행동 저장: 카테고리 "+received.getCategoryId());
         ClickProductAction clickProductAction = ClickProductAction.builder()
                 .now(LocalDateTime.now().toString())
                 .userId(received.getUserId().toString())
@@ -54,13 +54,17 @@ public class ElasticSearchService {
                 .categoryId(received.getCategoryId())
                 .actionType(received.getActionType())
                 .build();
-        log.info("\n사용자행동 객체: "+clickProductAction.toString());
+//        log.info("\n사용자행동 객체: "+clickProductAction.toString());
 //        new ClickProductAction(,,);
         IndexQuery indexQuery = new IndexQueryBuilder()
                 .withId(received.getUserId().toString() + clickProductAction.getNow()) // _id : userId
                 .withObject(clickProductAction) // class string?
                 .build();
-        log.info("\n click : " + esTemplate.index(indexQuery) + "\n");
+//        log.info("\n사용자 ID: " + received.getUserId());
+        log.info("\nElasticSearch 에 저장합니다 : " + clickProductAction);
+        esTemplate.index(indexQuery);
+
+//        log.info("\n click : " + esTemplate.index(indexQuery) + "\n");
 
     }
 
@@ -71,7 +75,7 @@ public class ElasticSearchService {
 //        return esTemplate.queryForObject(
 //                    GetQuery.getById(userId), CategoryScore.class);
         // es 에서 직접 가져오는 것이 아니라 장고 거쳐서 결과 받아온다
-        log.info("\ndjango 에 es 분석결과 요청합니다 userId: "+userId);
+//        log.info("\ndjango 에 es 분석결과 요청합니다 userId: "+userId);
 
         CategoryScore result = null;
         try {
@@ -81,10 +85,11 @@ public class ElasticSearchService {
                     CategoryScore.class);
 
         } catch (Exception e) {
-            log.info("\ndjango 에 es 분석결과 요청이 실패하였습니다\n"+e.getMessage());
+//            log.info("\ndjango 에 es 분석결과 요청이 실패하였습니다\n"+e.getMessage());
             return 1L;
         }
-        log.info("\ndjango 에 es 분석결과 로깅합니다: "+result.toString());
+//        log.info(); TODO 여기가 잘 작동 안하네! 회원만 잘 수행할 수 있을듯
+//        log.info("\n사용자 ID: " + userId+"\nDjango 응답 [최다행동 카테고리ID] : "+result.toString());
 
         return result.getMaxScoreCategory(); // category id
     }
@@ -100,7 +105,8 @@ public class ElasticSearchService {
                 .withId(allUserData.getUserId()) // _id
                 .withObject(allUserData) // list string
                 .build();
-        log.info("\nsearch data : " + esTemplate.index(indexQuery) + "\n");
+        esTemplate.index(indexQuery);
+//        log.info("\nsearch data : " + esTemplate.index(indexQuery) + "\n");
 
     }
 

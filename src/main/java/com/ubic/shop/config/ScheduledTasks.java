@@ -40,7 +40,7 @@ public class ScheduledTasks {
         try {
             result = restTemplate.getForObject(
                     ubicConfig.getDjangoServerUrl()+
-                            "/cf/get-product-ids/",
+                            "/cf/get-product-ids1/",
                     ProductIdListResponseDto.class);
 
         } catch (Exception e) {

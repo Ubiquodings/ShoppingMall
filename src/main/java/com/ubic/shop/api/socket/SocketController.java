@@ -127,7 +127,7 @@ public class SocketController { // 기존 소켓 테스트 코드
 //    @SendTo("/topic/users/{productPK}")
     public void requestDoNotHesitateCoupon(CouponRequestDto requestDto, @DestinationVariable long userID
     ) throws JsonProcessingException {
-        log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ?? 쿠폰 이름에 사용하려고!
+//        log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ?? 쿠폰 이름에 사용하려고!
         Long productId = requestDto.getProductId();
         Product product = productRepository.findById(productId).get();
 
@@ -135,6 +135,8 @@ public class SocketController { // 기존 소켓 테스트 코드
         // 발급 전 쿠폰 있는지 확인하기
         int discountRate = 10;
         String couponName = product.getName() + " 망설이지마세요! "+discountRate+"% 쿠폰!!";
+        log.info("\n사용자 ID: " + userID);
+        log.info("\n쿠폰 발급합니다 : " + couponName);
 
 
         couponService.createProductCoupon(product, userID, discountRate, couponName);

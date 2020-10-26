@@ -16,4 +16,5 @@ public class UbicConfig {
 
 //    @Value("${spring.profile.value}")
     private String djangoServerUrl; // '/' 없다!
+    private String localDjangoServerUrl;
 }

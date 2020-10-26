@@ -14,6 +14,7 @@ ubic:
     productListPageSize: 28
     productDetailPageSize: 4
     djangoServerUrl: http://ubic-env-08221710.ap-northeast-2.elasticbeanstalk.com
+    localDjangoServerUrl: http://127.0.0.1:8000
     dashBoardProductListPageSize: 4
 
 # spring.profiles.include=oauth

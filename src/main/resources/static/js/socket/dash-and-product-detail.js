@@ -86,6 +86,17 @@ price: 3990
 stockQuantity: 50}
             * */
             let id = product.id;
+            $.ajax({
+                type: 'GET',
+                url: '/api/hover/' + id,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8'
+            }).done(function () { // 왜 안되지 ?
+                console.log('ok');
+            }).fail(function (e) {
+                console.log('fail ' + JSON.stringify(e));
+            });
+
             let imgUrl = product.imgUrl;
             let name = product.name;
             let price = product.price;

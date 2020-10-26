@@ -81,7 +81,7 @@ public class RestAPIController {
     public String cart(@PathVariable(name = "id") Long productId, @RequestBody long count,
                        @LoginUser SessionUser user, HttpServletRequest request) {
 
-        log.info("\n여기는 서버 컨트롤러 cart()\nproductId: " + productId + "\ncount: " + count);
+//        log.info("\n여기는 서버 컨트롤러 cart()\nproductId: " + productId + "\ncount: " + count);
 
         Long clientId = -1L;
         clientId = getUserIdFromSession(user, request);
@@ -202,7 +202,7 @@ public class RestAPIController {
     @PostMapping("/api/orderAll")
     public String orderAll(@RequestBody OrderAllRequestDto requestDto,
                            @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
-        log.info("\n결제페이지 쿠폰: "+requestDto.toString());
+//        log.info("\n결제페이지 쿠폰: "+requestDto.toString());
 
         Long clientId = -1L;
         clientId = getUserIdFromSession(user, request);
@@ -272,7 +272,7 @@ public class RestAPIController {
         HttpSession session = request.getSession();
         User nonMember = null;
         if (session.isNew()) {
-            log.info("\nsession is new : " + session.getId());
+//            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -282,7 +282,7 @@ public class RestAPIController {
                     .build();
             userRepository.save(nonMember);
         } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
-            log.info("\nsession is not new");
+//            log.info("\nsession is not new");
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;
@@ -293,13 +293,13 @@ public class RestAPIController {
     public String click(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
                         HttpServletRequest request) throws JsonProcessingException {
 
-        log.info("\n\n click api");
+//        log.info("\n\n click api");
 
         Long clientId = -1L;
         clientId = getUserIdFromSession(user, request);
 
         String action = "click";
-        log.info("\n/click " + productId);
+//        log.info("\n/click " + productId);
         Product product = productService.findById(productId);
 
         kafkaService.buildKafkaRequest(clientId, product, action);
@@ -311,13 +311,13 @@ public class RestAPIController {
     public String hover(@PathVariable(name = "id") Long productId, @LoginUser SessionUser user,
                         HttpServletRequest request) throws JsonProcessingException {
 
-        log.info("\n\n hover api");
+//        log.info("\n\n hover api");
 
         Long clientId = -1L;
         clientId = getUserIdFromSession(user, request);
 
         String action = "hover";
-        log.info("\n/hover " + productId);
+//        log.info("\n/hover " + productId);
         Product product = productService.findById(productId);
 
         kafkaService.buildKafkaRequest(clientId, product, action);
@@ -369,14 +369,14 @@ public class RestAPIController {
     public List<RecommendationProductListResponseDto> getUserCfRecommendationList(
             @RequestParam(name = "page", defaultValue = "0") String page) throws JsonProcessingException {
         // 카테고리 id 전부 가져와서
-        List<Long> allCategoryIdList = categoryRepository.getAllCategoryId();
-        log.info("\ngetUserCfRecommendationList category id list 출력: " + allCategoryIdList.toString());
+//        List<Long> allCategoryIdList = categoryRepository.getAllCategoryId();
+//        log.info("\n홈화면 추천목록 : " + allCategoryIdList.toString());
 //        List<Long> randomCategoryId4 = new ArrayList<>();
 
         // 랜덤 id 추출 : 상품이 하나도 없는 카테고리가 있어서 안되겠다 !
 //        Random rand = new Random(); //Long randomCategoryId;
         Long randomCategoryId = 3L;//allCategoryIdList.get(rand.nextInt(allCategoryIdList.size()));
-        log.info("\ngetUserCfRecommendationList random category id  출력: " + randomCategoryId);
+//        log.info("\ngetUserCfRecommendationList random category id  출력: " + randomCategoryId);
 
         // 각 category id 에 대해 4개씩 product List 를 가져온다
         // model 에 담아 화면에 전달한다
@@ -384,7 +384,7 @@ public class RestAPIController {
                 Sort.by(Sort.Direction.DESC, "id"));
 
         Page<Product> productListByCategoryId = productRepository.findByCategoryId(randomCategoryId, pageRequest);
-        log.info("\ngetUserCfRecommendationList 찾아온 product list size 출력: " + productListByCategoryId.getTotalElements());
+//        log.info("\ngetUserCfRecommendationList 찾아온 product list size 출력: " + productListByCategoryId.getTotalElements());
 
         List<RecommendationProductListResponseDto> collect = productListByCategoryId.stream()
                 .map((product) -> {
@@ -410,7 +410,7 @@ public class RestAPIController {
                 }).collect(Collectors.toList());
 
         String result = objectMapper.writeValueAsString(collect);
-        log.info("\n추천목록 하나 리턴: " + result);
+        log.info("\n추천목록 리턴: " + result);
         return collect;
 
     }
@@ -436,7 +436,7 @@ public class RestAPIController {
     public List<OrderProductResponseDto> getOrderProducts(@PathVariable(name = "id") Long orderId, @LoginUser SessionUser user,
                                    HttpServletRequest request) throws JsonProcessingException {
 
-        log.info("\n\n get order product list api");
+//        log.info("\n\n get order product list api");
 
         Optional<Order> byId = orderRepository.findById(orderId);
         if (!byId.isPresent()) {

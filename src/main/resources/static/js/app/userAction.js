@@ -191,7 +191,8 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(count)
             }).done(function () { // 왜 안되지 ?
-                alert('바로 주문되었습니다!');
+                // alert('바로 주문되었습니다!');
+                $(".btn-order-immediately-from-detail").css("background","green");
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
             });
