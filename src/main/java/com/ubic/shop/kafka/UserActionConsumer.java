@@ -35,7 +35,7 @@ public class UserActionConsumer {
     @KafkaListener(topics = {"ubic-shop-test"}, containerFactory = "defaultKafkaListenerContainerFactory")
     public void onUserAction(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
 
-        log.info("\nubic-shop-test :: ConsumerRecord : {} ", consumerRecord.value());
+//        log.info("\nubic-shop-test :: ConsumerRecord : {} ", consumerRecord.value());
         ClickActionRequestDto received;
         try {
             received = objectMapper.readValue(consumerRecord.value(), ClickActionRequestDto.class);
@@ -43,10 +43,11 @@ public class UserActionConsumer {
             log.info("\n카프카 컨슈머 실패 :" + e.getMessage());
             return;
         }
-        log.info("\nkafka consumer user action: " + received.toString());
+//        log.info("\nkafka consumer user action: " + received.toString());
+        log.info("\nKafka Consumer : "+received.toString());
 
         // 장바구니 쿠폰 심사
-        log.info("\nonUserAction : actionType"+received.getActionType());
+//        log.info("\nonUserAction : actionType"+received.getActionType());
         if (received.getActionType().equals("cart")) {
             couponService.checkCartCategoryCoupon(received);
         }
@@ -60,8 +61,9 @@ public class UserActionConsumer {
     @KafkaListener(topics = {"ubic-shop-search"}, containerFactory = "defaultKafkaListenerContainerFactory")
     public void onUserSearchAction(ConsumerRecord<String, String> consumerRecord) throws JsonProcessingException {
 
-        log.info("\nubic-shop-search :: ConsumerRecord : {} ", consumerRecord.value());
+//        log.info("\nubic-shop-search :: ConsumerRecord : {} ", consumerRecord.value());
         SearchActionRequestDto received = objectMapper.readValue(consumerRecord.value(), SearchActionRequestDto.class);
+        log.info("\n사용자 검색로그 : "+received.toString());
 
         // TODO 검색 이력 ES 에 저장
         // 아 이걸 못한 이유가 index 꽉 차서였어...! 아니다 원래 있었음 아무튼 정리함!

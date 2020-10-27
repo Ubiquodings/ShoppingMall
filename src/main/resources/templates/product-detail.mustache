@@ -237,7 +237,7 @@ product-detail
                     <!--<a href="/carts"><button type="button" class="btn btn-warning" data-dismiss="modal">장바구니로 이동</button></a>-->
 
                     <!-- 3. 구글링으로..-->
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="location.href='/carts'">장바구니로 이동</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="callFunction('/carts');">장바구니로 이동</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
                 </p>
             </div>
@@ -249,6 +249,11 @@ product-detail
 
 <!--</div>-->
 
+<div class="card">
+    <div class="card-body">
+        - 상품 카테고리 기반 목록
+    </div>
+</div>
 <div class="row recommended-product-list">
     {{#recommendedList}}
         <div class="col-md-3 product-list-card-body">
@@ -279,12 +284,60 @@ product-detail
     {{/recommendedList}}
 </div>
 
+
+
+<div class="card">
+    <div class="card-body">
+        - 함께산 상품
+    </div>
+</div>
+<div class="row product-detail-buy-together-list">
+
+</div>
+
+
+
+<div class="card">
+    <div class="card-body">
+        - 회원님을 위한 할인 상품
+    </div>
+</div>
+<div class="row product-detail-recommended-list">
+
+</div>
+
+
+<!--사용자테스트용 클릭 로그 발생-->
+
+<script>
+    $(document).ready(function () { // 문서가 준비되면
+        // console.log(window.location.pathname.split('/').toString()); // ,products,2140
+        let productId = window.location.pathname.split('/')[2];
+        console.log("문서 ready! "+ productId );
+
+        $.ajax({ //  TODO click 메시지 : 카프카 전달 로직
+            type: 'GET',
+            url: '/api/click/' + productId,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function () { // 왜 안되지 ?
+            console.log('click message ok');
+            // _this.clickItem(productId);
+        }).fail(function (e) {
+            console.log('fail ' + JSON.stringify(e));
+        });
+
+    });
+
+</script>
+
+
 <!--<script src="/js/socket/common.js"></script>-->
 <!--상품 디테일 소켓 추가-->
 <script src="/js/socket/product-detail.js"></script>
 <!--상품 카운트 로직 추가-->
 <!--<script src="/js/app/product-detail-cal.js"></script>-->
 <script src="/js/socket/dash-and-product-detail.js"></script>
-<script src="/js/socket/product-list-and-detail.js"></script>
-<script src="/js/socket/order-number.js"></script>
+<script src="/js/socket/product-list-and-detail.js"></script> <!--사용자수-->
+<script src="/js/socket/order-number.js"></script> <!--사용자수-->
 {{>layout/footer}}

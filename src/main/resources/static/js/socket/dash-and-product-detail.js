@@ -5,50 +5,49 @@ var dashAndProductDetail = {
         /*소켓 연결*/
         $(document).ready(function () { // 문서가 준비되면
             console.log("문서 ready!");
-            _this.connectSocket(productId, userId);
+            _this.connectSocket();
         });
     },
-    connectSocket: function (productId, userId) {
+    connectSocket: function () {
         let _this = this;
         let socket = new SockJS('/websocket');
         let stompClient = Stomp.over(socket);
         let currentPage = 0;
+        let userId = $('#input-user-id').val();
 
-        // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
 
-            stompClient.disconnect(function () {
-            }, {"productId": productId});
-        };
+        stompClient.connect(/*header*/{}, function (frame) {
 
-        stompClient.connect(/*header*/{"productId": productId}, function (frame) {
-
+            // TODO 개인화
             /*[구독 1] xx님을 위한 할인 상품*/
             /* send: /app/products/discount/{userId}/page/{currentPage}
             , subscribe: /topic/products/discount/{userId}
             * */
-            stompClient.subscribe('/topic/users/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
-                console.log('/topic/users/{productId} 결과 :  \n' + JSON.parse(result.body).number); // ok
-                _this.updateUserNumber(JSON.parse(result.body).number);
-            }, {"productId": productId});
+            stompClient.subscribe('/topic/products/discount/' + userId, function (result) { // 콜백 호출이 안되네! 왜지!??
+                let className = 'product-detail-recommended-list';
+                let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
+                // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
+                // 결과로 화면 조작
+                _this.updateRecommendedList(resultList, className);
+            }, {});
+
+            // TODO 개인화
             /*[구독 2] 상품 카테고리 기반 목록*/
             /* send: /app/products/{userId}/page/{currentPage}
             , subscribe: /topic/products/{userId}
             * */
             stompClient.subscribe('/topic/products/'+userId, function (result) {
+                let className = 'recommended-product-list';
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
                 // 결과로 화면 조작
-                _this.updateRecommendedList(resultList);
+                _this.updateRecommendedList(resultList, className);
             }, {});
 
 
             /*[요청 1] xx님을 위한 할인 상품*/
-            stompClient.send('/app/users/' + productId,
-                {"productId": productId}, {});
-
             /*[요청 2] 상품 카테고리 기반 목록*/
             /*스케줄링 작업 설정: 추천목록 갱신*/
             _this.setSchedulingTasks(stompClient, userId, currentPage);
@@ -58,15 +57,21 @@ var dashAndProductDetail = {
     setSchedulingTasks: function(stompClient, userId, currentPage){
         // 추천 목록 주기적 요청
         setInterval(function(){
-            currentPage += 1
+            currentPage += 1;
+
+            /*[요청 1] xx님을 위한 할인 상품*/
+            stompClient.send('/app/products/discount/'+userId+'/page/' + currentPage,
+                {}, {});
+
+            /*[요청 2] 상품 카테고리 기반 목록*/
             // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
             stompClient.send('/app/products/' + userId + '/page/'+currentPage,
                 {}, {});
         }, 2000);
     },
-    updateRecommendedList: function(resultList){
+    updateRecommendedList: function(resultList, className){
         let _this = this;
-        let recomList = document.querySelector('div.recommended-product-list');
+        let recomList = document.querySelector('div.'+className);
         recomList.innerHTML = "";
 
         Array.from(resultList).forEach((product)=>{
@@ -81,6 +86,17 @@ price: 3990
 stockQuantity: 50}
             * */
             let id = product.id;
+            $.ajax({
+                type: 'GET',
+                url: '/api/hover/' + id,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8'
+            }).done(function () { // 왜 안되지 ?
+                console.log('ok');
+            }).fail(function (e) {
+                console.log('fail ' + JSON.stringify(e));
+            });
+
             let imgUrl = product.imgUrl;
             let name = product.name;
             let price = product.price;

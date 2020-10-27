@@ -15,5 +15,6 @@ public class UbicConfig {
     public int dashBoardProductListPageSize=0;
 
 //    @Value("${spring.profile.value}")
-    private String djangoServerUrl;
+    private String djangoServerUrl; // '/' 없다!
+    private String localDjangoServerUrl;
 }

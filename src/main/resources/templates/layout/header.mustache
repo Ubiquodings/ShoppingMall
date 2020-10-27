@@ -102,9 +102,7 @@
 <div class="row">
     <h1 class="col-md-6">hello Ubic</h1>
 
-    {{#userId}} <!-- 로그인 했음 이름 출력 -->
-        <input type="hidden" value="{{userId}}" id="input-user-id"/>
-    {{/userId}}
+    <input type="hidden" value="{{userId}}" id="input-user-id"/>
 
     <!--검색창 id="btn-search" -->
     <div class="col-md-6">
@@ -127,7 +125,7 @@
 
             <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
 
-            <div class="col-1 mini-text-font " id="allUserNumber">
+            <div class="col-1 mini-text-font view-root" id="allUserNumber">
                 <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
                       title="쇼핑몰 전체 접속자 수">accessibility_new</span>
                 <span class="align-text-bottom">0명</span>
@@ -136,16 +134,44 @@
     </div>
 </div>
 
+<script>
+
+    let callFunction = function (url) {
+        let socket = new SockJS('/websocket');
+        let stompClient = Stomp.over(socket);
+        if (stompClient.connected) {
+            console.log('header');
+            // 소켓 자원 정리
+            let userId = $('#input-user-id').val(); /*header 페이지에 있다*/
+            let productIdList = [];
+            Array.from(document.getElementsByClassName('product-detail-id')) // list and detail
+                    .forEach((productIdElem) => {
+                        // productId 루프돌며 구독
+                        let productId = productIdElem.value;
+                        productIdList.push(productId);
+                    });
+
+            console.log("상품열람 사용자수 감소요청합니다: " + productIdList);
+
+            stompClient.disconnect(function () { // 가설: 소켓 클라이언트는 사실 연결되어 있다! 모든 페이지 다른 클라이언트
+            }, {"userId": userId, "productIdList": productIdList});
+        }
+
+        // url 로 이동
+        window.location.href = url;
+    };
+
+</script>
 
 <nav class="px-4 justify-content-start navbar navbar-light bg-list my-2 border border-dark rounded">
-    <a class="navbar-brand" href="/">home</a>
-    <a class="navbar-brand" href="/products">list</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/');">home</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/products');">list</a>
     <!--    <a class="navbar-brand" href="/write">write</a>-->
 
     <!--로그인-->
     {{#userName}} <!-- 로그인 했음 이름 출력 -->
         Logged in as: <span id="user">{{userName}}</span>
-        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+        <a class="btn btn-info active" role="button" href="javascript:void(0);" onclick="callFunction('/logout');">Logout</a>
         <!--
                 <a href="/mypage" class="btn btn-info active" role="button">MyPage</a>
                 <a href="/carts" class="btn btn-info active" role="button">장바구니</a>
@@ -153,14 +179,15 @@
         -->
     {{/userName}}
     {{^userName}} <!-- 안했음 로그인 버튼 -->
-        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+        <a class="btn btn-success active" role="button" href="javascript:void(0);"
+           onclick="callFunction('/oauth2/authorization/google');">Google Login</a>
     {{/userName}}
 
     <!--    <a class="navbar-brand" href="/">home</a>-->
-    <a href="/mypage" class="navbar-brand">MyPage</a>
-    <a href="/carts" class="navbar-brand">장바구니</a>
-    <a href="/orders" class="navbar-brand">주문내역</a>
-    <button id="btn-my-coupons" type="button" class="btn btn-info" onClick="location.href='/my-coupons'">내 쿠폰</button>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/mypage');">MyPage</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/carts');">장바구니</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/orders');">주문내역</a>
+    <button id="btn-my-coupons" type="button" class="btn btn-info" onClick="callFunction('/my-coupons');">내 쿠폰</button>
     <!--    <a href="/my-coupons" class="btn btn-info active btn-sm" id="btn-my-coupons" role="button">내 쿠폰</a>-->
     <!--<a class="btn btn-lg btn-info" href="/my-coupons">내 쿠폰</a>-->
 

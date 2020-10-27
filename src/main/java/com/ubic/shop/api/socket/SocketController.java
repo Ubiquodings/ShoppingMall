@@ -73,61 +73,61 @@ public class SocketController { // 기존 소켓 테스트 코드
 //    }
 
     /*왜인지 url 파람은 받지 못한다!*/
-    @MessageMapping("/products/{userId}/page/{page}") /*해당 페이지 다음 추천 목록*/   // 전송
-//    @SendTo("/topic/products/{userId}") /*해당 유저에게만 추천 목록 갱신*/ // 구독
-    public void updateProductDetailRecommendedList(@DestinationVariable String userId,
-                                                   @DestinationVariable String page,
-                                                   String body) throws JsonProcessingException {
-        log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
-
-        // page 받고 repo 의 count 로 나머지 연산해야 한다 : page % pageCount
-        // product repository 에서 카운트만 가져오는 쿼리 수행
-        long categoryID = recommendService.getHighestCategoryId(userId);
-
-        log.info("categoryID: " + categoryID);
-
-//        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
-        // (찾아온 상품 수) % (페이징하는 상품 수) = 6 % 8 = 6
-
-
-        PageRequest pageRequest = PageRequest.of(1, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
-        Page<Product> productPageFindByCategoryId = productRepository.findByCategoryId(categoryID, pageRequest);
-//        productPageFindByCategoryId.stream()
-//                .forEach((p) -> {
-//                    p.getCategory();
-//                });
-        if (productPageFindByCategoryId.hasContent()) {
-            log.info("has content");
-        } else {
-            log.info("has not content");
-            return;
-        }
-        long pageCount = productPageFindByCategoryId.getTotalPages(); // 해당 카테고리 전체 페이지 수
-        log.info("pageCount: " + pageCount);
-
-        long pageToLong = Long.parseLong(page);
-        log.info("pageToLong: " + pageToLong);
-        pageToLong %= pageCount;
-
-        log.info("updateProductDetailRecommendedList page: " + pageToLong + ", count: " + pageCount);
-
-        List<Product> result = recommendService.getRecommendList(userId, Long.toString(pageToLong)); // Dto 로 변환해야 하는데!
-        List<ProductResponseDto> collect = result.stream()
-                .map(p -> new ProductResponseDto(p))
-                .collect(Collectors.toList());
-
-        log.info("\nupdateProductDetailRecommendedList : query-result :" + objectMapper.writeValueAsString(collect));
-
-        socketTemplate.convertAndSend("/topic/products/" + userId, objectMapper.writeValueAsString(collect));
-//        return "updateProductDetailRecommendedList";
-    }
+//    @MessageMapping("/products/{userId}/page/{page}") /*해당 페이지 다음 추천 목록*/   // 전송
+////    @SendTo("/topic/products/{userId}") /*해당 유저에게만 추천 목록 갱신*/ // 구독
+//    public void updateProductDetailRecommendedList(@DestinationVariable String userId,
+//                                                   @DestinationVariable String page,
+//                                                   String body) throws JsonProcessingException {
+//        log.info("updateProductDetailRecommendedList page: " + page + ", userId: " + userId);
+//
+//        // page 받고 repo 의 count 로 나머지 연산해야 한다 : page % pageCount
+//        // product repository 에서 카운트만 가져오는 쿼리 수행
+//        long categoryID = recommendService.getHighestCategoryId(userId);
+//
+//        log.info("categoryID: " + categoryID);
+//
+////        long count = productRepository.countByCategoryId(categoryID) % ubicConfig.productDetailPageSize;
+//        // (찾아온 상품 수) % (페이징하는 상품 수) = 6 % 8 = 6
+//
+//
+//        PageRequest pageRequest = PageRequest.of(1, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
+//        Page<Product> productPageFindByCategoryId = productRepository.findByCategoryId(categoryID, pageRequest);
+////        productPageFindByCategoryId.stream()
+////                .forEach((p) -> {
+////                    p.getCategory();
+////                });
+//        if (productPageFindByCategoryId.hasContent()) {
+//            log.info("has content");
+//        } else {
+//            log.info("has not content");
+//            return;
+//        }
+//        long pageCount = productPageFindByCategoryId.getTotalPages(); // 해당 카테고리 전체 페이지 수
+//        log.info("pageCount: " + pageCount);
+//
+//        long pageToLong = Long.parseLong(page);
+//        log.info("pageToLong: " + pageToLong);
+//        pageToLong %= pageCount;
+//
+//        log.info("updateProductDetailRecommendedList page: " + pageToLong + ", count: " + pageCount);
+//
+//        List<Product> result = recommendService.getRecommendList(userId, Long.toString(pageToLong)); // Dto 로 변환해야 하는데!
+//        List<ProductResponseDto> collect = result.stream()
+//                .map(p -> new ProductResponseDto(p))
+//                .collect(Collectors.toList());
+//
+//        log.info("\nupdateProductDetailRecommendedList : query-result :" + objectMapper.writeValueAsString(collect));
+//
+//        socketTemplate.convertAndSend("/topic/products/" + userId, objectMapper.writeValueAsString(collect));
+////        return "updateProductDetailRecommendedList";
+//    }
 
 
     @MessageMapping("/coupons/{userID}") /*망설이지마세요 쿠폰*/
 //    @SendTo("/topic/users/{productPK}")
     public void requestDoNotHesitateCoupon(CouponRequestDto requestDto, @DestinationVariable long userID
     ) throws JsonProcessingException {
-        log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ?? 쿠폰 이름에 사용하려고!
+//        log.info("body: " + requestDto.getProductId()); // 왜가져온거지 ?? 쿠폰 이름에 사용하려고!
         Long productId = requestDto.getProductId();
         Product product = productRepository.findById(productId).get();
 
@@ -135,6 +135,8 @@ public class SocketController { // 기존 소켓 테스트 코드
         // 발급 전 쿠폰 있는지 확인하기
         int discountRate = 10;
         String couponName = product.getName() + " 망설이지마세요! "+discountRate+"% 쿠폰!!";
+        log.info("\n사용자 ID: " + userID);
+        log.info("\n쿠폰 발급합니다 : " + couponName);
 
 
         couponService.createProductCoupon(product, userID, discountRate, couponName);

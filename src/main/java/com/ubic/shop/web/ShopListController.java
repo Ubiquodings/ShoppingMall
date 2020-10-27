@@ -46,6 +46,7 @@ public class ShopListController {
             model.addAttribute("clientId", nonMember.getName().substring(0,5));
             clientId = nonMember.getId();
         }
+        model.addAttribute("userId", clientId);
         model.addAttribute("shopLists", // List<ShopList>
                 shopListService.findAllShopLists(clientId));
 

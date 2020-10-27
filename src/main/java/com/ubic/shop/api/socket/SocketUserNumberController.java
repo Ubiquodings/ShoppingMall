@@ -26,7 +26,7 @@ public class SocketUserNumberController {
     @MessageMapping("/users/{productID}") /*각 상품 함께 열람하고 있는 사용자 수*/
     public void updateProductViewUserNumber(@DestinationVariable long productID,
                                             String body) throws JsonProcessingException {
-        log.info("\niam socket");
+//        log.info("\niam socket");
 
         // data 가져오기
         UpdateUserNumberDto dto = userNumberService.getProductViewUserNumber(productID);
@@ -36,21 +36,21 @@ public class SocketUserNumberController {
 //        }
 
         String result = objectMapper.writeValueAsString(dto);
-        log.info("\nupdateUserNumber : " + result);
+//        log.info("\nupdateUserNumber : " + result);
 
         /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/" + productID, result);
     }
 
     @MessageMapping("/users/root") /*쇼핑몰에 접속한 전체 사용자 수*/
-    public void updateAllViewUserNumber(@DestinationVariable long productID,
-                                        String body) throws JsonProcessingException {
+    public void updateAllViewUserNumber(String body) throws JsonProcessingException {
+//        log.info("\n쇼핑몰 전체 접속자수");
 
         // data 가져오기
         long number = userNumberService.getAllViewUserNumber();
 
         String result = objectMapper.writeValueAsString(new UpdateUserNumberDto(number));
-        log.info("\nupdateUserNumber : " + result);
+//        log.info("\nupdateRootUserNumber : " + result);
 
         /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/root", result);
@@ -63,12 +63,12 @@ public class SocketUserNumberController {
         // data 가져오기
         UpdateUserNumberDto dto = userNumberBroadcastService.getProductOrderUserNumber(productId);
         if (dto == null){
-            log.info("\nreturn null");
+//            log.info("\nreturn null");
             dto = new UpdateUserNumberDto(productId, 0L); // 없으면 0 반환해야 한다!
         }
 
         String result = objectMapper.writeValueAsString(dto);
-        log.info("\nupdateOrderUserNumber : " + result);
+//        log.info("\nupdateOrderUserNumber : " + result);
 
         /*해당 페이지 접속 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/ordered/" + productId, result);
@@ -81,12 +81,12 @@ public class SocketUserNumberController {
         // data 가져오기
         UpdateCouponUserNumberDto dto = userNumberBroadcastService.getCouponUseUserNumber(couponType);
         if (dto == null){
-            log.info("\nreturn null");
+//            log.info("\nreturn null");
             dto = new UpdateCouponUserNumberDto(couponType, 0L); // 없으면 0 반환해야 한다!
         }
 
         String result = objectMapper.writeValueAsString(dto);
-        log.info("\nupdateCouponUserNumber : " + result);
+//        log.info("\nupdateCouponUserNumber : " + result);
 
         /*해당 쿠폰 사용 사용자 수 브로드캐스트 갱신*/
         socketTemplate.convertAndSend("/topic/users/coupons/" + couponType, result);

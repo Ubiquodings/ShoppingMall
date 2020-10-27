@@ -51,12 +51,16 @@ public class IndexController {
                         @LoginUser SessionUser user, /*HttpSession session, */
                         HttpServletRequest request){
 
-        if(user != null){
+        long userId = -1L;
+        if (user != null) {
             model.addAttribute("userName", user.getName());
-        }else{ // 해시코드 다섯글자만 추출하기
+            userId = user.getId();
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
+            userId = nonMember.getId();
         }
+        model.addAttribute("userId", userId);
 
         // 추천 목록 가져오는 부분 Rest API 로 옮겼다 !
 

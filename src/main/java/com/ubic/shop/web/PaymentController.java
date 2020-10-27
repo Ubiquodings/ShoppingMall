@@ -41,6 +41,7 @@ public class PaymentController {
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getId();
         }
+        model.addAttribute("userId", clientId);
 
         List<Payment> allPayments = paymentService.findAllPayments(clientId);
 

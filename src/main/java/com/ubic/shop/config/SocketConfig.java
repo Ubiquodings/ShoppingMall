@@ -30,7 +30,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
-//    private final EsSocketService esSocketService;
+    //    private final EsSocketService esSocketService;
     private final ObjectMapper objectMapper;
     private final UserNumberService userNumberService;
 
@@ -51,14 +51,14 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new MyChannelInterceptor(objectMapper,userNumberService));
+        registration.interceptors(new MyChannelInterceptor(objectMapper, userNumberService));
     }
 
 
     @RequiredArgsConstructor
     static class MyChannelInterceptor implements ChannelInterceptor {
 
-//        private final EsSocketService esSocketService;
+        //        private final EsSocketService esSocketService;
         private final ObjectMapper objectMapper;
         private final UserNumberService userNumberService;
 
@@ -67,54 +67,72 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
             StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
             if (StompCommand.CONNECT == accessor.getCommand()) { // websocket 연결요청
-                log.info("\nsocket connected ");
+
+
+                // 전체 페이지 접속 인원수 +1
+                List<Long> list = getHeaderValue(message, "userId");
+                if (list.size() == 0)
+                    return message;
+                long userId = list.get(0);
+                userNumberService.plusAllViewUserNumber(1L);
+
+//                log.info("\nsocket connected : userId - " + userId);
 
             } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
 
-                long productId = getHeaderValue(message, "productId");
-                if (productId == -1L) {
+//                long productId =
+                List<Long> list = getHeaderValue(message, "productId");
+                if (list.size() == 0)
                     return message;
-                }
-                log.info("\nsocket subscribed : productId - " + productId);
+                long productId = list.get(0);
 
-                // 디테일 페이지 접속 인원수를 +1한다.
+//                log.info("\nsocket subscribed : productId - " + productId);
+
+                // 상품 열람 접속 인원수를 +1한다.
 //                esSocketService.plusUserCount(productId, 1L);
                 userNumberService.plusProductViewUserNumber(productId, 1L);
 
             } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 
-                long productId = getHeaderValue(message, "productId");
-                if (productId == -1L) {
-                    return message;
-                }
-                log.info("\nsocket terminated : productId - " + productId);
+                // 전체 페이지 접속 인원수 -1
+                List<Long> list = getHeaderValue(message, "userId");
 
-                // 디테일 페이지 접속 인원수를 -1한다.
-//                esSocketService.plusUserCount(productId, -1L);
-                userNumberService.plusProductViewUserNumber(productId, -1L);
+                // 상품열람 접속 인원수를 -1한다.
+                List<Long> productIdList = getHeaderValue(message, "productIdList");
+//                log.info("\nsocket disconnected : productIdList - " + productIdList.toString());
+                for (Long productId : productIdList) {
+                    userNumberService.plusProductViewUserNumber(productId, -1L);
+                }
+
+                if (list.size() == 0)
+                    return message;
+                long userId = list.get(0);
+//                log.info("\nsocket disconnected : userId - " + userId);
+                userNumberService.plusAllViewUserNumber(-1L);
             }
             return message;
         }
 
-        private Long getHeaderValue(Message<?> message, String keyName){
-            Map header = (Map)message.getHeaders().get("nativeHeaders");
-            if(header==null){
-                return -1L;
+        private List<Long> getHeaderValue(Message<?> message, String keyName) {
+            Map header = (Map) message.getHeaders().get("nativeHeaders");
+            if (header == null) {
+                return new ArrayList<>();
             }
-            log.info("\nsocket subscribed : header - " + header.toString());
+//            log.info("\nsocket subscribed : header - keyName: " + keyName + ", " + header.toString());
 
             List<Long> listId;
-            Long productId = -1L;
+            Long headerValue = -1L;
 //            assert header != null;
-            if(header.containsKey(keyName)){
+            if (header.containsKey(keyName)) {
                 try {
-                    listId = objectMapper.readValue(header.get(keyName).toString(), new TypeReference<List<Long>>(){});
-                    productId = listId.get(0); // Integer ? - Long 으로 타입변화하자 ?
+                    return objectMapper.readValue(header.get(keyName).toString(), new TypeReference<List<Long>>() {
+                    });
+//                    headerValue = listId.get(0); // Integer ? - Long 으로 타입변화하자 ?
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             }
-            return productId;
+            return new ArrayList<>();
         }
     }
 }

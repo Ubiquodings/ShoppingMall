@@ -37,7 +37,7 @@ public class CouponService {
 
     @Transactional
     public void checkCartCategoryCoupon(ClickActionRequestDto received) {
-        log.info("\ncheckCartCategoryCoupon");
+//        log.info("\ncheckCartCategoryCoupon");
 
         // 장바구니 데이터분석 요청 : 스부 내에서 처리 가능
 //        String actionType = received.getActionType();
@@ -45,7 +45,7 @@ public class CouponService {
         // DataAnalysisCartResponseDto :  categoryIdList
 //            스부에서 해당 user 의 장바구니 데이터 모두 가져오기
         List<ShopList> shopListAllByUserId = shopListRepository.findAllByUserId(received.getUserId());
-        log.info("\nshopListAllByUserId size: " + shopListAllByUserId.size());
+//        log.info("\nshopListAllByUserId size: " + shopListAllByUserId.size());
 //            장바구니 상품 루프돌면서 카테고리:카운팅 자료구조 이용
         Map<Long, Integer> categoryCounting = new HashMap<>();
         long keyCategoryId = -1L;
@@ -59,13 +59,13 @@ public class CouponService {
                 categoryCounting.put(keyCategoryId, 1); // 새 값 추가
             }
         }
-        log.info("\ncategoryCounting size: "+categoryCounting.size());
+//        log.info("\ncategoryCounting size: "+categoryCounting.size());
 
 //            자료구조 루프돌면서 3이상인 id 리턴
         List<Long> categoryIdListForCoupon = new ArrayList<>();
         categoryCounting.forEach((key, value) -> {
             if (value >= 3) {
-                log.info("\ncategoryIdListForCoupon.add(key) : " + key+" value: "+value);
+//                log.info("\ncategoryIdListForCoupon.add(key) : " + key+" value: "+value);
                 categoryIdListForCoupon.add(key);
             }
         });
@@ -82,7 +82,7 @@ public class CouponService {
         int discountRate = 20;
 
         for (Long categoryId : categoryIdList) {
-            log.info("\npublishCategoryCouponsTypeCart 쿠폰 발급 심사합니다 : "+categoryId);
+//            log.info("\npublishCategoryCouponsTypeCart 쿠폰 발급 심사합니다 : "+categoryId);
             createCategoryCoupon(categoryId, userId, discountRate, CategoryCouponType.cart);
         }
     }
@@ -95,17 +95,19 @@ public class CouponService {
         String couponName = "장바구니에 담아두신 " + category.getName() + " 쿠폰드려요! + 20% 쿠폰!!";
 
         // 쿠폰 이미 있는지 확인
-        log.info("\n쿠폰 발급 심사 userId : "+userId);
+//        log.info("\n쿠폰 발급 심사 userId : "+userId);
         List<Coupon> byCategoryAndUserAndCouponType = couponRepository
                 .findByCategoryAndUserAndCategoryCouponType(categoryId, userId, categoryCouponType);
 
-        log.info("\nbyCategoryAndUserAndCouponType : "+byCategoryAndUserAndCouponType.size());
+//        log.info("\nbyCategoryAndUserAndCouponType : "+byCategoryAndUserAndCouponType.size());
         if (byCategoryAndUserAndCouponType.size() != 0) { // 이미 있다면
-            log.info("\n이미 갖고있는 쿠폰: " + couponName);
+//            log.info("\n이미 갖고있는 쿠폰: " + couponName);
             return -1L;
         }
 
         // 쿠폰 생성
+        log.info("\n사용자 ID : "+userId);
+        log.info("\n쿠폰 발급합니다 : "+couponName);
         User user = userRepository.findById(userId).get();
 
         Coupon coupon = CategoryCoupon.builder()
@@ -115,7 +117,7 @@ public class CouponService {
                 .category(category)
                 .categoryCouponType(categoryCouponType)
                 .build();
-        log.info("\n쿠폰 발급 userId : "+user.getId());
+//        log.info("\n쿠폰 발급 userId : "+user.getId());
 
         coupon = couponRepository.save(coupon);
         em.flush();
@@ -132,7 +134,7 @@ public class CouponService {
         // 쿠폰 이미 있는지 확인
         List<Coupon> CouponsByProductAndUser = couponRepository.findByProductAndUser(product.getId(), userId);
         if (CouponsByProductAndUser.size() != 0) { // 이미 있다면
-            log.info("\n이미 갖고있는 쿠폰: " + couponName);
+//            log.info("\n이미 갖고있는 쿠폰: " + couponName);
             return -1L;
         }
 
@@ -150,7 +152,7 @@ public class CouponService {
 
     @Transactional
     public void saveChangedCoupon(Coupon coupon) {
-        log.info("coupon status changed: "+coupon.toString());
+//        log.info("coupon status changed: "+coupon.toString());
         couponRepository.save(coupon);
     }
 

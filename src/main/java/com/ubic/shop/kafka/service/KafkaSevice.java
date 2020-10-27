@@ -53,12 +53,12 @@ public class KafkaSevice {
 
     public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
 
-        log.info("\nkafka send log");
+//        log.info("\nkafka send log");
 
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
-        log.info("\nkafka send log: "+value);
+        log.info("\nKafka Send [UserAction] : "+value);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topic);
 
         ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
@@ -78,11 +78,12 @@ public class KafkaSevice {
 
     public ListenableFuture<SendResult<String,String>> sendToTopic(SearchActionRequestDto requestDto) throws JsonProcessingException {
 
-        log.info("\nkafka send log");
+//        log.info("\nkafka send log");
 
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
+        log.info("\nKafka Send [Search] : "+value);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topicSearch);
 
         ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
@@ -117,6 +118,6 @@ public class KafkaSevice {
     }
 
     private void handleSuccess(String key, String value, SendResult<String, String> result) {
-        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
+//        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
     }
 }

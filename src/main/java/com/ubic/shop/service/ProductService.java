@@ -53,9 +53,9 @@ public class ProductService {
         return true;
     }
 
-    public List<Product> findAllProducts(/*Pageable pageable*/) {
-        return (List) productRepository.findDefaultProducts/*findAll*/();
-    }
+//    public List<Product> findAllProducts(/*Pageable pageable*/) {
+//        return (List) productRepository.findDefaultProducts/*findAll*/();
+//    }
 
     public List<Product> findPagingProducts(Pageable pageable) {
         return productRepository.findProductsCountBy(pageable).getContent();

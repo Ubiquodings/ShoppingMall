@@ -191,7 +191,8 @@ var userAction = {
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(count)
             }).done(function () { // 왜 안되지 ?
-                alert('바로 주문되었습니다!');
+                // alert('바로 주문되었습니다!');
+                $(".btn-order-immediately-from-detail").css("background","green");
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
             });
@@ -216,7 +217,7 @@ var userAction = {
         //
         // });
 
-        /*장바구니에서 주문하기 버튼을 누르면*/
+        /*장바구니에서 주문하기 버튼을 누르면*/ // TODO 화면이동
         $(document).on('click', '#btn-order-from-cart', function (e) {
             // $("#btn-order-from-cart").on('click', function (e) { // detail 페이지에서 가져와야지
             /**
@@ -272,7 +273,8 @@ var userAction = {
                 data: JSON.stringify(ShopToOrder_IdAndCount)
             }).done(function () {
                 // alert('ok');
-                window.location.href = '/payment';
+                _this.callFunction('/payment');
+                // window.location.href = ;
             }).fail(function (e) {
                 alert('fail ' + JSON.stringify(e));
             });
@@ -315,21 +317,23 @@ var userAction = {
             // console.log('이전 페이지 id는 '+beforeProductId);
 
             var productId = this.children[0].value; // TODO 확인!
-            $.ajax({
-                type: 'GET',
-                url: '/api/click/' + productId,
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8'
-            }).done(function () { // 왜 안되지 ?
-                console.log('ok');
-                // _this.clickItem(productId);
-            }).fail(function (e) {
-                console.log('fail ' + JSON.stringify(e));
-            });
+
+            // $.ajax({ //  TODO click 메시지 : 카프카 전달 로직
+            //    type: 'GET',
+            //     url: '/api/click/' + productId,
+            //     dataType: 'json',
+            //     contentType: 'application/json; charset=utf-8'
+            // }).done(function () { // 왜 안되지 ?
+            //     console.log('ok');
+            //     // _this.clickItem(productId);
+            // }).fail(function (e) {
+            //     console.log('fail ' + JSON.stringify(e));
+            // });
 
             console.log(productId);
             // _this.click(productId, productName);
-            _this.clickItem(productId); // TODO 주석 해제
+            // _this.clickItem(productId); // TODO 주석 해제 window.location.href = '/products/' + id;
+            _this.callFunction('/products/' + productId);
         });
 
         $(document).on('click', '#btn-search', function (e) {
@@ -339,17 +343,8 @@ var userAction = {
             var keyword = $('#input-search-keyword').val();
             // var keyword = this.parent("div").parent("div").children[0].value;
 
-            window.location.href = '/api/search?keyword=' + keyword;
-            // $.ajax({
-            //     type: 'GET',
-            //     url: '/api/search?keyword=' + keyword,//$("input#input-cart-order").val(),
-            //     dataType: 'json',
-            //     contentType: 'application/json; charset=utf-8'
-            // }).done(function () { // 왜 안되지 ?
-            //     alert('ok');
-            // }).fail(function (e) {
-            //     alert('fail ' + JSON.stringify(e));
-            // });
+            // window.location.href = ;
+            _this.callFunction('/api/search?keyword=' + keyword);
         });
 
         $(document).on('mouseenter', 'div.product-list-card-body', function (e) {
@@ -373,8 +368,33 @@ var userAction = {
         });
 
     },
-    clickItem: function (id) {
-        window.location.href = '/products/' + id;
+    // clickItem: function (id) {
+    //     window.location.href = '/products/' + id;
+    // },
+    callFunction: function (url) {
+        let socket = new SockJS('/websocket');
+        let stompClient = Stomp.over(socket);
+
+        if (stompClient.connected) {
+            console.log('userAction.js');
+            // 소켓 자원 정리
+            let userId = $('#input-user-id').val(); /*header 페이지에 있다*/
+            let productIdList = [];
+            Array.from(document.getElementsByClassName('product-detail-id')) // list and detail
+                .forEach((productIdElem) => {
+                    // productId 루프돌며 구독
+                    let productId = productIdElem.value;
+                    productIdList.push(productId);
+                });
+
+            console.log("상품열람 사용자수 감소요청합니다: " + productIdList);
+
+            stompClient.disconnect(function () { // 가설: 소켓 클라이언트는 사실 연결되어 있다! 모든 페이지 다른 클라이언트
+            }, {"userId": userId, "productIdList": productIdList});
+        }
+
+        // url 로 이동
+        window.location.href = url;
     }
 };
 

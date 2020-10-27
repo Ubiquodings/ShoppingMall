@@ -14,11 +14,11 @@ var orderNumber = {
         let stompClient = Stomp.over(socket);
 
         // 소켓 연결이 끊어졌을 때, 필요한 자원 정리 처리
-        window.onbeforeunload = function (eventObject) {
-
-            // stompClient.disconnect(function () {
-            // }, {"productId": productId});
-        };
+        // window.onbeforeunload = function (eventObject) {
+        //
+        //     // stompClient.disconnect(function () {
+        //     // }, {"productId": productId});
+        // };
 
         stompClient.connect(/*header*/{}, function (frame) {
 
@@ -37,12 +37,12 @@ var orderNumber = {
                         let parseResult = JSON.parse(result.body);
                         console.log('/topic/users/{productId} 결과 :  \n' + parseResult.number); // ok
                         _this.updateUserNumber(parseResult.productId, parseResult.number);
-                    }, {"productId": productId});
+                    }, {});
 
 
                     /*[요청 1] 해당상품 구매한 사용자 수*/
                     stompClient.send('/app/users/ordered/' + productId,
-                        {"productId": productId}, {});
+                        {}, {});
 
                 });
             console.log('productOrderUserNumber: ' + productIdList);
@@ -54,7 +54,7 @@ var orderNumber = {
         Array.from(document.getElementsByClassName('productOrderUserNumber-' + productId))
             .forEach((userNumberDiv) => {
                 // 부모의 첫번째 자식
-                console.log('\nupdateOrderUserNumber : '+userNumberDiv.parentElement.children[0].value);
+                console.log('\nupdateOrderUserNumber : '+number);
                 userNumberDiv.innerHTML = "";
                 userNumberDiv.innerHTML += `<span class="material-icons light-green d-inline-block" tabindex="0" data-toggle="tooltip"
                                       title="이 상품을 구매한 사용자 수">payment</span><span class="align-text-bottom"> ${number}명</span>`;
