@@ -1,25 +1,29 @@
 package com.ubic.shop.service;
 
 import com.ubic.shop.domain.*;
+import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.OrderRepository;
 import com.ubic.shop.repository.ShopListRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final ProductService productService;
     private final ShopListRepository shopListRepository;
-
+    private final KafkaSevice kafkaService;
 
     /** 주문 */ // 장바구니에서 하나 주문
     // 주문은 - 장바구니에서 하나 이상 주문, - 장바구니에서 전체 주문,
@@ -74,6 +78,8 @@ public class OrderService {
                 count);
         //주문 생성
         Order order = Order.createOrder(user, /*delivery, */orderProduct);
+        order.initTitleAndTotalPrice();
+
         //주문 저장
         orderRepository.save(order);
 
@@ -83,19 +89,33 @@ public class OrderService {
 
     /** 주문 취소 */
     @Transactional
-    public void cancelOrder(Long orderId) {
+    public void cancelOrder(Long orderId, Long clientId) {
         //주문 엔티티 조회
-        Order order = orderRepository.findOne(orderId);
-        //주문 취소 -- order 만 삭제하고 order product 는 삭제 안하는데 ? -- 그래서 status 로 필터링 로직 추가했다
-        order.cancel();
+        Optional<Order> orderbyId = orderRepository.findById(orderId);
+        if(orderbyId.isPresent()){
+            Order order = orderbyId.get();
+            //주문 취소 -- order 만 삭제하고 order product 는 삭제 안하는데 ? -- 그래서 status 로 필터링 로직 추가했다
+            order.cancel();
+
+            for(OrderProduct orderProduct : order.getOrderProducts()){
+                String action = "order-cancel";
+                Product product = orderProduct.getProduct();
+                kafkaService.buildKafkaRequest(clientId, product, action);
+            }
+        }
     }
 
     public List<Order> findAllOrders(Long userId) {
-        return orderRepository.findAll(userId);
+        return orderRepository.findByUserId(userId);
     }
 
     public List<Order> findAllOrdered(Long userId) {
-        return orderRepository.findAllOrdered(userId);
+//        OrderStatus order = OrderStatus.ORDER;
+        return orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.ORDER);
     }
 
+    @Transactional
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
 }

@@ -36,15 +36,48 @@ product-detail
     .modal-font{
         font-family: 'Do Hyeon', sans-serif;
     }
+
+
 </style>
 
+<!--이 상품을 함께보고 있는 사람 수-->
+<div class="card"> <!---->
+    <div class="card-body detail-info-number" >
+        <div class="row">
+            <input type="hidden" value="{{id}}"/>
+            <div class="col-9"></div> <!-- -lg 붙여야 하나 ?-->
+            <!-- https://material.io/resources/icons/?search=eye&icon=visibility&style=outline -->
+            <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
+            <div class="col-1  mini-text-font userNumber productUserNumber-{{id}}" id="userNumber">
+                <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
+                      title="이 상품을 함께보고 있는 사람 수">visibility</span> <span class="align-text-bottom">0명</span>
+            </div>
+            <!--이 상품을 장바구니에 담은 사람 수--> <!--가방 or 카트-->
+            <div class="col-1 mini-text-font" id="userShopListNumber">
+                <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
+                      title="이 상품을 장바구니에 담은 사람 수">shopping_cart</span> <span class="align-text-bottom">0명</span>
+            </div>
+            <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+            <div class="col-1 mini-text-font productOrderUserNumber-{{id}}" id="userOrderNumber">
+                <span class="material-icons orange600 d-inline-block " tabindex="0" data-toggle="tooltip"
+                      title="이 상품을 구매한 사람 수">payment</span> <span class="align-text-bottom">0명</span>
+            </div>
+        </div>
+<!--        <p class="row" id="userNumber">이 상품을 함께보고 있는 사람 수</p>-->
+<!--        <p class="row" id="userShopListNumber">이 상품을 장바구니에 담은 사람 수</p> &lt;!&ndash;가방 or 카트&ndash;&gt;-->
+<!--        <p class="row" id="userOrderNumber">이 상품을 구매한 사람 수</p> &lt;!&ndash;돈 다발&ndash;&gt;-->
+    </div>
+</div>
+
+<!--상품 상세 정보 출력-->
 {{#product}}
-    {{name}}
-    <input type="hidden" value="{{id}}" id="input-product-id"/>
+    <!--{{name}}-->
+    <input type="hidden" value="{{id}}" id="input-product-id" class="product-detail-id"/>
 
 
-    <div class="card">
+    <div class="card-product card">
         <div class="container-fliud">
+
             <div class="wrapper row">
                 <div class="preview col-md-6">
 
@@ -66,6 +99,12 @@ product-detail
                             <span class="fa fa-star"></span>
                             <span class="fa fa-star"></span>
                         </div>
+                    </div>
+                    <div style="margin-bottom: 20px">
+                        {{#ProductTagList}}
+                            <span class="badge badge-warning"
+                                  style="background-color:pink">{{tag.name}}</span>
+                        {{/ProductTagList}}
                     </div>
                     <p class="product-description">{{description}}</p>
                     <h4 class="price">Price: <span>{{price}}</span> <span class="won">원</span></h4>
@@ -132,7 +171,7 @@ product-detail
                                 <img src="/icon/minus.svg" alt=""/>
                             </button>
 
-                            <input type="text" name="amount" value="1" id="count" onchange="change();">
+                            <input type="text" name="amount" value="1" id="count" class="count" onchange="change();">
 
                             <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">
                                 <!--<img src="plus.svg" alt="" />-->
@@ -154,7 +193,7 @@ product-detail
                         <!--
                                 <button type="button" class="btn btn-primary btn-lg" id="btn-shoplist">장바구니</button>
                                 <button type="button" class="btn btn-primary btn-lg" id="btn-order">바로주문</button>
-                        -->
+                        -->  <!--  -from-detail -->
                         <button type="button" class="btn btn-primary btn-lg btn-shoplist"
                                 data-toggle="modal" data-target="#exampleModal">
                             <input type="hidden" value="{{id}}"/>
@@ -198,7 +237,7 @@ product-detail
                     <!--<a href="/carts"><button type="button" class="btn btn-warning" data-dismiss="modal">장바구니로 이동</button></a>-->
 
                     <!-- 3. 구글링으로..-->
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="location.href='/carts'">장바구니로 이동</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="callFunction('/carts');">장바구니로 이동</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">닫기</button>
                 </p>
             </div>
@@ -206,14 +245,19 @@ product-detail
     </div>
 </div>
 
-<div class="row" id="userNumber">
+<!--<div class="row" id="userNumber">-->
 
+<!--</div>-->
+
+<div class="card">
+    <div class="card-body">
+        - 상품 카테고리 기반 목록
+    </div>
 </div>
-
 <div class="row recommended-product-list">
     {{#recommendedList}}
         <div class="col-md-3 product-list-card-body">
-            <input type="hidden" value="{{id}}"/>
+            <input type="hidden" value="{{id}}" class="product-detail-id"/>
             <div class="ibox">
                 <div class="ibox-content product-box">
                     <div class="product-imitation">
@@ -240,8 +284,60 @@ product-detail
     {{/recommendedList}}
 </div>
 
+
+
+<div class="card">
+    <div class="card-body">
+        - 함께산 상품
+    </div>
+</div>
+<div class="row product-detail-buy-together-list">
+
+</div>
+
+
+
+<div class="card">
+    <div class="card-body">
+        - 회원님을 위한 할인 상품
+    </div>
+</div>
+<div class="row product-detail-recommended-list">
+
+</div>
+
+
+<!--사용자테스트용 클릭 로그 발생-->
+
+<script>
+    $(document).ready(function () { // 문서가 준비되면
+        // console.log(window.location.pathname.split('/').toString()); // ,products,2140
+        let productId = window.location.pathname.split('/')[2];
+        console.log("문서 ready! "+ productId );
+
+        $.ajax({ //  TODO click 메시지 : 카프카 전달 로직
+            type: 'GET',
+            url: '/api/click/' + productId,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function () { // 왜 안되지 ?
+            console.log('click message ok');
+            // _this.clickItem(productId);
+        }).fail(function (e) {
+            console.log('fail ' + JSON.stringify(e));
+        });
+
+    });
+
+</script>
+
+
+<!--<script src="/js/socket/common.js"></script>-->
 <!--상품 디테일 소켓 추가-->
-<script src="/js/app/product-socket.js"></script>
+<script src="/js/socket/product-detail.js"></script>
 <!--상품 카운트 로직 추가-->
 <!--<script src="/js/app/product-detail-cal.js"></script>-->
+<script src="/js/socket/dash-and-product-detail.js"></script>
+<script src="/js/socket/product-list-and-detail.js"></script> <!--사용자수-->
+<script src="/js/socket/order-number.js"></script> <!--사용자수-->
 {{>layout/footer}}

@@ -4,33 +4,18 @@ spring:
   profiles.include: oauth,kafka,db
   session.store-type: jdbc
 
-  #  datasource:
-  #    url: jdbc:h2:tcp://localhost/~/sisishop
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
-  #    data: classpath*:db/${database}/data.sql # db data 초기화하고 싶을 때 이용
 
-
-#  jpa:
-#    hibernate:
-#      ddl-auto: update #create # , create-drop
-#    properties:
-#      hibernate:
-#  #     show_sql: true
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-#        format_sql: true
-
-
-logging.level:
-  org.hibernate.SQL: debug
+#logging.level:
+#  org.hibernate.SQL: debug # [로그 주석]
 # org.hibernate.type: trace
 
 ubic:
   orders:
     productListPageSize: 28
-    productDetailPageSize: 8
+    productDetailPageSize: 4
     djangoServerUrl: http://ubic-env-08221710.ap-northeast-2.elasticbeanstalk.com
+    localDjangoServerUrl: http://127.0.0.1:8000
+    dashBoardProductListPageSize: 4
 
 # spring.profiles.include=oauth
 #spring.session.store-type: jdbc
@@ -50,7 +35,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #create # , create-drop update #
+      ddl-auto: update # create # , create-drop update
     properties:
       hibernate:
         #     show_sql: true

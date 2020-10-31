@@ -2,6 +2,7 @@ package com.ubic.shop.kafka.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ubic.shop.domain.Product;
 import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.dto.SearchActionRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +35,30 @@ public class KafkaSevice {
     String topicSearch = "ubic-shop-search";
     private final ObjectMapper objectMapper;
 
+    public void buildKafkaRequest(Long clientId, Product product, String action) {
+        ClickActionRequestDto requestDto = ClickActionRequestDto.builder()
+                .userId(clientId)
+                .actionType(action)
+                .categoryId(product.getCategory().getId())
+                .productId(product.getId())
+                .build();
+        try {
+            sendToTopic(requestDto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+
     public ListenableFuture<SendResult<String,String>> sendToTopic(ClickActionRequestDto requestDto) throws JsonProcessingException {
 
-        log.info("\nkafka send log");
+//        log.info("\nkafka send log");
 
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
+        log.info("\nKafka Send [UserAction] : "+value);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topic);
 
         ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
@@ -60,11 +78,12 @@ public class KafkaSevice {
 
     public ListenableFuture<SendResult<String,String>> sendToTopic(SearchActionRequestDto requestDto) throws JsonProcessingException {
 
-        log.info("\nkafka send log");
+//        log.info("\nkafka send log");
 
         // 카프카 토픽에 전송한다
         String key = requestDto.toString();
         String value = objectMapper.writeValueAsString(requestDto);
+        log.info("\nKafka Send [Search] : "+value);
         ProducerRecord<String,String> producerRecord = buildProducerRecord(key, value, topicSearch);
 
         ListenableFuture<SendResult<String,String>> listenableFuture =  kafkaTemplate.send(producerRecord);
@@ -99,6 +118,6 @@ public class KafkaSevice {
     }
 
     private void handleSuccess(String key, String value, SendResult<String, String> result) {
-        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
+//        log.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
     }
 }

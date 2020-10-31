@@ -21,10 +21,18 @@ public class PaymentService {
     private final ProductService productService;
 
     @Transactional
-    public Long payment(Long userId, Long productId, int count) {
+    public Long payment(Long userId, Long productId, long count) {
         //엔티티 조회
         User user = userRepository.findById(userId).get();
         Product product = productService.findById(productId);
+
+        // user + product 조합으로 이미 Payment 객체가 있다면 생성하지 않는다 !
+        List<Payment> byUserIdAndProductId = paymentRepository.findByUserIdAndProductId(user.getId(), product.getId(), count);
+
+        if(byUserIdAndProductId.size() != 0){ // 있다면
+//            Payment payment = byUserIdAndProductId.get(0);
+            return -1L;
+        }
 
         //결제 상품 생성
         Payment payment = Payment.builder()

@@ -5,17 +5,18 @@
     <title>Ubic Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+    <!--    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap-theme.min.css">-->
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
-<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+    <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+    <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
     <style>
@@ -45,6 +46,36 @@
         div#input-group-append {
             display: inline-block;
         }
+
+        .material-icons.orange600 {
+            color: #FB8C00;
+        }
+
+        .material-icons.light-green {
+            color: #9AFE2E;
+        }
+
+        .material-icons.white00 {
+            color: white;
+        }
+
+        .material-icons.pink00 {
+            color: tomato;
+        }
+
+        .mini-text-font {
+            font-size: 70%;
+        }
+
+        .list-mini-text-font {
+            font-size: 50%;
+            text-align: start;
+        }
+
+        .detail-info-number {
+            padding: 0px 0px;
+        }
+
     </style>
 
 
@@ -52,19 +83,26 @@
 <body class="container h-100"><!-- py-5 my-3-->
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <!-- websocket 의존성 추가 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
+<script>
+    // $(function () {
+    // $(document).ready(function () {
+    //     $(document).on('click', '.btn-order-at-payment', function (e) {
+    //     $('[data-toggle="tooltip"]').tooltip();
+    // });
+    $('body').tooltip({selector: '[data-toggle="tooltip"]'});
+</script>
 
 <div class="row">
     <h1 class="col-md-6">hello Ubic</h1>
 
-    {{#userId}} <!-- 로그인 했음 이름 출력 -->
-        <input type="hidden" value="{{userId}}" id="input-user-id"/>
-    {{/userId}}
+    <input type="hidden" value="{{userId}}" id="input-user-id"/>
 
     <!--검색창 id="btn-search" -->
     <div class="col-md-6">
@@ -78,15 +116,62 @@
     </div>
 </div>
 
+
+<!--쇼핑몰 전체 접속자 수-->
+<div class="card"> <!---->
+    <div class="card-body detail-info-number">
+        <div class="row">
+            <div class="col-11"></div> <!-- -lg 붙여야 하나 ? 괜츈-->
+
+            <!--이 상품을 함께보고 있는 사람 수--> <!--눈 아이콘--> <!--border border-warning rounded align-text-bottom-->
+
+            <div class="col-1 mini-text-font view-root" id="allUserNumber">
+                <span class="material-icons orange600 d-inline-block" tabindex="0" data-toggle="tooltip"
+                      title="쇼핑몰 전체 접속자 수">accessibility_new</span>
+                <span class="align-text-bottom">0명</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let callFunction = function (url) {
+        let socket = new SockJS('/websocket');
+        let stompClient = Stomp.over(socket);
+        if (stompClient.connected) {
+            console.log('header');
+            // 소켓 자원 정리
+            let userId = $('#input-user-id').val(); /*header 페이지에 있다*/
+            let productIdList = [];
+            Array.from(document.getElementsByClassName('product-detail-id')) // list and detail
+                    .forEach((productIdElem) => {
+                        // productId 루프돌며 구독
+                        let productId = productIdElem.value;
+                        productIdList.push(productId);
+                    });
+
+            console.log("상품열람 사용자수 감소요청합니다: " + productIdList);
+
+            stompClient.disconnect(function () { // 가설: 소켓 클라이언트는 사실 연결되어 있다! 모든 페이지 다른 클라이언트
+            }, {"userId": userId, "productIdList": productIdList});
+        }
+
+        // url 로 이동
+        window.location.href = url;
+    };
+
+</script>
+
 <nav class="px-4 justify-content-start navbar navbar-light bg-list my-2 border border-dark rounded">
-    <a class="navbar-brand" href="/">home</a>
-    <a class="navbar-brand" href="/products">list</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/');">home</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/products');">list</a>
     <!--    <a class="navbar-brand" href="/write">write</a>-->
 
     <!--로그인-->
     {{#userName}} <!-- 로그인 했음 이름 출력 -->
         Logged in as: <span id="user">{{userName}}</span>
-        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+        <a class="btn btn-info active" role="button" href="javascript:void(0);" onclick="callFunction('/logout');">Logout</a>
         <!--
                 <a href="/mypage" class="btn btn-info active" role="button">MyPage</a>
                 <a href="/carts" class="btn btn-info active" role="button">장바구니</a>
@@ -94,13 +179,16 @@
         -->
     {{/userName}}
     {{^userName}} <!-- 안했음 로그인 버튼 -->
-        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+        <a class="btn btn-success active" role="button" href="javascript:void(0);"
+           onclick="callFunction('/oauth2/authorization/google');">Google Login</a>
     {{/userName}}
 
-    <a href="/mypage" class="btn btn-info active btn-sm" role="button">MyPage</a>
-    <a href="/carts" class="btn btn-info active btn-sm" role="button">장바구니</a>
-    <a href="/orders" class="btn btn-info active btn-sm" role="button">주문내역</a>
-    <a href="/my-coupons" class="btn btn-info active btn-sm" id="btn-my-coupons" role="button">내 쿠폰</a>
+    <!--    <a class="navbar-brand" href="/">home</a>-->
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/mypage');">MyPage</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/carts');">장바구니</a>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="callFunction('/orders');">주문내역</a>
+    <button id="btn-my-coupons" type="button" class="btn btn-info" onClick="callFunction('/my-coupons');">내 쿠폰</button>
+    <!--    <a href="/my-coupons" class="btn btn-info active btn-sm" id="btn-my-coupons" role="button">내 쿠폰</a>-->
     <!--<a class="btn btn-lg btn-info" href="/my-coupons">내 쿠폰</a>-->
 
     <!--비회원 UUID-->

@@ -77,11 +77,9 @@ public class TagService {
                     ubicConfig.getDjangoServerUrl()+"/search/test/?text=" + productInfo,
                     SearchResponseDto.class);
         } catch (Exception e) {
+            log.info("\n태그 분석 요청 실패 : null 을 반환합니다 !\n"+e.getMessage());
             return null;
         }
-
-//        if (result == null)
-//            return null;
 
         // 스트림 처리하며 lemma 부분을 태그로 등록하기
         // Product 객체 필요한데! : ProductService 에서 처리!

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -24,6 +26,7 @@ public class ShopListController {
 
     private final ShopListService shopListService;
     private final UserRepository userRepository;
+
 
     @GetMapping("/carts")
     public String list(Model model, @LoginUser SessionUser user, HttpServletRequest request){
@@ -43,8 +46,10 @@ public class ShopListController {
             model.addAttribute("clientId", nonMember.getName().substring(0,5));
             clientId = nonMember.getId();
         }
+        model.addAttribute("userId", clientId);
         model.addAttribute("shopLists", // List<ShopList>
                 shopListService.findAllShopLists(clientId));
+
 
         return "cart-list";
     }

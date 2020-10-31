@@ -82,7 +82,7 @@ $('.minus-btn').on('click', function () {
             test -= parseInt(sum.value);
         }
         document.getElementById("allsum").value = test;*/
-    } else {
+    } else { // length 가 1 아님
         console.log("minus button click");
         var minus_index = $('.minus-btn').index($(this));
         console.log("minus_index " + minus_index);
@@ -260,34 +260,34 @@ $('.plus-btn').on('click', function () {
 });*/
 
 //3. formlist 상관 없이 index 구해지게!
-$('.btn-cart-cancel').on('click', function(e) {
-
-    console.log("delete button click");
-    var shopListId_List = document.getElementsByClassName("cart-item-id");
-    console.log("shopListId length " + shopListId_List.length);
-
-    //delete 버튼의 index를 가져온다.
-    var delete_index = $('.btn-cart-cancel').index($(this)); // 왜 index 0만 되는거지..
-
-    var shopListId = shopListId_List[delete_index].value;
-
-    console.log("delete index " + delete_index);
-    console.log("shopListId " + shopListId);
-
-    $.ajax({
-        type: 'DELETE',
-        url: '/api/carts/'+ shopListId, // order id
-        dataType: 'json',// Accept ?
-        contentType:'application/json; charset=utf-8',
-        // data: JSON.stringify({})
-    }).done(function() {
-        alert('장바구니에서 삭제되었습니다.');
-        window.location.href=window.location.href;
-    }).fail(function (error) {
-        alert(JSON.stringify(error));
-    });
-
-});
+// $('.btn-cart-cancel').on('click', function(e) {
+//
+//     console.log("delete button click");
+//     var shopListId_List = document.getElementsByClassName("cart-item-id");
+//     console.log("shopListId length " + shopListId_List.length);
+//
+//     //delete 버튼의 index를 가져온다.
+//     var delete_index = $('.btn-cart-cancel').index($(this)); // 왜 index 0만 되는거지..
+//
+//     var shopListId = shopListId_List[delete_index].value;
+//
+//     console.log("delete index " + delete_index);
+//     console.log("shopListId " + shopListId);
+//
+//     $.ajax({
+//         type: 'DELETE',
+//         url: '/api/carts/'+ shopListId, // order id
+//         dataType: 'json',// Accept ?
+//         contentType:'application/json; charset=utf-8',
+//         // data: JSON.stringify({})
+//     }).done(function() {
+//         alert('장바구니에서 삭제되었습니다.');
+//         window.location.href=window.location.href;
+//     }).fail(function (error) {
+//         alert(JSON.stringify(error));
+//     });
+//
+// });
 
 function change() {
     var form_list = document.getElementsByClassName("formlist");

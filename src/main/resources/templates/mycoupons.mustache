@@ -4,15 +4,59 @@ coupons
 {{#couponList}} <!--List<Coupon>-->
 <div class="row">
     <div class="card" style="width: 100%;">
-        <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <span class="badge badge-secondary"
+                      style="background-color:darkorange">{{createdDate}}</span>
+
+                <!-- product, category, all 구분하는 badge! -->
+                <span class="badge badge-secondary"
+                      style="background-color:darkorange">{{couponType}}</span>
+
+
+            </div>
+        </div>
+        <div class="row">
             <h5 class="card-title">{{name}}</h5> <!--잘나온다!-->
-<!--            <h5 class="card-title"></h5>-->
-<!--            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value=""/>주문</button>-->
-<!--            <input type="hidden" value="" id="input-cart-order"/>-->
-            <!--                    <a href="/orders/new/" class="btn btn-info active" role="button">주문</a>-->
+        </div>
+        <div class="row">
+            <div class="col-10"></div> <!-- -lg 붙여야 하나 ?-->
+
+            <!--이 쿠폰 사용한 사용자 수-->
+            <div class="col-1">
+                <input type="hidden" value="{{couponType}}" class="coupon-type"/>
+                <div class="mini-text-font couponUseUserNumber-{{couponType}}" id="userShopListNumber">
+                    <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
+                          title="이 쿠폰 사용한 사용자 수">check_circle_outline</span>
+                    <span class="align-text-bottom">0명</span>
+                </div>
+            </div>
+
+            <div class="col-1">
+                {{#product}}
+                    <div>
+                        <input type="hidden" value="{{product.id}}" class="product-detail-id"/>
+                        <!--이 상품을 구매한 사람 수--> <!--돈 다발-->
+                        <div class="mini-text-font productOrderUserNumber-{{product.id}}"
+                             id="userOrderNumber">
+                            <span class="material-icons pink00 d-inline-block" tabindex="0" data-toggle="tooltip"
+                                  title="이 상품을 구매한 사람 수">payment</span>
+                            <span class="align-text-bottom">0명</span>
+                        </div>
+                    </div>
+                {{/product}}
+            </div>
+
+                <!--            <h5 class="card-title"></h5>-->
+                <!--            <button type="button" class="btn btn-primary btn-lg btn-order"><input type="hidden" value=""/>주문</button>-->
+                <!--            <input type="hidden" value="" id="input-cart-order"/>-->
+                <!--                    <a href="/orders/new/" class="btn btn-info active" role="button">주문</a>-->
         </div>
     </div>
 </div>
 {{/couponList}}
 
+<!--<script src="/js/socket/common.js"></script>-->
+<script src="/js/socket/order-number.js"></script>
+<script src="/js/socket/coupon-use.js"></script>
 {{>layout/footer}}

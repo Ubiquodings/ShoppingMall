@@ -1,11 +1,13 @@
 package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.domain.Order;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.SessionUser;
 import com.ubic.shop.repository.CouponRepository;
+import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.OrderService;
 import com.ubic.shop.service.ShopListService;
@@ -30,6 +32,7 @@ public class OrderController {
     private final UserRepository userRepository;
     private final ShopListService shopListService;
     private final CouponRepository couponRepository;
+    private final ProductRepository productRepository;
 
     @GetMapping("/orders")
     public String list(Model model, @LoginUser SessionUser user, HttpServletRequest request) { // 화면 :: 채민
@@ -51,16 +54,21 @@ public class OrderController {
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getId();
         }
-        model.addAttribute("shopLists", // List<ShopList>
-                orderService.findAllOrdered(clientId));
+        model.addAttribute("userId", clientId);
 
+        List<Order> allOrdered = orderService.findAllOrdered(clientId);
+        log.info("\nordered size: "+allOrdered.size());
+        model.addAttribute("orderList", // List<Order>
+                allOrdered);
+
+        model.addAttribute("buyTogetherList", // List<Order>
+                productRepository.findProductsByLimit(4L));
 
         return "order-list";
     }
 
     //TODO
     @GetMapping("/orders/{id}") //아마 지금 이거 사용안할걸
-
     public String detail(@PathVariable int id, Model model, @LoginUser SessionUser user) {
         if (user != null) {
             model.addAttribute("userName", user.getName());

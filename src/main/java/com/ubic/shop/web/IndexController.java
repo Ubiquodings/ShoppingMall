@@ -1,21 +1,32 @@
 package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.config.UbicConfig;
+import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.SessionUser;
+import com.ubic.shop.repository.CategoryRepository;
+import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.session.SessionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Controller
@@ -35,15 +46,30 @@ public class IndexController {
 
     @Transactional
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user, /*HttpSession session, */
+    public String index(Model model,
+//                        @RequestParam(name = "page", defaultValue = "0") String page,
+                        @LoginUser SessionUser user, /*HttpSession session, */
                         HttpServletRequest request){
 
-        if(user != null){
+        long userId = -1L;
+        if (user != null) {
             model.addAttribute("userName", user.getName());
-        }else{ // 해시코드 다섯글자만 추출하기
+            userId = user.getId();
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
+            userId = nonMember.getId();
         }
+        model.addAttribute("userId", userId);
+
+        // 추천 목록 가져오는 부분 Rest API 로 옮겼다 !
+
+
+        // itemCf  userCf  freq  discount
+//        model.addAttribute("itemCf", result.get(0).getContent());
+//        model.addAttribute("userCf", result.get(1).getContent());
+//        model.addAttribute("freq", result.get(2).getContent());
+//        model.addAttribute("discount", result.get(3).getContent());
 
         return "index";
     }

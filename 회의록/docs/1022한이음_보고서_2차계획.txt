@@ -1,0 +1,89 @@
+
+
+사용자 테스트 제대로 하려면,
+
+추천 목록 받으면 : 카테고리형 말고
+- hover 카프카 메시지 전달하기
+  ** 아니야 click/shop/order 만 하자..
+어려운거 아니지 않을까!
+
+
+파이썬 추천 코드.. 보강!!
+- 행동 점수화
+
+- hover 에 카테고리 3번 이상 발급 쿠폰 추가해야할듯
+
+
+보여주고 싶은 로그
+사용자 세션id + 
+ok- 쿠폰 발급 로그
+
+- 카프카 메시지 전달
+ok  - kafka.service.KafkaSevice
+ok  - kafka.UserActionConsumer
+
+- Django 응답 결과 : 어떤 분석인지 이름도
+ok  - 추천 상품목록
+  - 추천 카테고리 id
+ok  - 함께산 상품들
+
+
+수정할 목록
+ok- ElasticSearchService : 장고로 요청하는데 ?
+ok- RecommendService : 어떤 결과인지 구체적으로 명시하기
+
+ok- RestAPIController : 디버그용 로그 삭제
+  - getUserCfRecommendationList : 하드코딩 카테고리id 수정하기
+
+
+* 그리고 페이지 전환 5초로 변경하기
+* 소켓은 2초
+
+
+**** 분석결과가 달라질 즈음에 녹화 시작하기 실행 후 15분 있다가
+
+- 숫자 리셋하기
+- 화면은 2개정도 보여주기
+
+** 추천 코드 수정하기
+
+마지막 사용자 테스트 영상은
+3초정도 빠르게 보여주고, : 50개 내용
+
+1개로만 수행하여
+로그 내용 알려주기
+
+POST
+/ubic_click_action/_delete_by_query
+{
+  "query": {
+    "match_all": {
+    }
+  }
+}
+
+
+=================================
+== STACK =========================
+=================================
+=================================
+
+페이지네이션 이전/이후 누르면
+현재 url 가져와서
+이전/다음 url param 으로 변경하기
+
+
+상품 디테일 로딩하자마자
+ok- click 카프카 메시지 전달하기
+ok-클릭하면 이동하면서 메시지 전달은 주석!
+ ok - 이거 프론트 코드만 수정하자 : 주석
+
+
+인텔리제이 쓸데없는 로그 다 지우기
+ok- ScheduledTasks
+ok- LoginUserArgumentResolver : session id 지운다
+ok- ProductController : 세션 생성 로그 지운다
+ok- SocketRecommendListController : 결과 로그 지우기
+
+
+=================================

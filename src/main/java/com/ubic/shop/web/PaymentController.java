@@ -1,6 +1,7 @@
 package com.ubic.shop.web;
 
 import com.ubic.shop.config.LoginUser;
+import com.ubic.shop.domain.coupon.Coupon;
 import com.ubic.shop.domain.Payment;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
@@ -41,18 +42,34 @@ public class PaymentController {
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             clientId = nonMember.getId();
         }
+        model.addAttribute("userId", clientId);
 
         List<Payment> allPayments = paymentService.findAllPayments(clientId);
 
         model.addAttribute("allPayments", allPayments);
 
         List<Long> idList = allPayments.stream()
-                .map(m -> m.getProduct().getId()) // 각 장바구니 아이템의 상품 아이디 가져오기
+                .map(m -> {
+                    log.info("장바구니에서 온 상품id: "+m.getProduct().getId()); // 근데 여기서 문제가 있는건 아닌데
+                    return m.getProduct().getId();
+                }) // 각 장바구니 아이템의 상품 아이디 가져오기
                 .collect(Collectors.toList());
 //        log.info("\nidList: "+)
 
         // 상품 아이디 기반으로 쿠폰 가져오기
-        model.addAttribute("couponList", couponRepository.findByIds(idList));
+//        , clientId
+        final Long userId = clientId;
+        List<Coupon> couponByProductAndUser = couponRepository.findByProductListAndUser(idList, clientId);
+//        List<Coupon> myCouponList = couponByProductId.stream()
+//                .map(c -> {
+//                    if (c.getUser().getId() == userId) {
+//                        return c;
+//                    }
+//                    return null;
+//                })
+//                .filter(x -> x != null)
+//                .collect(Collectors.toList());
+        model.addAttribute("couponList", couponByProductAndUser);
 
         return "payment";
     }
