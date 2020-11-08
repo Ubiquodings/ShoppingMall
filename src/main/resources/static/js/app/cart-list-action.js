@@ -16,7 +16,7 @@ function init() {
 
     /*var test = 0;*/
     var totalSum = 0; // 채민: 임의대로 잠시 test -> totalSum으로 바꿔서 해볼게요!
-    var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
+    //var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
     if (form_list.length == 1) { // list에 하나 있을때는 따로 처리해줘야 하는듯.. 잘 안나온다.
         sell_price = document.form.sell_price.value;
         amount = document.form.amount.value;
@@ -31,13 +31,15 @@ function init() {
         sum.value = parseInt(hm.value) * sell_price;
         totalSum = sum.value;
         document.getElementById("allsum").value = totalSum;
+        document.getElementById("allsum_final").value = totalSum;
+        /*document.getElementsByClassName("allsum").value = totalSum;*/
     } else {
         for (var i = 0; i < form_list.length; i++) {
             sell_price = document.form[i].sell_price.value;
             amount = document.form[i].amount.value;
             document.form[i].sum.value = sell_price;
             /*console.log("i " + i); 확인! 잘 나온다.*/
-            $(init_list[i]).val(i + 1); // 0번째부터 나와서 그냥 +1 해줬다.
+            //$(init_list[i]).val(i + 1); // 0번째부터 나와서 그냥 +1 해줬다.
             hm = document.form[i].amount;
             sum = document.form[i].sum;
             if (hm.value < 0) {
@@ -52,8 +54,11 @@ function init() {
             }*/
             totalSum = totalSum + parseInt(sum.value);
         }
+        $('.init_c').val(i);
         /*document.getElementById("allsum").value = test;*/
         document.getElementById("allsum").value = totalSum;
+        document.getElementById("allsum_final").value = totalSum;
+        /*document.getElementsByClassName("allsum").value = totalSum;*/
     }
 }
 
@@ -73,6 +78,8 @@ $('.minus-btn').on('click', function () {
             console.log("minus before totalSum " + totalSum);
             totalSum = totalSum - sell_price;
             document.getElementById("allsum").value = totalSum;
+            document.getElementById("allsum_final").value = totalSum;
+            /*document.getElementsByClassName("allsum").value = totalSum;*/
             console.log("minus after totalSum " + totalSum);
         }
         /**
@@ -95,9 +102,12 @@ $('.minus-btn').on('click', function () {
             //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
             // try 해보자..ㅎ
             var totalSum = document.getElementById("allsum").value;
+            /*var totalSum = document.getElementsByClassName("allsum").value;*/
             console.log("minus before totalSum " + totalSum);
             totalSum = totalSum - sell_price;
             document.getElementById("allsum").value = totalSum;
+            document.getElementById("allsum_final").value = totalSum;
+            /*document.getElementsByClassName("allsum").value = totalSum;*/
             console.log("minus after totalSum " + totalSum);
         }
         /**
@@ -120,9 +130,12 @@ $('.plus-btn').on('click', function () {
         hm.value++;
         sum.value = parseInt(hm.value) * sell_price;
         var totalSum = document.getElementById("allsum").value;
+        /*var totalSum = document.getElementsByClassName("allsum").value;*/
         console.log("plus before totalSum " + totalSum);
         totalSum = parseInt(totalSum) + parseInt(sell_price);
         document.getElementById("allsum").value = totalSum;
+        document.getElementById("allsum_final").value = totalSum;
+        /*document.getElementsByClassName("allsum").value = totalSum;*/
         console.log("plus after totalSum " + totalSum);
     } else {
         console.log("plus button click");
@@ -134,9 +147,12 @@ $('.plus-btn').on('click', function () {
         hm.value++;
         sum.value = parseInt(hm.value) * sell_price;
         var totalSum = document.getElementById("allsum").value;
+        /*var totalSum = document.getElementsByClassName("allsum").value;*/
         console.log("plus before totalSum " + totalSum);
         totalSum = parseInt(totalSum) + parseInt(sell_price);
         document.getElementById("allsum").value = totalSum;
+        document.getElementById("allsum_final").value = totalSum;
+        /*document.getElementsByClassName("allsum").value = totalSum;*/
         console.log("plus after totalSum " + totalSum);
     }
 });
@@ -313,6 +329,8 @@ function change() {
         }*/
         <!-- 채민: 이게 지금 하나라서 아마 document.form[i]가 안먹힐거에요 ㅜㅜ-->
         document.getElementById("allsum").value = sum.value;
+        document.getElementById("allsum_final").value = sum.value;
+        /*document.getElementsByClassName("allsum").value = sum.value;*/
         console.log("change method after totalSum " + sum.value);
     } else {
         var change_index = $('.amount').index();
@@ -341,6 +359,8 @@ function change() {
             totalSum = parseInt(totalSum) + parseInt(document.form[i].sum.value);
         }
         document.getElementById("allsum").value = totalSum;
+        document.getElementById("allsum_final").value = totalSum;
+        /*document.getElementsByClassName("allsum").value = totalSum;*/
         console.log("change method after totalSum " + totalSum);
     }
 }

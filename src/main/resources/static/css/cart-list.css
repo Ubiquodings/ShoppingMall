@@ -69,6 +69,32 @@
     margin-top: 0px;
 }
 
+.trashicon{
+    color: red;
+}
+
+.refreshicon {
+    color: cornflowerblue;
+}
+
+.p_price span{
+    font-weight: bold;
+}
+
+.init_c {
+    border: none;
+    background: transparent;
+    width: 15px;
+}
+
+#allsum, #allsum_final{
+    border: none;
+    background: transparent;
+    width: 45px;
+    font-weight: bold;
+    text-align: left;
+}
+
 button:focus,
 input:focus {
     outline:0;

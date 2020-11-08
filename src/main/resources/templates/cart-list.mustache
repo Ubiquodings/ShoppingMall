@@ -1,454 +1,334 @@
 {{>layout/header}}
 
 
-<!--시현:주석시작-->
-<link rel="stylesheet" type="text/css" href="/css/cart-list-quantity.css">
+<link rel="stylesheet" type="text/css" href="/css/cart-list.css">
 
-<style>
-    body{
-        background-color: #f5f5f5;
-    }
-    .Product-img img{
-        width: 100%;
-    }
-    .main-section{
-        font-family: 'Roboto Condensed', sans-serif;
-        margin-top:100px;
-    }
-    .init_c {
-        border: none;
-        background: transparent;
-        width: 10px;
-    }
-    .init_td {
-        width: 10px;
-    }
-</style>
-
-<html>
-<head>
-    <!--    <title> 장바구니</title>-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-    <!--시현:주석 끝-->
-
-    <!--    <link rel="stylesheet" type="text/css" href="custom.css">-->
-    <!--    위에 링크 custom.css 자꾸 안뜬다고 떠서 주석 처리 했습니다!-->
-
-    <!--<script language="JavaScript">
-        /*$(document).ready(function() {
-            init();
-        });
-        function init () {
-            var sell_price;
-            var amount;
-            //var init = 0;
-            var form_list = document.getElementsByClassName("formlist");
-            console.log("form_list length " + form_list.length);
-            var amount_list = document.getElementsByClassName("amount");
-            console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...
-            var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
-            if(form_list.length == 1) {
-                sell_price = document.form.sell_price.value;
-                amount = document.form.amount.value;
-                document.form.sum.value = sell_price;
-                //document.init_c.value = 0;
-                $('.init_c').val('0');
-                hm = document.form.amount;
-                sum = document.form.sum;
-                if (hm.value < 0) {
-                    hm.value = 0;
-                }
-                sum.value = parseInt(hm.value) * sell_price;
-            }
-            else {
-                for(var i=0; i<form_list.length; i++) {
-                    sell_price = document.form[i].sell_price.value;
-                    amount = document.form[i].amount.value;
-                    document.form[i].sum.value = sell_price;
-                    //document.form[i].init_c.value = init;
-                    //document.init_c.value = i;
-                    console.log("i " + i);
-                    //$('.init_c')[i].val(i);
-                    $(init_list[i]).val(i);
-                    //init++;
-                    hm = document.form[i].amount;
-                    sum = document.form[i].sum;
-                    if (hm.value < 0) {
-                        hm.value = 0;
-                    }
-                    sum.value = parseInt(hm.value) * sell_price;
-                }
-            }
-        }*/
-        /*$('.minus-btn').on('click', function() {
-            console.log("minus button click");
-           // var minus_index = $('.minus-btn').index($(this));
-           /!*var minus_index = $('.formlist').index($(this));
-           console.log(minus_index); 싹다 안된다....*!/
-           // console.log($(this).index()); 이거도 안돼..
-           // console.log($(".minus-btn").index(this)); 안돼..
-            //var minus_index = $('.minus-btn').index($(this));
-            /!*var minus_index = $(".minus-btn").index(this);
-            console.log(minus_index);*!/
-            //https://stackoverflow.com/questions/35960324/getting-the-index-of-a-form-element
-            //여기있는 방법 적용
-            var all_sellprice = $('[name="sell_price"]');
-            var sellprice = $(this).siblings('[name="sell_price"]');
-            var minus_index = all_sellprice.index(sellprice.get(0));
-            console.log("minus index before");
-            console.log(minus_index);
-            console.log("minus index after");
-            hm = document.form[minus_index].amount;
-            sum = document.form[minus_index].sum;
-            if (hm.value > 1) {
-                hm.value -- ;
-                //sum.value = parseInt(hm.value) * sell_price;
-                sum.value = parseInt(hm.value) * sellprice;
-            }
-        });*/
-        function add () {
-            var add_index = document.form.getElementsByClassName('.plus-btn)
-            hm = document.form.amount.value;
-            sum = document.form.sum;
-            console.log(parseInt(hm));
-            hm.value++;
-            //hm.val()++;
-            sum.value = parseInt(hm.value) * sell_price;
-        }
-        function change () {
-            //index = document.getElementsByClassName("init_c");
-            var sum_index = $('.formlist').index($(this));
-            console.log(sum_index);
-            hm = document.form[sum_index].amount;
-            sum = document.form[sum_index].sum;
-            if (hm.value < 0) {
-                hm.value = 0;
-            }
-            sum.value = parseInt(hm.value) * sell_price;
-        }
-    </script>-->
-
-</head>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Roboto Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&amp;display=swap">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <!--
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    -->
 
 
-<body>
-<div class="container main-section">
-    <div class="row">
-        <div class="col-lg-12 pb-2">
-            <h4>장바구니</h4>
+    <!-- Material Design Bootstrap -->
+    <!--<link rel="stylesheet" href="../../../css/mdb-pro.min.css">-->
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    &lt;!&ndash; Bootstrap core CSS &ndash;&gt;
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+
+    <!-- Material Design Bootstrap Ecommerce -->
+    <!--<link rel="stylesheet" href="../../../css/mdb.ecommerce.min.css">-->
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/mdbootstrap/Ecommerce-Template-Bootstrap/master/css/mdb.min.css">
+    <!-- Your custom styles (optional) -->
+
+    <style type="text/css">/* Chart.js */
+    @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style></head>
+
+<body class="skin-light vsc-initialized" aria-busy="true">
+
+<!--Main Navigation-->
+<header>
+
+    <!-- Navbar -->
+
+    <!--<nav class="navbar navbar-expand-md navbar-light fixed-top scrolling-navbar top-nav-collapse">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="https://mdbecommerce.com/">
+                <i class="fab fa-mdb fa-3x" alt="mdb logo"></i>
+            </a>
+
+            &lt;!&ndash; Collapse button &ndash;&gt;
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            &lt;!&ndash; Links &ndash;&gt;
+            <div class="collapse navbar-collapse" id="basicExampleNav">
+
+                &lt;!&ndash; Right &ndash;&gt;
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="#!" class="nav-link navbar-link-2 waves-effect">
+                            <span class="badge badge-pill red">1</span>
+                            <i class="fas fa-shopping-cart pl-0"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle waves-effect" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="united kingdom flag m-0"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item waves-effect waves-light" href="#!">Action</a>
+                            <a class="dropdown-item waves-effect waves-light" href="#!">Another action</a>
+                            <a class="dropdown-item waves-effect waves-light" href="#!">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#!" class="nav-link waves-effect">
+                            Shop
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#!" class="nav-link waves-effect">
+                            Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#!" class="nav-link waves-effect">
+                            Sign in
+                        </a>
+                    </li>
+                    <li class="nav-item pl-2 mb-2 mb-md-0">
+                        <a href="#!" type="button" class="btn btn-outline-info btn-md btn-rounded btn-navbar waves-effect waves-light">Sign
+                            up</a>
+                    </li>
+                </ul>
+
+            </div>
+            &lt;!&ndash; Links &ndash;&gt;
         </div>
-        <div class="col-lg-12 pl-3 pt-3">
-            <table class="table table-hover border bg-white">
-                <thead>
-                <tr>
-                    <th scope="col">숫자</th>
-                    <th scope="col">상품정보</th>
-                    <th scope="col">가격</th>
-                    <th scope="col" style="width:10%;">수량</th>
-                    <th scope="col">상품금액</th>
-                    <th scope="col">상품삭제</th>
-                </tr>
-                </thead>
+    </nav>-->
 
 
-
-                {{#shopLists}} <!--List<ShopList>-->
-                    <!--                    &lt;!&ndash;loop ? ok&ndash;&gt; &lt;!&ndash;List<ShopListProduct>&ndash;&gt;-->
-
-                    <tbody>
-                    <tr>
-                        <td class="init_td"><input type=text class="init_c" name="init_c"></td>
-                        <td>
-                            <div class="row">
-                                <div class="col-lg-6 Product-img">
-                                    <img src="{{product.imgUrl}}" alt="..." class="img-responsive"/>
-                                </div>
-                                <div class="col-lg-6">
-                                    <h4 class="nomargin">{{product.name}}</h4>
-                                    <p>{{product.description}}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <!--<td> {{product.price}} </td>-->
-                        <td> {{product.price}} </td>
-                        <input type="hidden" class="cart-item-id" value="{{id}}"/>
-
-                        <!--                            <form name="form" method="get" onload="init()">-->
-                        <form name="form" class="formlist" method="get">
-                            <input type=hidden name="sell_price" value="{{product.price}}">
-                            <!--<input type=hidden name="init_c">-->
-                            <!--<input type="hidden" name="amount" value="{{count}}">-->
-
-                            <td data-th="Quantity">
-                                <div class="quantity">
-
-                                    <!--                                        <button class="minus-btn" type="button" name="button" value=" - " onclick="del();" >-->
-                                    <button class="minus-btn" type="button" name="button" value=" - ">
-
-                                        <img src="/icon/minus-cartlist.svg" alt="" />
-                                    </button>
-
-                                    <!--<input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">-->
-                                    <!-- 시현이 준 로직 추가하기-->
-                                    <input type="text" name="amount" class="amount" id="cart-item-count" value="{{count}}" onchange="change();">
-
-                                    <!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
-                                    <button class="plus-btn" type="button" name="button" value=" + ">
-
-                                        <img src="/icon/plus-cartlist.svg" alt="" />
-                                    </button>
-                                </div>
-                            </td>
-
-                            <td class="product_total_price">
-                                <!--<input type="text" name="sum" onload="init();" readonly>-->
-                                <input type="text" class="sum" name="sum" readonly>
-                                <span>원</span>
-                            </td>
-
-                        </form>
-
-                        <td class="actions" data-th="" style="width:10%;">
-                            <button class="btn btn-info btn-sm btn-cart-modify"><input type="hidden" value="{{id}}"/><i class="fa fa-refresh"></i></button>
-                            <!--<button class="btn btn-danger btn-sm" id="btn-cart-cancel"><i class="fa fa-trash-o"></i></button>-->
-                            <button class="btn btn-danger btn-sm btn-cart-cancel"><input type="hidden" value="{{id}}"/><i class="fa fa-trash-o"></i></button>
-                        </td>
-
-                        <!-- 시현이가 추가한 부분(바로 주문하기 버튼)-->
-                        <!-- 이건 바로 주문하기 버튼 생성 후 추가하려는 로직 입니다-->
-                        <!--<button type="button" class="btn btn-primary btn-lg btn-order-immediately-from-cart">
-                                <input type="hidden" id="cart-item-id" value="{{id}}"/>
-                                <input type="hidden" id="cart-item-count" value="{{count}}"/>
-                                주문
-                            </button>
-                            <input type="hidden" value="{{product.id}}" id="input-cart-order"/>-->
-                    </tr>
-
-                    </tbody>
-
-
-
-                {{/shopLists}}
-
-                <tfoot>
-                <tr>
-                    <td><a href="#" class="btn btn-warning text-white"><i class="fa fa-angle-left"></i> 쇼핑계속하기</a></td>
-                    <td colspan="2" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center" style="width:10%;"><strong>총금액:
-                        <input type="text" id="allsum">
-
-                    <td><a href="/payment" class="btn btn-success btn-block" id="btn-order-from-cart">주문하기<i class="fa fa-angle-right"></i></a></td>
-                    <!--<td><a href="/payment-min" class="btn btn-success btn-block" id="btn-order-from-cart">주문하기<i class="fa fa-angle-right"></i></a></td>-->
-                </tr>
-                </tfoot>
-            </table>
+    <div class="jumbotron color-grey-light mt-70">
+        <div class="d-flex align-items-center h-100">
+            <div class="container text-center py-5">
+                <h3 class="mb-0">Shopping cart</h3>
+            </div>
         </div>
     </div>
-</div>
-<!--<script>
-    $(document).ready(function() {
-        init();
-    });
-    function init () {
-        var sell_price;
-        var amount;
-        //var init = 0;
-        var form_list = document.getElementsByClassName("formlist"); // 잘나옴
-        console.log("form_list length " + form_list.length);
-        /*var amount_list = document.getElementsByClassName("amount");
-        console.log("amount length " + amount_list.length); //이거도 수만큼 잘 나오네...*/
 
-        /*var shopListId_list = document.getElementsByClassName("cart-item-id");
-        console.log("shoplistId length " + shopListId_list.length);*/ // 이거도 수만큼 잘나온다
+</header>
+<!--Main Navigation-->
 
-        /*var test = 0;*/
-        var totalSum = 0; // 채민: 임의대로 잠시 test -> totalSum으로 바꿔서 해볼게요!
-        var init_list = $(".init_c"); // 테이블에 번호를 주어서 form의 index를 가져와볼려고 시도..
-        if (form_list.length == 1) { // list에 하나 있을때는 따로 처리해줘야 하는듯.. 잘 안나온다.
-            sell_price = document.form.sell_price.value;
-            amount = document.form.amount.value;
-            document.form.sum.value = sell_price;
-            /*$('.init_c').val('0'); 그냥 1부터 시작하게 하는게...*/
-            $('.init_c').val('1');
-            hm = document.form.amount;
-            sum = document.form.sum;
-            if (hm.value < 0) {
-                hm.value = 0;
-            }
-            sum.value = parseInt(hm.value) * sell_price;
-            totalSum = sum.value;
-            document.getElementById("allsum").value = totalSum;
-        } else {
-            for (var i = 0; i < form_list.length; i++) {
-                sell_price = document.form[i].sell_price.value;
-                amount = document.form[i].amount.value;
-                document.form[i].sum.value = sell_price;
-                /*console.log("i " + i); 확인! 잘 나온다.*/
-                $(init_list[i]).val(i+1); // 0번째부터 나와서 그냥 +1 해줬다.
-                hm = document.form[i].amount;
-                sum = document.form[i].sum;
-                if (hm.value < 0) {
-                    hm.value = 0;
-                }
-                sum.value = parseInt(hm.value) * sell_price;
-                /**
-                 * 윤진언니 총 합계 수량 메소드
-                 * */
-                /*if(parseInt(sum.value)){
-                    test += parseInt(sum.value);
-                }*/
-                totalSum = totalSum + parseInt(sum.value);
-            }
-            /*document.getElementById("allsum").value = test;*/
-            document.getElementById("allsum").value = totalSum;
-        }
-    }
-    $('.minus-btn').on('click', function() {
-        var form_list = document.getElementsByClassName("formlist");
-        if (form_list.length == 1) {
-            console.log("minus button click alone");
-            var sell_price = document.form.sell_price.value;
-            hm = document.form.amount;
-            sum = document.form.sum;
-            if (hm.value > 1) {
-                hm.value -- ;
-                sum.value = parseInt(hm.value) * sell_price;
-                //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
-                // try 해보자..ㅎ
-                var totalSum = document.getElementById("allsum").value;
-                console.log("minus before totalSum " + totalSum);
-                totalSum = totalSum - sell_price;
-                document.getElementById("allsum").value = totalSum;
-                console.log("minus after totalSum " + totalSum);
-            }
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
-            /*if(parseInt(sum.value)){
-                test -= parseInt(sum.value);
-            }
-            document.getElementById("allsum").value = test;*/
-        }
-        else {
-            console.log("minus button click");
-            var minus_index = $('.minus-btn').index($(this));
-            console.log("minus_index " + minus_index);
-            var sell_price = document.form[minus_index].sell_price.value;
-            hm = document.form[minus_index].amount;
-            sum = document.form[minus_index].sum;
-            if (hm.value > 1) {
-                hm.value -- ;
-                sum.value = parseInt(hm.value) * sell_price;
-                //원래 totalSum에다가ㅏ sell_price를 빼면 되지 않을까?
-                // try 해보자..ㅎ
-                var totalSum = document.getElementById("allsum").value;
-                console.log("minus before totalSum " + totalSum);
-                totalSum = totalSum - sell_price;
-                document.getElementById("allsum").value = totalSum;
-                console.log("minus after totalSum " + totalSum);
-            }
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
-            /*&lt;!&ndash;이 밑에 함수가 안먹히는듯&ndash;&gt;
-            if(parseInt(sum.value)){
-                test -= parseInt(sum.value);
-            }
-            document.getElementById("allsum").value = test;*/
-        }
-    });
-    $('.plus-btn').on('click', function() {
-        var form_list = document.getElementsByClassName("formlist");
-        if (form_list.length == 1) {
-            console.log("plus button click alone");
-            var sell_price = document.form.sell_price.value;
-            hm = document.form.amount;
-            sum = document.form.sum;
-            hm.value ++ ;
-            sum.value = parseInt(hm.value) * sell_price;
-            var totalSum = document.getElementById("allsum").value;
-            console.log("plus before totalSum " + totalSum);
-            totalSum = parseInt(totalSum) + parseInt(sell_price);
-            document.getElementById("allsum").value = totalSum;
-            console.log("plus after totalSum " + totalSum);
-        }
-        else {
-            console.log("plus button click");
-            var plus_index = $('.plus-btn').index($(this));
-            console.log("plus_index " + plus_index);
-            var sell_price = document.form[plus_index].sell_price.value;
-            hm = document.form[plus_index].amount;
-            sum = document.form[plus_index].sum;
-            hm.value ++ ;
-            sum.value = parseInt(hm.value) * sell_price;
-            var totalSum = document.getElementById("allsum").value;
-            console.log("plus before totalSum " + totalSum);
-            totalSum = parseInt(totalSum) + parseInt(sell_price);
-            document.getElementById("allsum").value = totalSum;
-            console.log("plus after totalSum " + totalSum);
-        }
-    });
-    function change () {
-        var form_list = document.getElementsByClassName("formlist");
-        if (form_list.length == 1) {
-            var sell_price = document.form.sell_price.value;
-            var amount = document.form.amount.value;
-            document.form.sum.value = sell_price;
-            hm = document.form.amount;
-            sum = document.form.sum;
-            if (hm.value < 0) {
-                hm.value = 0;
-            }
-            sum.value = parseInt(hm.value) * sell_price;
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
-            &lt;!&ndash;이 밑에 함수가 안먹히는듯&ndash;&gt;
-            /*for (var i = 0; i < form_list.length; i++){
-                if(parseInt(sum.value)){
-                    test += parseInt(document.form[i].sum.value);
-                }
-                document.getElementById("allsum").value = test;
-            }*/
-            &lt;!&ndash; 채민: 이게 지금 하나라서 아마 document.form[i]가 안먹힐거에요 ㅜㅜ&ndash;&gt;
-            document.getElementById("allsum").value = sum.value;
-            console.log("change method after totalSum " + sum.value);
-        }
-        else {
-            var change_index = $('.amount').index();
-            console.log(change_index);
-            var sell_price = document.form[change_index].sell_price.value;
-            var amount = document.form[change_index].amount.value;
-            document.form[change_index].sum.value = sell_price;
-            hm = document.form[change_index].amount;
-            sum = document.form[change_index].sum;
-            if (hm.value < 0) {
-                hm.value = 0;
-            }
-            sum.value = parseInt(hm.value) * sell_price;
-            /**
-             * 윤진언니 총 합계 수량 메소드
-             * */
-            &lt;!&ndash;이 밑에 함수가 안먹히는듯&ndash;&gt;
-            /*for (var i = 0; i < form_list.length; i++){
-                if(parseInt(sum.value)){
-                    test += parseInt(document.form[i].sum.value);
-                }
-                document.getElementById("allsum").value = test;
-            }*/
-            var totalSum = 0;
-            for (var i = 0; i < form_list.length; i++){
-                totalSum = parseInt(totalSum) + parseInt(document.form[i].sum.value);
-            }
-            document.getElementById("allsum").value = totalSum;
-            console.log("change method after totalSum " + totalSum);
-        }
-    }
-</script>-->
-</body>
-</html>
+<!--Main layout-->
+<main>
+    <div class="container">
+
+        <!--Section: Block Content-->
+        <section class="mt-5 mb-4">
+
+            <!--Grid row-->
+            <div class="row">
+
+
+                <!--Grid column-->
+                <div class="col-lg-8">
+
+
+                    <!-- Card -->
+                    <div class="card wish-list mb-4">
+                        <div class="card-body">
+
+                            <h5 class="mb-4">장바구니 (<input type=text class="init_c" name="init_c"> items)</h5>
+
+                            {{#shopLists}}
+                            <div class="row mb-4">
+                                <div class="col-md-5 col-lg-3 col-xl-3">
+                                    <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                                        <!--<img class="img-fluid w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg" alt="Sample">-->
+                                        <img class="img-fluid w-100" src="{{product.imgUrl}}" alt="Sample">
+                                        <a href="#!">
+                                            <div class="mask waves-effect waves-light">
+                                                <!--<img class="img-fluid w-100" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg">-->
+                                                <img class="img-fluid w-100" src="{{product.imgUrl}}">
+                                                <!--<div class="mask rgba-black-slight waves-effect waves-light"></div>-->
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-lg-9 col-xl-9">
+                                    <div>
+                                        <form name="form" class="formlist" method="get">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <!--<h5>Blue denim shirt</h5>-->
+                                                <h5>{{product.name}}</h5>
+                                                <!--<p class="mb-3 text-muted text-uppercase small">Shirt - blue</p>
+                                                <p class="mb-2 text-muted text-uppercase small">Color: blue</p>
+                                                <p class="mb-3 text-muted text-uppercase small">Size: M</p>-->
+                                                <p class="mb-3 text-muted text-uppercase small">{{product.description}}</p>
+                                            </div>
+
+                                            <input type="hidden" class="cart-item-id" value="{{id}}"/>
+
+                                            <div>
+                                                <!--<form name="form" class="formlist" method="get">-->
+                                                <input type=hidden name="sell_price" value="{{product.price}}">
+                                                <!--<div class="def-number-input number-input safari_only mb-0 w-100">-->
+                                                <div class="quantity">
+                                                    <!--<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+                                                    <input class="quantity" min="0" name="quantity" value="1" type="number">
+                                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>-->
+
+                                                    <button class="minus-btn" type="button" name="button" value=" - ">
+
+                                                        <img src="/icon/minus-cartlist.svg" alt="" />
+                                                    </button>
+
+                                                    <!--<input type="text" name="amount" class="amount" value="{{count}}" onchange="change();">-->
+                                                    <!-- 시현이 준 로직 추가하기-->
+                                                    <input type="text" name="amount" class="amount" id="cart-item-count" value="{{count}}" onchange="change();">
+
+                                                    <!--                                        <button class="plus-btn" type="button" name="button" value=" + " onclick="add();">-->
+                                                    <button class="plus-btn" type="button" name="button" value=" + ">
+
+                                                        <img src="/icon/plus-cartlist.svg" alt="" />
+                                                    </button>
+
+                                                </div>
+                                                <!--<small id="passwordHelpBlock" class="form-text text-muted text-center">
+                                                    (Note, 1 piece)
+                                                </small>-->
+                                                <!--</form>-->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <!--<a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i class="fas fa-trash-alt mr-1"></i> Remove item </a>
+                                                <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i class="fas fa-heart mr-1"></i> Move to wish list </a>-->
+
+                                                <a type="button" class ="small btn-cart-cancel"><input type="hidden" value="{{id}}"/><i class="fas fa-trash-alt mr-1 trashicon"></i> 삭제</a> <br>
+                                                <a type="button" class="small btn-cart-modify"><input type="hidden" value="{{id}}"/><i class="fas fa-refresh mr-1 refreshicon"></i> 새로고침 </a>
+
+                                                <!--<button class="btn btn-danger btn-sm btn-cart-cancel"><input type="hidden" value="{{id}}"/><i class="fas fa-trash-alt mr-1"></i>Remove item</button>
+                                                <button class="btn-sm btn-cart-modify"><input type="hidden" value="{{id}}"/><i class="fas fa-refresh mr-1"></i>Move to wish list</button>-->
+                                            </div>
+                                            <span class="product_total_price"><input type="hidden" class="sum" name="sum" readonly></span>
+                                            <p class="mb-0 p_price"><span>{{product.price}}</span>원</p>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-4">
+                            {{/shopLists}}
+
+                            <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
+                                items to your cart does not mean booking them.</p>
+
+                        </div>
+                    </div>
+                    <!-- Card -->
+
+
+                    <!-- Card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h5 class="mb-4">Expected shipping delivery</h5>
+
+                            <p class="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
+                        </div>
+                    </div>
+                    <!-- Card -->
+
+                    <!-- Card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h5 class="mb-4">We accept</h5>
+
+                            <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" alt="Visa">
+                            <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg" alt="American Express">
+                            <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" alt="Mastercard">
+                            <img class="mr-2" width="45px" src="https://z9t4u9f6.stackpathcdn.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png" alt="PayPal acceptance mark">
+                        </div>
+                    </div>
+                    <!-- Card -->
+
+                </div>
+                <!--Grid column-->
+
+
+                <!--Grid column-->
+                <div class="col-lg-4">
+
+                    <!-- Card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h5 class="mb-3">The total amount of</h5>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                    총 상품 금액
+                                    <span><input type="text" id="allsum">원</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    배송비
+                                    <span>무료</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                    <div>
+                                        <strong>결제 금액</strong>
+                                        <strong>
+                                            <p class="mb-0">(including VAT)</p>
+                                        </strong>
+                                    </div>
+                                    <span><input type="text" id="allsum_final">원</span>
+                                </li>
+                            </ul>
+
+                            <!--<button type="button" class="btn btn-primary btn-block waves-effect waves-light">주문하기</button>-->
+                            <a href="/payment" type="button" class="btn btn-primary btn-block waves-effect waves-light" id="btn-order-from-cart">
+                                GO TO CHECKOUT
+                            </a>
+
+                        </div>
+                    </div>
+                    <!-- Card -->
+
+
+                    <!-- Card -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <a class="dark-grey-text d-flex justify-content-between" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Add a discount code (optional)
+                                <span><i class="fas fa-chevron-down pt-1"></i></span>
+                            </a>
+
+                            <div class="collapse" id="collapseExample">
+                                <div class="mt-3">
+                                    <div class="md-form md-outline mb-0">
+                                        <input type="text" id="discount-code" class="form-control font-weight-light" placeholder="Enter discount code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card -->
+
+                </div>
+                <!--Grid column-->
+
+
+            </div>
+            <!--Grid row-->
+
+        </section>
+        <!--Section: Block Content-->
+
+    </div>
+</main>
+<!--Main layout-->
+
+<div class="hiddendiv common"></div></body></html>
 
 <!--<script src="/js/socket/common.js"></script>-->
 <script src="/js/app/cart-list-action.js"></script>
