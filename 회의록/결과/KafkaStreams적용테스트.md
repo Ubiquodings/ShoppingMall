@@ -8,7 +8,7 @@
 
 화면
 
-![스트림즈예제_UI화면]([D:%5Cdownloads%5C%EC%8A%A4%ED%8A%B8%EB%A6%BC%EC%A6%88%EC%98%88%EC%A0%9C_UI%ED%99%94%EB%A9%B4.PNG](https://github.com/Ubiquodings/ShoppingMall/blob/master/%ED%9A%8C%EC%9D%98%EB%A1%9D/%EA%B2%B0%EA%B3%BC/%EC%8A%A4%ED%8A%B8%EB%A6%BC%EC%A6%88%EC%98%88%EC%A0%9C_UI%ED%99%94%EB%A9%B4.PNG))
+![스트림즈예제_UI화면](https://github.com/Ubiquodings/ShoppingMall/blob/master/%ED%9A%8C%EC%9D%98%EB%A1%9D/%EA%B2%B0%EA%B3%BC/%EC%8A%A4%ED%8A%B8%EB%A6%BC%EC%A6%88%EC%98%88%EC%A0%9C_UI%ED%99%94%EB%A9%B4.PNG))
 
 type: click, shoplist 에 따라 count 집계하는 테스트입니다.
 
