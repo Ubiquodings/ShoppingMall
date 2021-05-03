@@ -72,7 +72,7 @@ public class RestAPIController {
 
     @PostMapping("/api/categories/new")
     public CategoryResponseDto save(@RequestBody CategorySaveRequestDto requestDto) {
-//        logger.info("\n"+requestDto.toString());
+//        log.info("\n"+requestDto.toString());
         return new CategoryResponseDto(categoryService.saveCategory(requestDto));
     }
 
@@ -445,6 +445,7 @@ public class RestAPIController {
 
         Order order = byId.get();
         List<OrderProduct> orderProducts = order.getOrderProducts();
+
         List<OrderProductResponseDto> resultProductList = new ArrayList<>();
         orderProducts.forEach(orderProduct -> {
             resultProductList.add(new OrderProductResponseDto(orderProduct.getProduct(), orderProduct.getCount()));

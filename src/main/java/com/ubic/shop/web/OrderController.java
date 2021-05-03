@@ -11,6 +11,7 @@ import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.OrderService;
 import com.ubic.shop.service.ShopListService;
+import com.ubic.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ public class OrderController {
     private final ShopListService shopListService;
     private final CouponRepository couponRepository;
     private final ProductRepository productRepository;
+    private final UserService userService;
 
     @GetMapping("/orders")
     public String list(Model model, @LoginUser SessionUser user, HttpServletRequest request) { // 화면 :: 채민
@@ -49,6 +51,7 @@ public class OrderController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             clientId = user.getId();
+            userService.updateLastActivatedTime(clientId);
         } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
@@ -61,8 +64,8 @@ public class OrderController {
         model.addAttribute("orderList", // List<Order>
                 allOrdered);
 
-        model.addAttribute("buyTogetherList", // List<Order>
-                productRepository.findProductsByLimit(4L));
+//        model.addAttribute("buyTogetherList", // List<Order>
+//                productRepository.findProductsByLimit(4L));
 
         return "order-list";
     }

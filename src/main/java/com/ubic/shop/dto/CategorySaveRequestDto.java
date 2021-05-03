@@ -4,8 +4,9 @@ import com.ubic.shop.domain.Category;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Getter
+@Getter @ToString
 @NoArgsConstructor
 public class CategorySaveRequestDto {
     private long kurlyId;

@@ -1,6 +1,6 @@
 database: hsqldb
 spring:
-  profiles.active: local
+  profiles.active: prod #local
   profiles.include: oauth,kafka,db
   session.store-type: jdbc
 

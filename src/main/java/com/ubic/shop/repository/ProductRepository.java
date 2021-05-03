@@ -43,4 +43,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Query(value = "select p from Product p where p.id in :productIdList")
     Page<Product> findByProductIdList(@Param("productIdList") List<Long> productIdList, Pageable pageable);
 
+    @Query(value = "select p from Product p where p.id in :productIdList")
+    List<Product> findByProductIdListNoPage(@Param("productIdList") List<Long> productIdList);
+
 }

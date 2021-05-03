@@ -4,6 +4,9 @@ import com.ubic.shop.dto.ProductIdListResponseDto;
 import com.ubic.shop.elasticsearch.domain.CategoryScore;
 import com.ubic.shop.elasticsearch.domain.ClickProductAction;
 import com.ubic.shop.elasticsearch.domain.RecommendList;
+import com.ubic.shop.repository.ProductRepository;
+import com.ubic.shop.repository.UserRepository;
+import com.ubic.shop.repository.user_number.ProductViewUserNumberRepository;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
@@ -23,21 +26,48 @@ public class ScheduledTasks {
 
     private final RestTemplate restTemplate;
     private final UbicConfig ubicConfig;
+    private final UserRepository userRepository;
+    private final ProductViewUserNumberRepository productViewUserNumberRepository;
 
 //    @Scheduled(fixedDelay = 2000)
 //    public void reportCurrentTime() {
 //        log.info("test ScheduledTask !!"); // ok
 //    }
 
-    @Scheduled(fixedDelay = 4000) // 20s
+    @Builder @ToString
+    private static class CFRequestDto {
+        List<Long> requestUserIdList;
+        List<Long> requestProductIdList;
+    }
+
+    @Builder @ToString
+    private static class CFResponseDto {
+
+    }
+
+
+    @Scheduled(fixedDelay = 30*1000) // 30s
     public void getDjangoData() {
         /* 임시로 가져올 데이터
         * 11794,6079,9694,20522,5607,8328,10121,45417,11809,46176,17745,18456,18616,45552,2171,5424,2095,2123,2000,6000,1071,987,5968,1045,1784,1016,2045,2140
         * */
         log.info("\n4초 간격으로 데이터 분석 요청합니다");
+        List<Long> requestUserIdList = userRepository
+                .findUserIdByConTimeArrange(LocalDateTime.now(), LocalDateTime.now().minusMinutes(30L));
+        List<Long> requestProductIdList = productViewUserNumberRepository.findProductIdByConUserNumber();
+//        log.info("\nuserId\n"+requestUserIdList.toString()+
+//                "\nproductId\n"+requestProductIdList.toString());
+        CFRequestDto buildCFRequestDto = CFRequestDto.builder()
+                .requestUserIdList(requestUserIdList)
+                .requestProductIdList(requestProductIdList)
+                .build();
 
         ProductIdListResponseDto result = null;
         try {
+            restTemplate.postForObject(
+                    ubicConfig.getDjangoServerUrl()+"",
+                    buildCFRequestDto, Object.class);
+
             result = restTemplate.getForObject(
                     ubicConfig.getDjangoServerUrl()+
                             "/cf/get-product-ids1/",

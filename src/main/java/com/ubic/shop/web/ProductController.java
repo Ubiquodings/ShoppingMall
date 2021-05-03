@@ -22,6 +22,7 @@ import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.ProductService;
 import com.ubic.shop.service.RecommendService;
 import com.ubic.shop.service.TagService;
+import com.ubic.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,6 +56,7 @@ public class ProductController {
     private final TagService tagService;
     private final ProductRepository productRepository;
     private final TagRepository tagRepository;
+    private final UserService userService;
 
 //    private
 
@@ -76,6 +78,7 @@ public class ProductController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             userId = user.getId();
+            userService.updateLastActivatedTime(userId);
         } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
@@ -106,6 +109,7 @@ public class ProductController {
             model.addAttribute("userName", user.getName());
             clientId = user.getId().toString();
             userId = user.getId();
+            userService.updateLastActivatedTime(userId);
         } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));
@@ -131,6 +135,7 @@ public class ProductController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             userId = user.getId();
+            userService.updateLastActivatedTime(userId);
         } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));

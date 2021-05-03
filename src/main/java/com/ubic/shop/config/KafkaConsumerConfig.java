@@ -17,7 +17,7 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
-public class DefaultConsumerConfig {
+public class KafkaConsumerConfig {
 
     @Autowired
     private KafkaProperties kafkaProperties;

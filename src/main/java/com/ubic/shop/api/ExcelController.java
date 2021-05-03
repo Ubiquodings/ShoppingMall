@@ -166,6 +166,7 @@ public class ExcelController {
                     .name(row.getCell(1).getStringCellValue())
                     .build();
 
+//            log.info("\n"+requestDto.toString());
             CategorySaveRequestDto result = restTemplate.postForObject(
                     ubicConfig.baseUrl + "/api/categories/new",
                     /*body*/ requestDto, CategorySaveRequestDto.class);

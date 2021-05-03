@@ -312,6 +312,7 @@ public class SocketRecommendListController {
 //        log.info();
         log.info("\n상품 ID: " + productId+"\n해당 상품과 이런 상품도 함께 구매했어요 : " + productIdList.toString());
 
+
         String resultString = objectMapper.writeValueAsString(collect);
 //        log.info("\nupdateDetailBuyTogetherRecommendedList : query-result :" + resultString);
 

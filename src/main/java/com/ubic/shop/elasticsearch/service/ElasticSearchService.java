@@ -45,8 +45,7 @@ public class ElasticSearchService {
 
     public void updateCategoryScore(ClickActionRequestDto received) {
 
-        // 사용자 행동 수집 -- ES 저장
-//        log.info("\n사용자행동 저장: 카테고리 "+received.getCategoryId());
+        // 사용자 행동 수집 -- ElasticSearch에 저장
         ClickProductAction clickProductAction = ClickProductAction.builder()
                 .now(LocalDateTime.now().toString())
                 .userId(received.getUserId().toString())
@@ -54,17 +53,13 @@ public class ElasticSearchService {
                 .categoryId(received.getCategoryId())
                 .actionType(received.getActionType())
                 .build();
-//        log.info("\n사용자행동 객체: "+clickProductAction.toString());
-//        new ClickProductAction(,,);
+
         IndexQuery indexQuery = new IndexQueryBuilder()
                 .withId(received.getUserId().toString() + clickProductAction.getNow()) // _id : userId
-                .withObject(clickProductAction) // class string?
+                .withObject(clickProductAction)
                 .build();
-//        log.info("\n사용자 ID: " + received.getUserId());
         log.info("\nElasticSearch 에 저장합니다 : " + clickProductAction);
         esTemplate.index(indexQuery);
-
-//        log.info("\n click : " + esTemplate.index(indexQuery) + "\n");
 
     }
 

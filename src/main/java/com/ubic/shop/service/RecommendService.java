@@ -214,13 +214,15 @@ public class RecommendService {
         log.info("\nDjango 응답 [추천 상품ID 리스트] : "+result.toString()); // ok
 
         // 페이징
-        PageRequest pageRequest = PageRequest.of(/*0*/(int)page, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
-
+//        PageRequest pageRequest = PageRequest.of(/*0*/(int)page, ubicConfig.productDetailPageSize, Sort.by(Sort.Direction.DESC, "name"));
+//
         List<Long> productIdList = result.getProductIdList();
-        Page<Product> byProductIdList = productRepository.findByProductIdList(productIdList, pageRequest);
+//        Page<Product> byProductIdList = productRepository.findByProductIdList(productIdList, pageRequest);
+
+        List<Product> byProductIdList = productRepository.findByProductIdListNoPage(productIdList);
         // 쿼리문이 잘 실행되는지 확인해야 한다 oo 아주 잘 온다!
 
-        return byProductIdList.getContent();
+        return byProductIdList;
     }
 
 }

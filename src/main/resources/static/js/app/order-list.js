@@ -14,6 +14,7 @@ var orderList = {
             var orderId = this.children[0].value;
             console.log(orderId);
 
+            // 해당 주문 목록에 대한 추천상품 가져오기
             $.ajax({
                 type: 'GET',
                 url: '/api/order-products/' + orderId,
@@ -24,6 +25,7 @@ var orderList = {
                 // 결과 파싱
                 let resultString = JSON.stringify(result);
                 let productList = JSON.parse(resultString);
+
 
                 // 화면 준비
                 let modalContentUI = document.querySelector('#order-product-list');
@@ -61,9 +63,9 @@ var orderList = {
                     );
                 });
 
-                if(stompClient.connected){
+                if (stompClient.connected) {
 
-                    /*[구독 2] 목록에서 함께산 상품목록*/
+                    /*[구독 2] TODO 목록에서 함께산 상품목록*/
                     /* send: /app/products/buywith/order-list/{userId}/page/{currentPage} // 소켓 서버에서 userId 를 사용하진 않지만 , 서버>클라 데이터 전송하기 위해!
                     , subscribe: /topic/products/buywith/order-list/{userId}
                     * */
@@ -71,11 +73,21 @@ var orderList = {
                         let className = 'order-list-buy-together-list';
                         let resultList = JSON.parse(result.body); /*JSON.stringify(*/
                         // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                        let cur_index = 0;
+                        let item_list_size=4;
 
                         // 결과로 화면 조작
-                        _this.updateRecommendedList(resultList, className);
-                    }, {});
+                        // 결과로 화면 조작: 4개씩 다음으로 이동할 방법
+                        setInterval(function() {
+                            console.log(cur_index);
+                            _this.updateRecommendedList(
+                                resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size),
+                                className);
+                            cur_index += item_list_size;
+                        }, 2000);
 
+                        // _this.updateRecommendedList(resultList, className);
+                    }, {});
 
                     /*목록 주기적 요청*/
                     _this.setSchedulingTasks(stompClient, userId, currentPage, productIdList);
@@ -91,19 +103,17 @@ var orderList = {
 
     },
     /*스케줄링 작업*/
-    setSchedulingTasks: function(stompClient, userId, currentPage, productIdList){
+    setSchedulingTasks: function (stompClient, userId, currentPage, productIdList) {
         // 추천 목록 주기적 요청
-        setInterval(function(){
-            currentPage += 1;
-
-            /*[요청 1] 해당 상품과 이런 상품도 함께 구매했어요*/
-            stompClient.send('/app/products/buywith/order-list/' + userId+'/page/'+currentPage,
-                {}, {'productIdList':productIdList});
-
-        }, 2000);
+        // setInterval(function () {
+        //     currentPage += 1;
+        //
+        // }, 2000);
+        // 한번만 요청
+        /*[요청 1] 해당 상품과 이런 상품도 함께 구매했어요*/
+        stompClient.send('/app/products/buywith/order-list/' + userId + '/page/' + currentPage,
+            {}, {'productIdList': productIdList});
     },
-
-
 
 
     /*order-list 추천목록 갱신*/

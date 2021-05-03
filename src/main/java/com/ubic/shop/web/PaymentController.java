@@ -9,6 +9,7 @@ import com.ubic.shop.dto.SessionUser;
 import com.ubic.shop.repository.CouponRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.PaymentService;
+import com.ubic.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
+    private final UserService userService;
 
     @GetMapping("/payment")
     public String payment(Model model, @LoginUser SessionUser user, HttpServletRequest request) {
@@ -36,6 +38,7 @@ public class PaymentController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             clientId = user.getId();
+            userService.updateLastActivatedTime(clientId);
         } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0, 5));

@@ -23,6 +23,7 @@ public class CategorySevice {
     @Transactional
     public Category saveCategory(CategorySaveRequestDto requestDto) {
         Category category = requestDto.toEntity();
+//        log.info("\n"+category.toString());
         if(!validateDuplicateCategory(category)){ // false 이면
             return null;
         } //중복 카테고리 검증 true 이면 정상

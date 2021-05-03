@@ -20,21 +20,27 @@ var productDetail = {
         let socket = new SockJS('/websocket');
         let stompClient = Stomp.over(socket);
         let currentPage = 0;
+        let cur_index = 0;
+        let item_list_size=4;
 
         stompClient.connect(/*header*/{}, function (frame) {
 
 
-            /*[구독 1] 해당 상품과 이런 상품도 함께 구매했어요*/
+            /*[구독 1] TODO 해당 상품과 이런 상품도 함께 구매했어요*/
             /* send: /app/products/buywith/{productId}/page/{currentPage} // 소켓 서버에서 userId 를 사용하진 않지만 , 서버>클라 데이터 전송하기 위해!
             , subscribe: /topic/products/buywith/{productId}
             * */
             stompClient.subscribe('/topic/products/buywith/' + productId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 let className = 'product-detail-buy-together-list';
-                let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
+                let resultList = JSON.parse(result.body); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
 
-                // 결과로 화면 조작
-                _this.updateRecommendedList(resultList, className);
+                // 결과로 화면 조작: 4개씩 다음으로 이동할 방법
+                setInterval(function() {
+                    console.log(cur_index);
+                    _this.updateRecommendedList(resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size), className);
+                    cur_index += item_list_size;
+                }, 2000);
             }, {});
 
 
@@ -68,15 +74,14 @@ var productDetail = {
 
     },
     setSchedulingTasks: function(stompClient, productId, currentPage){
-        // 추천 목록 주기적 요청
-        setInterval(function(){
-            currentPage += 1;
+        // 추천 목록 요청
+        /*[요청 1] 해당 상품과 이런 상품도 함께 구매했어요*/
+        stompClient.send('/app/products/buywith/' + productId+'/page/'+currentPage,
+            {}, {});
 
-            /*[요청 1] 해당 상품과 이런 상품도 함께 구매했어요*/
-            stompClient.send('/app/products/buywith/' + productId+'/page/'+currentPage,
-                {}, {});
-
-        }, 2000);
+        // setInterval(function(){ //주기적
+        //     currentPage += 1;
+        // }, 2000);
     },
     requestDoNotHesitateCoupon: function (stompClient, userId, productId) {
         setTimeout(function () {

@@ -17,45 +17,74 @@ var dashBoard = {
 
         stompClient.connect(/*header*/{}, function (frame) {
 
-            // TODO 개인화
             /*[구독 1] 내가 본 상품의 연관 상품*/
             /* send: /app/products/related/{userId}/page/{currentPage}
             , subscribe: /topic/products/related/{userId} */
-            stompClient.subscribe('/topic/products/related/' + userId, function (result) {
-                let className = 'dashboard-recommendation-itemCf';
-                let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
-                // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+            // stompClient.subscribe('/topic/products/related/' + userId, function (result) {
+            //     let className = 'dashboard-recommendation-itemCf';
+            //     let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
+            //     // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+            //     let cur_index = 0;
+            //     let item_list_size=4;
+            //
+            //
+            //     // 결과로 화면 조작
+            //     setInterval(function() {
+            //         console.log(cur_index);
+            //         _this.updateRecommendedList(
+            //             resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size),
+            //             className);
+            //         cur_index += item_list_size;
+            //     }, 2000);
+            //
+            //     // _this.updateRecommendedList(resultList, className);
+            // }, {});
 
-                // 결과로 화면 조작
-                _this.updateRecommendedList(resultList, className);
-            }, {});
-
-            // TODO 개인화
-            /*[구독 2] xx님을 위한 추천상품*/
+            /*[구독 2] TODO xx님을 위한 추천상품*/
             /* send: /app/products/usercf/{userId}/page/{currentPage}
             , subscribe: /topic/products/usercf/{userId} */
             stompClient.subscribe('/topic/products/usercf/' + userId, function (result) {
                 let className = 'dashboard-recommendation-userCf';
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                let cur_index = 0;
+                let item_list_size=4;
+
 
                 // 결과로 화면 조작
-                _this.updateRecommendedList(resultList, className);
+                setInterval(function() {
+                    console.log(cur_index);
+                    _this.updateRecommendedList(
+                        resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size),
+                        className);
+                    cur_index += item_list_size;
+                }, 2000);
+
+                // _this.updateRecommendedList(resultList, className);
             }, {});
 
-            /*[구독 3] 요즘 잘나가는 상품*/
+            /*[구독 3] TODO 요즘 잘나가는 상품*/
             /* send: /app/products/freq/page/{currentPage}
             , subscribe: /topic/products/freq */
             stompClient.subscribe('/topic/products/freq', function (result) {
                 let className = 'dashboard-recommendation-freq';
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                let cur_index = 0;
+                let item_list_size=4;
+
 
                 // 결과로 화면 조작
-                _this.updateRecommendedList(resultList, className);
+                setInterval(function() {
+                    console.log(cur_index);
+                    _this.updateRecommendedList(
+                        resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size),
+                        className);
+                    cur_index += item_list_size;
+                }, 2000);
+
+                // _this.updateRecommendedList(resultList, className);
             }, {});
-
-
 
             /*스케줄링 작업 설정: 추천목록 갱신*/
             _this.setSchedulingTasks(stompClient, userId, currentPage);
@@ -64,22 +93,23 @@ var dashBoard = {
     },
     setSchedulingTasks: function(stompClient, userId, currentPage){
         // 추천 목록 주기적 요청
-        setInterval(function(){
-            currentPage += 1;
+        // setInterval(function(){
+        //     currentPage += 1;
+        //
+        // }, 2000);
+        // 추천 목록 한번만 요청
+        /*[요청 1] 내가 본 상품의 연관 상품*/
+        stompClient.send('/app/products/related/'+userId+'/page/' + currentPage,
+            {}, {});
 
-            /*[요청 1] 내가 본 상품의 연관 상품*/
-            stompClient.send('/app/products/related/'+userId+'/page/' + currentPage,
-                {}, {});
+        /*[요청 2] xx님을 위한 추천상품*/
+        stompClient.send('/app/products/usercf/'+userId+'/page/' + currentPage,
+            {}, {});
 
-            /*[요청 2] xx님을 위한 추천상품*/
-            stompClient.send('/app/products/usercf/'+userId+'/page/' + currentPage,
-                {}, {});
+        /*[요청 3] 요즘 잘나가는 상품*/
+        stompClient.send('/app/products/freq/page/' + currentPage,
+            {}, {});
 
-            /*[요청 3] 요즘 잘나가는 상품*/
-            stompClient.send('/app/products/freq/page/' + currentPage,
-                {}, {});
-
-        }, 2000);
     },
     updateRecommendedList: function(resultList, className){
         let _this = this;

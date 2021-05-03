@@ -8,7 +8,7 @@ import javax.persistence.*;
 //import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
-@Getter
+@Getter @ToString
 @Setter(AccessLevel.PROTECTED)
 public class Category extends BaseTimeEntity {
 

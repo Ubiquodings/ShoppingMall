@@ -18,22 +18,31 @@ var dashAndProductDetail = {
 
         stompClient.connect(/*header*/{}, function (frame) {
 
-            // TODO 개인화
-            /*[구독 1] xx님을 위한 할인 상품*/
+            /*[구독 1] TODO xx님을 위한 할인 상품*/
             /* send: /app/products/discount/{userId}/page/{currentPage}
             , subscribe: /topic/products/discount/{userId}
             * */
             stompClient.subscribe('/topic/products/discount/' + userId, function (result) { // 콜백 호출이 안되네! 왜지!??
                 let className = 'product-detail-recommended-list';
-                let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
+                let resultList = JSON.parse(result.body); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                let cur_index = 0;
+                let item_list_size=4;
 
                 // 결과로 화면 조작
-                _this.updateRecommendedList(resultList, className);
+                setInterval(function() {
+                    console.log(cur_index);
+                    _this.updateRecommendedList(
+                        resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size),
+                        className);
+                    cur_index += item_list_size;
+                }, 2000);
+
+                // _this.updateRecommendedList(resultList, className);
             }, {});
 
-            // TODO 개인화
-            /*[구독 2] 상품 카테고리 기반 목록*/
+
+            /*[구독 2] TODO 상품 카테고리 기반 목록*/
             /* send: /app/products/{userId}/page/{currentPage}
             , subscribe: /topic/products/{userId}
             * */
@@ -41,9 +50,19 @@ var dashAndProductDetail = {
                 let className = 'recommended-product-list';
                 let resultList = JSON.parse(result.body ); /*JSON.stringify(*/
                 // console.log('/topic/products/{userId} 결과 :  \n'+ resultList);
+                let cur_index = 0;
+                let item_list_size=4;
 
                 // 결과로 화면 조작
-                _this.updateRecommendedList(resultList, className);
+                setInterval(function() {
+                    console.log(cur_index);
+                    _this.updateRecommendedList(
+                        resultList.slice(cur_index%resultList.length, (cur_index%resultList.length)+item_list_size),
+                        className);
+                    cur_index += item_list_size;
+                }, 2000);
+
+                // _this.updateRecommendedList(resultList, className);
             }, {});
 
 
@@ -56,18 +75,20 @@ var dashAndProductDetail = {
     },
     setSchedulingTasks: function(stompClient, userId, currentPage){
         // 추천 목록 주기적 요청
-        setInterval(function(){
-            currentPage += 1;
+        // setInterval(function(){
+        //     currentPage += 1;
+        //
+        // }, 2000);
+        // 추천 목록 한번만 요청
+        /*[요청 1] xx님을 위한 할인 상품*/
+        stompClient.send('/app/products/discount/'+userId+'/page/' + currentPage,
+            {}, {});
 
-            /*[요청 1] xx님을 위한 할인 상품*/
-            stompClient.send('/app/products/discount/'+userId+'/page/' + currentPage,
-                {}, {});
+        /*[요청 2] 상품 카테고리 기반 목록*/
+        // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
+        stompClient.send('/app/products/' + userId + '/page/'+currentPage,
+            {}, {});
 
-            /*[요청 2] 상품 카테고리 기반 목록*/
-            // 디테일 추천목록 2초마다 받아서 화면에 뿌리기
-            stompClient.send('/app/products/' + userId + '/page/'+currentPage,
-                {}, {});
-        }, 2000);
     },
     updateRecommendedList: function(resultList, className){
         let _this = this;

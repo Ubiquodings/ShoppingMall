@@ -29,10 +29,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	implementation 'org.springframework.kafka:spring-kafka'  // kafka
-	compileOnly 'org.projectlombok:lombok'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2:1.4.199' // 1.4.199
 	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	compile('org.webjars:stomp-websocket:2.3.3')
@@ -40,7 +41,7 @@ dependencies {
 	compile('org.springframework.session:spring-session-jdbc')
 
 	// input excel file
-	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
+	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.0'
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
 	// elastic search

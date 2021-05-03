@@ -7,6 +7,7 @@ import com.ubic.shop.domain.coupon.CouponStatus;
 import com.ubic.shop.dto.SessionUser;
 import com.ubic.shop.repository.CouponRepository;
 import com.ubic.shop.repository.UserRepository;
+import com.ubic.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
+    private final UserService userService;
 
     @GetMapping("/mypage")
     public String detail(Model model, @LoginUser SessionUser user, HttpServletRequest request){
@@ -31,6 +33,7 @@ public class UserController {
         if(user != null){
             model.addAttribute("userName", user.getName());
             userId = user.getId();
+            userService.updateLastActivatedTime(userId);
         }else{ // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0,5));
@@ -48,6 +51,7 @@ public class UserController {
         if(user != null){
             model.addAttribute("userName", user.getName());
             userId = user.getId();
+            userService.updateLastActivatedTime(userId);
         }else{ // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
             model.addAttribute("clientId", nonMember.getName().substring(0,5));

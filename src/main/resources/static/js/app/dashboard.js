@@ -9,7 +9,7 @@ var dashboard = {
         let _this = this;
         $(document).ready(function () { // 문서가 준비되면
             _this.getUserCfRecommendationList();
-            _this.getItemCfRecommendationList();
+            // _this.getItemCfRecommendationList();
             _this.getFreqRecommendationList();
             _this.getDiscountRecommendationList();
         });
