@@ -1,9 +1,8 @@
 package com.ubic.shop.domain;
+
 import lombok.*;
-//import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +13,11 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "order_id")
     private Long id;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; //주문 회원
@@ -28,8 +28,8 @@ public class Order extends BaseTimeEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
-    private String title="";
-    private long totalPrice=0;
+    private String title = "";
+    private long totalPrice = 0;
 
     //==연관관계 메서드==//
     public void addOrderProduct(OrderProduct orderProduct) {
@@ -49,20 +49,20 @@ public class Order extends BaseTimeEntity {
     }
 
     //==비즈니스 로직==//
-    /** 주문 취소 */
-    public void cancel() { // TODO  Delivery 추가 ?
-//        if (delivery.getStatus() == DeliveryStatus.COMP) {
-//            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니
-//                    다.");
-//        }
+
+    /**
+     * 주문 취소
+     */
+    public void cancel() {
         this.setStatus(OrderStatus.CANCEL);
         for (OrderProduct orderProduct : orderProducts) { // TODO 양방향 설정해야 할듯
             orderProduct.cancel();
         }
     }
 
-    //==조회 로직==//
-    /** 전체 주문 가격 조회 */
+    /**
+     * 전체 주문 가격 조회
+     */
     public int getTotalPrice() {
         int totalPrice = 0;
         for (OrderProduct orderProduct : orderProducts) {
@@ -72,27 +72,8 @@ public class Order extends BaseTimeEntity {
     }
 
     public void initTitleAndTotalPrice() {
-        this.title = orderProducts.get(0).getProduct().getName()+" 그 외 "+(orderProducts.size()-1)+"종류";
+        this.title = orderProducts.get(0).getProduct().getName() + " 그 외 " + (orderProducts.size() - 1) + "종류";
         this.totalPrice = getTotalPrice();
     }
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "delivery_id")
-//    private Delivery delivery; //배송정보
-
-    //==연관관계 메서드==//
-//    public void setUser(User user) {
-//        this.user = user;
-//        user.getOrders().add(this);
-//    }
-//
-//    public void addOrderProduct(OrderProduct orderProduct) {
-//        orderProducts.add(orderProduct);
-//        orderProduct.setOrder(this);
-//    }
-//
-//    public void setDelivery(Delivery delivery) {
-//        this.delivery = delivery;
-//        delivery.setOrder(this);
-//    }
 }

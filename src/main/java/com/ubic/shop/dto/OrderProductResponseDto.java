@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Getter /*@Setter*/
+@Getter
 @Builder
 @ToString
 public class OrderProductResponseDto {
@@ -27,7 +27,7 @@ public class OrderProductResponseDto {
         this.stockQuantity = entity.getStockQuantity();
         this.count = count;
         categoryId = entity.getCategory().getId();
-        description=entity.getDescription();
+        description = entity.getDescription();
         imgUrl = entity.getImgUrl();
     }
 

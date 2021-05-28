@@ -9,7 +9,6 @@ import com.ubic.shop.repository.ProductTagRepository;
 import com.ubic.shop.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -65,7 +64,6 @@ public class TagService {
         }
     }
 
-    //    @Async
     public List<String> stemmingProductInfo(String productInfo) { // 상품 이름&설명 일반화할 수 있지 않을까!
 
         log.info("\n형태소 분석합니다: " + productInfo);
@@ -82,7 +80,6 @@ public class TagService {
         }
 
         // 스트림 처리하며 lemma 부분을 태그로 등록하기
-        // Product 객체 필요한데! : ProductService 에서 처리!
         List<String> stemmingResult = null;
         if (result != null) {
             stemmingResult = result.getResult().stream()
@@ -94,7 +91,6 @@ public class TagService {
             log.info("\n형태소 분석 결과: " + stemmingResult.size());
         }
         return stemmingResult;
-
     }
 
 }

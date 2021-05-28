@@ -1,8 +1,7 @@
 package com.ubic.shop.service;
 
-import com.ubic.shop.domain.ShopList;
-import com.ubic.shop.domain.ShopListProduct;
 import com.ubic.shop.domain.Product;
+import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.ShopListRepository;
@@ -38,9 +37,6 @@ public class ShopListService {
         User user = userRepository.findById(userId).get();
         Product product = productService.findById(productId);
 
-        //주문상품 생성
-//        ShopListProduct shopListProduct = ShopListProduct.createShopListProduct(product, product.getPrice(),
-//                count);
         //주문 생성
         ShopList shopList = ShopList.builder()
                 .user(user)

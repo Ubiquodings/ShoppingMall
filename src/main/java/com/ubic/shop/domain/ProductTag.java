@@ -29,5 +29,4 @@ public class ProductTag extends BaseTimeEntity {
         this.tag = tag;
     }
 
-
 }

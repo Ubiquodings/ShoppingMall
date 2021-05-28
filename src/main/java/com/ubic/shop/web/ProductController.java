@@ -3,21 +3,13 @@ package com.ubic.shop.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ubic.shop.config.LoginUser;
 import com.ubic.shop.config.UbicConfig;
-
 import com.ubic.shop.config.UbicSecretConfig;
 import com.ubic.shop.domain.*;
 import com.ubic.shop.dto.SessionUser;
-import com.ubic.shop.kafka.dto.ClickActionRequestDto;
 import com.ubic.shop.kafka.dto.SearchActionRequestDto;
 import com.ubic.shop.kafka.service.KafkaSevice;
 import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.TagRepository;
-
-import com.ubic.shop.domain.Product;
-import com.ubic.shop.domain.Role;
-import com.ubic.shop.domain.User;
-import com.ubic.shop.dto.SessionUser;
-
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.ProductService;
 import com.ubic.shop.service.RecommendService;
@@ -49,7 +41,6 @@ public class ProductController {
     private final ProductService productService;
     private final RecommendService recommendService;
     private final UbicConfig ubicConfig;
-    private final UbicSecretConfig ubicSecretConfig;
     private final UserRepository userRepository;
 
     private final KafkaSevice kafkaService;
@@ -58,20 +49,13 @@ public class ProductController {
     private final TagRepository tagRepository;
     private final UserService userService;
 
-//    private
 
     @GetMapping("/products")
     public String list(Model model, @LoginUser SessionUser user,
                        @RequestParam(name = "page", defaultValue = "0") String page, HttpServletRequest request) { // 화면 :: 윤진
 
-//        User nonMember = getTempUser(request);
-
-        // 사용 (age, offset=page, limit=40)
-        // 정렬은 어떻게 하지 ? name 디폴트로 하고 정렬 라디오 박스 추가하면 되겠다 TODO
         PageRequest pageRequest = PageRequest.of(Integer.parseInt(page), ubicConfig.productListPageSize, Sort.by(Sort.Direction.DESC, "name"));
-//        productService.findPagingProducts(pageRequest);
 
-//        model.addAttribute("products", productService.findAllProducts(/*PageRequest.of(0,20)*/));
         model.addAttribute("products", productService.findPagingProducts(pageRequest)); // 40개씩 페이징
 
         long userId = -1L;
@@ -87,9 +71,9 @@ public class ProductController {
         model.addAttribute("userId", userId);
 
         //끝페이지 가져오기
-        Page<Product> pages=productRepository.findProductsCountBy(pageRequest);
-        int page_total_count=pages.getTotalPages();
-        model.addAttribute("page-total-count",page_total_count );
+        Page<Product> pages = productRepository.findProductsCountBy(pageRequest);
+        int page_total_count = pages.getTotalPages();
+        model.addAttribute("page-total-count", page_total_count);
         return "product-list";
 
     }
@@ -100,7 +84,6 @@ public class ProductController {
                          HttpServletRequest request) {
 
         model.addAttribute("product", productService.findById(id));
-
 
         String clientId = null;
         long userId = -1L;
@@ -128,8 +111,6 @@ public class ProductController {
     public String search(@RequestParam("keyword") String searchText, Model model,
                          @LoginUser SessionUser user, HttpServletRequest request) throws JsonProcessingException {
 
-//        log.info("\nkeyword: "+searchText+"\napi key: "+ ubicSecretConfig.etriApiKey); // ok
-
         //회원+비회원
         Long userId = -1L;
         if (user != null) {
@@ -151,9 +132,9 @@ public class ProductController {
 
         // 검색어 형태소 분석
         List<String> result = tagService.stemmingProductInfo(searchText);
-        if(result == null){
+        if (result == null) {
             model.addAttribute("products", productListFromOriginalParam); // 40개씩 페이징
-            model.addAttribute("page-total-count",productListFromOriginalParam.size()%ubicConfig.productListPageSize );
+            model.addAttribute("page-total-count", productListFromOriginalParam.size() % ubicConfig.productListPageSize);
 
             return "product-list";
         }
@@ -161,18 +142,15 @@ public class ProductController {
 
         // String tagName > Tag
         List<Tag> byName = result.stream()
-                .filter(x -> x!=null)
+                .filter(x -> x != null)
                 .map(tagName -> {
-//                    log.info("\n debug tagName: "+tagName);
-                    if(tagRepository.findByName(tagName).size() == 0) {
-//                        log.info("\ntag null");
+                    if (tagRepository.findByName(tagName).size() == 0) {
                         return null;
-                    }else {
-//                        log.info("\ntagName: "+tagRepository.findByName(tagName).get(0).getName());
+                    } else {
                         return tagRepository.findByName(tagName).get(0); // 같은 이름 Tag 는 하나!
                     }
                 })
-                .filter(x -> x!=null)
+                .filter(x -> x != null)
                 .collect(Collectors.toList());
 
         // byName + tagListbyNameWithOriginalParam
@@ -180,14 +158,11 @@ public class ProductController {
                 .distinct() // 중복제거
                 .collect(Collectors.toList());
 
-//        log.info("\nsearch TagbyName size: "+byName.size()); // 2 ok
         List<Product> searchResultProductList = getProductListFromTagList(byName);
 
         model.addAttribute("products", searchResultProductList); // 40개씩 페이징
         //끝페이지 가져오기
-//        Page<Product> pages=productRepository.findProductsCountBy(pageRequest);
-//        int page_total_count=pages.getTotalPages();
-        model.addAttribute("page-total-count",searchResultProductList.size()%ubicConfig.productListPageSize );
+        model.addAttribute("page-total-count", searchResultProductList.size() % ubicConfig.productListPageSize);
 
         return "product-list";
     }
@@ -195,8 +170,8 @@ public class ProductController {
     public List<Product> getProductListFromTagList(List<Tag> tagList) {
         // Tag List > ProductTag List
         List<ProductTag> productTagList = new ArrayList<>();
-        for(Tag tag : tagList){
-            if(tag==null)
+        for (Tag tag : tagList) {
+            if (tag == null)
                 log.info("\ntag list null"); // null
             else if (tag.getProductTagList().size() != 0) // null 일 수가 없어
                 productTagList = Stream.concat(productTagList.stream(), tag.getProductTagList().stream())
@@ -216,7 +191,6 @@ public class ProductController {
         HttpSession session = request.getSession();
         User nonMember = null;
         if (session.isNew()) {
-//            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -230,6 +204,5 @@ public class ProductController {
         }
         return nonMember;
     }
-
 
 }

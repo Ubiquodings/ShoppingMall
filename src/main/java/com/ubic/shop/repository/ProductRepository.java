@@ -10,8 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-//@Repository
-//@RequiredArgsConstructor
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Override
@@ -28,13 +26,9 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             countQuery = "select count(p.name) from Product p")
     Page<Product> findProductsCountBy(Pageable pageable);
 
-    //    @Query("select p from Product p left join fetch p.category where p.category.id = :categoryId")
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
-    // 패치조인하면 페이징 못한다고...!
+    // 패치조인하면 페이징 못한다
 
-    // category id 기반으로 검색하되, count 만 반환하는 함수
-    // 이렇게 하면 전체 product 개수를 세는 함수인데!
-//    @Query(value = "select p from Product p where p.category")
     long countByCategoryId(Long categoryId);
 
     @Query(value = "select p from Product p where :results in p.ProductTagList")

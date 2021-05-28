@@ -6,7 +6,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString @Builder
+@ToString
+@Builder
 public class PublishedCouponInfoResponseDto {
     String couponName;
 }

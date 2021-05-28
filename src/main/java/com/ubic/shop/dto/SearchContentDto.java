@@ -12,6 +12,5 @@ public class SearchContentDto {
     String lemma;
     String type;
     Double position;
-    Double weight; // 가중치가 좀 신경쓰이는데 일단 다 해보자!
-
+    Double weight; // 가중치
 }

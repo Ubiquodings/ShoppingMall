@@ -18,14 +18,14 @@ import java.util.HashMap;
 @Slf4j
 public class EsSocketService {
 
-    private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장 ?
+    private final ElasticsearchRestTemplate esTemplate; // sb version up 2.2.x 로 새로 등장
 
     public long plusUserCount(long productId, long count) {
         log.info("\nplusUserCount : count : "+count);
 
         // 업데이트
         // 기존 es 객체 가져와야 한다
-        String productID = Long.toString(productId); //String);/*received.getUserId();*/
+        String productID = Long.toString(productId);
         ProductPageUserNumber productUserNumber = esTemplate.queryForObject(
                 GetQuery.getById(productID), ProductPageUserNumber.class);
 

@@ -25,7 +25,9 @@ public class OrderService {
     private final ShopListRepository shopListRepository;
     private final KafkaSevice kafkaService;
 
-    /** 주문 */ // 장바구니에서 하나 주문
+    /**
+     * 주문
+     */ // 장바구니에서 하나 주문
     // 주문은 - 장바구니에서 하나 이상 주문, - 장바구니에서 전체 주문,
     @Transactional
     public Long orderOneFromShopList(Long userId, Long productId, int count, Long shopListId) {
@@ -87,17 +89,18 @@ public class OrderService {
     }
 
 
-    /** 주문 취소 */
+    /**
+     * 주문 취소
+     */
     @Transactional
     public void cancelOrder(Long orderId, Long clientId) {
         //주문 엔티티 조회
         Optional<Order> orderbyId = orderRepository.findById(orderId);
-        if(orderbyId.isPresent()){
+        if (orderbyId.isPresent()) {
             Order order = orderbyId.get();
-            //주문 취소 -- order 만 삭제하고 order product 는 삭제 안하는데 ? -- 그래서 status 로 필터링 로직 추가했다
             order.cancel();
 
-            for(OrderProduct orderProduct : order.getOrderProducts()){
+            for (OrderProduct orderProduct : order.getOrderProducts()) {
                 String action = "order-cancel";
                 Product product = orderProduct.getProduct();
                 kafkaService.buildKafkaRequest(clientId, product, action);
@@ -110,7 +113,6 @@ public class OrderService {
     }
 
     public List<Order> findAllOrdered(Long userId) {
-//        OrderStatus order = OrderStatus.ORDER;
         return orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.ORDER);
     }
 

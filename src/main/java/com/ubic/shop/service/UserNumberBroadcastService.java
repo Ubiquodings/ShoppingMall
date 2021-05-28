@@ -44,9 +44,9 @@ public class UserNumberBroadcastService {
             productOrderUserNumberRepository.save(productOrderUserNumber);
         }
 
-        // 소켓-브로드캐스팅 결과 전달 : 이게 되나 ?
+        // 소켓-브로드캐스팅 결과 전달
         broadcastProductOrderUserNumber(productId);
-        // 의존성 순환 문제 : 클래스 분리로 문제 해결 ? oo 된다! 상품 상세에서 바로 확인 가능!
+        // 의존성 순환 문제 : 클래스 분리로 문제 해결
     }
 
     public UpdateUserNumberDto getProductOrderUserNumber(long productId) {
@@ -61,7 +61,7 @@ public class UserNumberBroadcastService {
     private void broadcastProductOrderUserNumber(long productId) throws JsonProcessingException {
         // data 가져오기
         UpdateUserNumberDto dto = getProductOrderUserNumber(productId);
-        if (dto == null){
+        if (dto == null) {
             log.info("\nreturn null");
             dto = new UpdateUserNumberDto(productId, 0L); // 없으면 0 반환해야 한다!
         }
@@ -99,7 +99,7 @@ public class UserNumberBroadcastService {
         List<CouponUseUserNumber> byProductId = couponUseUserNumberRepository.findByCouponType(couponType);
         if (byProductId.size() != 0) { // 결과가 있다면
             CouponUseUserNumber couponUseUserNumber = byProductId.get(0);
-            log.info("\ngetCouponUseUserNumber : "+couponUseUserNumber.toString());
+            log.info("\ngetCouponUseUserNumber : " + couponUseUserNumber.toString());
             return new UpdateCouponUserNumberDto(couponUseUserNumber.getCouponType(), couponUseUserNumber.getUserNumber());
         }
         return null;
@@ -108,7 +108,7 @@ public class UserNumberBroadcastService {
     private void broadcastCouponUseUserNumber(String couponType) throws JsonProcessingException {
         // data 가져오기
         UpdateCouponUserNumberDto dto = getCouponUseUserNumber(couponType);
-        if (dto == null){
+        if (dto == null) {
             log.info("\nreturn null");
             dto = new UpdateCouponUserNumberDto(couponType, 0L); // 없으면 0 반환해야 한다!
         }

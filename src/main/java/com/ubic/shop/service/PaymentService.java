@@ -29,8 +29,7 @@ public class PaymentService {
         // user + product 조합으로 이미 Payment 객체가 있다면 생성하지 않는다 !
         List<Payment> byUserIdAndProductId = paymentRepository.findByUserIdAndProductId(user.getId(), product.getId(), count);
 
-        if(byUserIdAndProductId.size() != 0){ // 있다면
-//            Payment payment = byUserIdAndProductId.get(0);
+        if (byUserIdAndProductId.size() != 0) { // 있다면
             return -1L;
         }
 

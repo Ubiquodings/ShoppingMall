@@ -20,9 +20,6 @@ public class CategoryCoupon extends Coupon {
     @Enumerated(EnumType.STRING)
     private CategoryCouponType categoryCouponType;
 
-//    @Enumerated(EnumType.STRING)
-//    private CouponType couponType = CouponType.category_base;
-
 
     @Builder
     public CategoryCoupon(String name, User user, Category category, int discountRate, CategoryCouponType categoryCouponType) {

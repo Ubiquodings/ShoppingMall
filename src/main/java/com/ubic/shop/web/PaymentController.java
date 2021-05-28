@@ -52,25 +52,14 @@ public class PaymentController {
 
         List<Long> idList = allPayments.stream()
                 .map(m -> {
-                    log.info("장바구니에서 온 상품id: "+m.getProduct().getId()); // 근데 여기서 문제가 있는건 아닌데
+                    log.info("장바구니에서 온 상품id: " + m.getProduct().getId()); // 근데 여기서 문제가 있는건 아닌데
                     return m.getProduct().getId();
                 }) // 각 장바구니 아이템의 상품 아이디 가져오기
                 .collect(Collectors.toList());
-//        log.info("\nidList: "+)
 
         // 상품 아이디 기반으로 쿠폰 가져오기
-//        , clientId
         final Long userId = clientId;
         List<Coupon> couponByProductAndUser = couponRepository.findByProductListAndUser(idList, clientId);
-//        List<Coupon> myCouponList = couponByProductId.stream()
-//                .map(c -> {
-//                    if (c.getUser().getId() == userId) {
-//                        return c;
-//                    }
-//                    return null;
-//                })
-//                .filter(x -> x != null)
-//                .collect(Collectors.toList());
         model.addAttribute("couponList", couponByProductAndUser);
 
         return "payment";

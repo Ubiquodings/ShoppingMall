@@ -4,7 +4,6 @@ import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
 import lombok.Builder;
 import lombok.Getter;
-//import org.springframework.security.core.userdetails.User;
 
 import java.util.Map;
 
