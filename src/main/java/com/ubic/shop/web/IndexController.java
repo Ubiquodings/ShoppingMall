@@ -1,34 +1,20 @@
 package com.ubic.shop.web;
-// web.IndexController
 
 import com.ubic.shop.config.LoginUser;
-import com.ubic.shop.config.UbicConfig;
-import com.ubic.shop.domain.Product;
 import com.ubic.shop.domain.Role;
 import com.ubic.shop.domain.User;
 import com.ubic.shop.dto.SessionUser;
-import com.ubic.shop.repository.CategoryRepository;
-import com.ubic.shop.repository.ProductRepository;
 import com.ubic.shop.repository.UserRepository;
 import com.ubic.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.session.SessionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @Controller

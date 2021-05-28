@@ -11,5 +11,4 @@ import java.util.List;
 @Getter
 public class OrderAllRequestDto {
     List<Long> couponIdList;
-//    List<Long> shopListIdList;
 }

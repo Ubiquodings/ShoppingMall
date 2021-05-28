@@ -1,11 +1,9 @@
 package com.ubic.shop.domain;
 
 import lombok.*;
-//import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 
-//import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 @Getter @ToString
@@ -18,10 +16,7 @@ public class Category extends BaseTimeEntity {
     private Long id;
 
     private String name;
-    private Long kurlyId; // 얘가 진짜 카테고리 id 인데!
-
-//    @OneToOne(mappedBy = "category", fetch = FetchType.LAZY)
-//    private Product product;
+    private Long kurlyId; // 얘가 실제 데이터 카테고리 id
 
     @Builder
     public Category(long kurlyId, String name) {

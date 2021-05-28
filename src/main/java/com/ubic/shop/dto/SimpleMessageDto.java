@@ -5,7 +5,8 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor @ToString
+@AllArgsConstructor
+@ToString
 public class SimpleMessageDto {
     String message;
 }

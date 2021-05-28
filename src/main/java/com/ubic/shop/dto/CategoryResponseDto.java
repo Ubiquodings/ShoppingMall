@@ -1,7 +1,6 @@
 package com.ubic.shop.dto;
 
 import com.ubic.shop.domain.Category;
-import com.ubic.shop.domain.Product;
 import lombok.Getter;
 
 @Getter

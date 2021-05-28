@@ -27,16 +27,16 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/mypage")
-    public String detail(Model model, @LoginUser SessionUser user, HttpServletRequest request){
+    public String detail(Model model, @LoginUser SessionUser user, HttpServletRequest request) {
 
-        Long userId=-1L;
-        if(user != null){
+        Long userId = -1L;
+        if (user != null) {
             model.addAttribute("userName", user.getName());
             userId = user.getId();
             userService.updateLastActivatedTime(userId);
-        }else{ // 해시코드 다섯글자만 추출하기
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             userId = nonMember.getId();
         }
         model.addAttribute("userId", userId);
@@ -45,21 +45,20 @@ public class UserController {
     }
 
     @GetMapping("/my-coupons")
-    public String coupons(Model model, @LoginUser SessionUser user, HttpServletRequest request){
+    public String coupons(Model model, @LoginUser SessionUser user, HttpServletRequest request) {
 
-        Long userId=-1L;
-        if(user != null){
+        Long userId = -1L;
+        if (user != null) {
             model.addAttribute("userName", user.getName());
             userId = user.getId();
             userService.updateLastActivatedTime(userId);
-        }else{ // 해시코드 다섯글자만 추출하기
+        } else { // 해시코드 다섯글자만 추출하기
             User nonMember = getTempUser(request);
-            model.addAttribute("clientId", nonMember.getName().substring(0,5));
+            model.addAttribute("clientId", nonMember.getName().substring(0, 5));
             userId = nonMember.getId();
         }
         model.addAttribute("userId", userId);
 
-//        TODO 전달해야 한다! : 사용한건 안 가져오는가 ?
         model.addAttribute("couponList", couponRepository.findByUserIdAndStatus(userId, CouponStatus.Created));
 
         return "mycoupons";
@@ -68,9 +67,9 @@ public class UserController {
 
     private User getTempUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User nonMember=null;
-        if(session.isNew()){
-            log.info("\nsession is new : "+session.getId());
+        User nonMember = null;
+        if (session.isNew()) {
+            log.info("\nsession is new : " + session.getId());
             // user 생성
             nonMember = User.builder()
                     .name(session.getId())
@@ -79,7 +78,7 @@ public class UserController {
                     .role(Role.GUEST)
                     .build();
             userRepository.save(nonMember);
-        }else{ // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
+        } else { // 새로운 세션이 아니라면 기존 세션이 있다는 말이니까!
             nonMember = userRepository.findByName(session.getId());
         }
         return nonMember;

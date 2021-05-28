@@ -1,15 +1,18 @@
 package com.ubic.shop.domain;
+
 import lombok.*;
-//import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+
 @NoArgsConstructor
 @Entity
 @Table(name = "order_product")
-@Getter @Setter
+@Getter
+@Setter
 public class OrderProduct extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "order_product_id")
     private Long id;
 
@@ -27,19 +30,22 @@ public class OrderProduct extends BaseTimeEntity {
     //==생성 메서드==//
     public static OrderProduct createOrderProduct(Product product, long orderPrice, long count) {
         OrderProduct orderProduct = new OrderProduct();
-        orderProduct.setProduct(product); //
+        orderProduct.setProduct(product);
         orderProduct.setOrderPrice(orderPrice);
         orderProduct.setCount(count);
-//        product.removeStock(count); // 재고관리는 안한다 !
         return orderProduct;
     }
-    //==비즈니스 로직==//
-    /** 주문 취소 */
+
+    /**
+     * 주문 취소
+     */
     public void cancel() {
         getProduct().addStock(count);
     }
-    //==조회 로직==//
-    /** 주문상품 전체 가격 조회 */
+
+    /**
+     * 주문상품 전체 가격 조회
+     */
     public long getTotalPrice() {
         return getOrderPrice() * getCount();
     }

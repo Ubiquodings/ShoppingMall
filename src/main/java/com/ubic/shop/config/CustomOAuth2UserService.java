@@ -38,7 +38,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", new SessionUser(user));
-        log.info("\n login session id : "+httpSession.getId()); // 여기까지 이전 세션 id 그대로!!
+        log.info("\n login session id : "+httpSession.getId()); // 이전 세션 id
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),

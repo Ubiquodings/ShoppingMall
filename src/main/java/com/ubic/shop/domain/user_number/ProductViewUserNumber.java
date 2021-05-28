@@ -1,9 +1,5 @@
 package com.ubic.shop.domain.user_number;
 
-import com.ubic.shop.domain.Category;
-import com.ubic.shop.domain.User;
-import com.ubic.shop.domain.coupon.CategoryCouponType;
-import com.ubic.shop.domain.coupon.CouponType;
 import lombok.*;
 
 import javax.persistence.Column;

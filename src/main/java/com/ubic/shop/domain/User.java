@@ -2,7 +2,6 @@ package com.ubic.shop.domain;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.data.annotation.Id;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,9 +35,6 @@ public class User extends BaseTimeEntity {
     public Long updateLastActivatedDate(){
         this.lastActivatedDate = LocalDateTime.now();
         LocalDateTime now = LocalDateTime.now();
-//        now.minusMinutes(30);
-//        log.info(""+now);
-
         return this.id;
     }
 

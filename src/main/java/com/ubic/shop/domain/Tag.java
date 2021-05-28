@@ -19,17 +19,12 @@ public class Tag extends BaseTimeEntity {
 
     private String name;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "product_id")
-//    private Product product;
-
     @OneToMany(mappedBy = "tag")
     private List<ProductTag> productTagList = new ArrayList<>();
 
 
     @Builder
-    public Tag(/*Product product, */String name) {
-//        this.product = product;
+    public Tag(String name) {
         this.name = name;
     }
 

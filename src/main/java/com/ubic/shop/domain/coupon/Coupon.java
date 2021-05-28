@@ -41,18 +41,6 @@ public abstract class Coupon extends BaseTimeEntity {
     }
 
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "product_id")
-//    private Product product;
-
-
-//    @Builder
-//    public Coupon(String name, User user/*, Product product*/) {
-//        this.name = name;
-//        this.user = user;
-////        this.product = product;
-//    }
-
     public void changeStatusUsed() {
         this.status = CouponStatus.Used;
     }
@@ -61,9 +49,5 @@ public abstract class Coupon extends BaseTimeEntity {
         return couponType.toString();
     }
 
-
-//    public void changeStatus(CouponStatus used) {
-//        this.status =
-//    }
 }
 

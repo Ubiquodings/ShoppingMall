@@ -2,10 +2,8 @@ package com.ubic.shop.service;
 
 import com.ubic.shop.domain.Category;
 import com.ubic.shop.domain.Product;
-import com.ubic.shop.domain.ProductCategory;
 import com.ubic.shop.dto.ProductResponseDto;
 import com.ubic.shop.dto.ProductSaveRequestDto;
-import com.ubic.shop.repository.ProductCategoryRepository;
 import com.ubic.shop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +19,6 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductCategoryService productCategoryService;
-    //    private final ProductCategoryRepository productCategoryRepository;
     private final TagService tagService;
 
     @Transactional
@@ -31,11 +27,6 @@ public class ProductService {
         if (!validateDuplicateProduct(product)) { // false 이면 중복상품
             return null;
         } //중복 상품 검증
-        // 여기까지 dto 끌고 들어와서, category list 처리 ?
-//        product.se
-//        ProductResponseDto productResponseDto;
-//        Product product = ;
-//        productCategoryService.saveCategoryList(productDto.getCategoryList(), product);
 
         // 여기서 생성된 product 를 가지고 Tag 등록을 해야겠다
         product = productRepository.save(product);
@@ -48,19 +39,13 @@ public class ProductService {
         List<Product> findProductList = productRepository.findByName(product.getName());
         if (!findProductList.isEmpty()) {
             return false;
-//            throw new IllegalStateException("이미 존재하는 상품입니다.");
         }
         return true;
     }
 
-//    public List<Product> findAllProducts(/*Pageable pageable*/) {
-//        return (List) productRepository.findDefaultProducts/*findAll*/();
-//    }
-
     public List<Product> findPagingProducts(Pageable pageable) {
         return productRepository.findProductsCountBy(pageable).getContent();
     }
-
 
     public Product findById(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);

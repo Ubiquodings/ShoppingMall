@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString @Builder
+@ToString
+@Builder
 @Document(indexName = "ubic_click_action", type = "_doc")
 public class ClickProductAction {
     String now = LocalDateTime.now().toString();
@@ -17,10 +18,4 @@ public class ClickProductAction {
     Long productId;
     Long categoryId;
     String actionType;
-
-//    public ClickProductAction(String userId, Long productId, String actionType) {
-//        this.userId = userId;
-//        this.productId = productId;
-//        this.actionType = actionType;
-//    }
 }

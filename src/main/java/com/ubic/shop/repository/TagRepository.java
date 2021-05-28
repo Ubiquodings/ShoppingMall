@@ -1,7 +1,5 @@
 package com.ubic.shop.repository;
 
-import com.ubic.shop.domain.Product;
-import com.ubic.shop.domain.ShopList;
 import com.ubic.shop.domain.Tag;
 import org.springframework.data.repository.CrudRepository;
 
